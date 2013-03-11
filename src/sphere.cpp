@@ -9,11 +9,17 @@ using namespace std;
 
 // constructeur
 Sphere::Sphere(float taille, int nb_morceaux) {
+   glPushMatrix();
    drawImmediate(taille, nb_morceaux);
+   glPopMatrix();
 }
 
 //destructor
 Sphere::~Sphere() {
+}
+
+void Sphere::draw() {
+
 }
 
 

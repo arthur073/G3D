@@ -36,10 +36,9 @@ void Viewer::init()
 
 
    //=== INIT SCENE: add everything you want in your scene to the renderableList
-   //    (just an instance of Cube in this example)
 
- //  Magicien *mag = new Magicien();
- //  renderableList.push_back(mag);
+   Magicien *mag = new Magicien();
+   renderableList.push_back(mag);
 }
 
 

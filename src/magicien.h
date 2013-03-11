@@ -12,6 +12,7 @@ class Magicien : public Renderable
 	public:
 		Magicien();
       ~Magicien();
+      void draw();
 };
 
 #endif
