@@ -1,5 +1,5 @@
-#ifndef _MAGICIAN_
-#define _MAGICIAN_
+#ifndef _MAGICIEN_
+#define _MAGICIEN_
 
 #include "renderable.h"
 #include <GL/glut.h>
@@ -11,7 +11,7 @@ class Magicien : public Renderable
 {
 	public:
 		Magicien();
-      virtual ~Magicien();
+      ~Magicien();
 };
 
 #endif

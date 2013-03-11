@@ -8,7 +8,7 @@ class Sphere : public Renderable
 {
 	public:
       Sphere(float taille, int nb_morceaux);
-      virtual ~Sphere();
+      ~Sphere();
 
 	private:
       void drawImmediate(float taille, int nb_morceaux);
