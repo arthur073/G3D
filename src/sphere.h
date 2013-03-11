@@ -7,12 +7,11 @@
 class Sphere : public Renderable
 {
 	public:
-		void draw();
+      Sphere(float taille, int nb_morceaux);
+      virtual ~Sphere();
 
 	private:
-		void drawImmediate();
-		void drawElements();
-		void drawArrays();
+      void drawImmediate(float taille, int nb_morceaux);
 };
 
 #endif
