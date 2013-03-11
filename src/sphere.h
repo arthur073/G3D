@@ -9,8 +9,8 @@ class Sphere : public Renderable
 	public:
       Sphere(float taille, int nb_morceaux);
       virtual ~Sphere();
-
 	private:
+      void draw();
       void drawImmediate(float taille, int nb_morceaux);
 };
 

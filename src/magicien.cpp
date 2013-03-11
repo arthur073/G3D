@@ -9,6 +9,8 @@ using namespace std;
 
 //destructor
 Magicien::~Magicien() {
+//detruire la sphere
+
 }
 
 
@@ -18,4 +20,8 @@ Magicien::Magicien()
    
    // HEAD
    Sphere *head = new Sphere(0.5, 15);
+}
+
+void Magicien::draw()
+{
 }

@@ -11,7 +11,8 @@ class Magicien : public Renderable
 {
 	public:
 		Magicien();
-      virtual ~Magicien();
+     ~Magicien();
+  void draw();
 };
 
 #endif
