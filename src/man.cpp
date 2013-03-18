@@ -2,7 +2,6 @@
 #include <math.h>
 using namespace std;
 #include "man.h"
-
 /*
    cylinder's drawing
    */
