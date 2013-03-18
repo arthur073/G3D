@@ -12,6 +12,7 @@ class Man : public Renderable
 	private:
 		void drawImmediate();
 		void drawCylinder(float radius, float height);
+      void solidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks);
 };
 
 #endif
