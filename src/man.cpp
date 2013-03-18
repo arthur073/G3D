@@ -15,6 +15,8 @@ GLfloat leftShoulder = 0;
 GLfloat rightShoulder = 0;
 GLfloat rightWrist = 0;
 
+bool reverseAnim = false;
+
 void Man::draw()
 {
    // draw immediate 
@@ -214,11 +216,38 @@ void Man::animate()
 {
    //belly+=1;
    //neck+=1;
+  if( reverseAnim == false )
+  {
    if (leftShoulder > -70) {
       leftShoulder-=1;
       rightShoulder+=1;
    }
+   else {
+     reverseAnim = true;
+   }
+
    if (rightWrist > -90) {
       rightWrist-=1;
    }
+   else {
+     reverseAnim = true;
+   }
+  }
+  else
+  {
+   if (leftShoulder < 0) {
+      leftShoulder+=1;
+      rightShoulder-=1;
+   }
+   else {
+     reverseAnim = false;
+   }
+
+   if (rightWrist < 0) {
+      rightWrist+=1;
+   }
+   else {
+     reverseAnim = false;
+   }
+  }
 }
