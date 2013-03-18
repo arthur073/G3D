@@ -98,25 +98,6 @@ void Man::drawImmediate()
    glPopMatrix();
 
 
-<<<<<<< HEAD
-  // baton
-  glPushMatrix();
-  glTranslatef(1.5,0,1.7);
-  glColor3ub(0,0,255);
-  glutSolidSphere(0.22, 30, 30);
-  glColor3ub(255,255,255);
-  glPushMatrix();
-  glTranslatef(0, 0, -0.05); 
-  glRotatef(180, 1, 0, 0);
-  glColor3ub(255,0,0);
-  solidCone(0.3, 0.6, 30, 30);
-  glPopMatrix();
-  glTranslatef(0,0,-1.1);
-  drawCylinder(0.1, 1.2);
-  glColor3ub(255,255,255);
-  glPopMatrix();
-=======
->>>>>>> e46e79f45043ba3a103f60cb8df5d636276c103e
 
    // baton
    glPushMatrix();
@@ -138,8 +119,8 @@ void Man::drawImmediate()
    glTranslatef(0,0,-1.3);
    drawCylinder(0.05, 1.2);
    glPopMatrix();
+   glColor3f(1,1,1);
 
-   //glutPostRedisplay();
 }
 
 void Man::drawCylinder(float radius, float height)
