@@ -34,7 +34,7 @@ void Man::drawImmediate()
    glPopMatrix();
 
 
- 
+
    // left arm
    glPushMatrix();
    glTranslatef(-1.2, 0, 0.65);
@@ -42,7 +42,7 @@ void Man::drawImmediate()
    solidCone(0.2, 1.2, 30, 30);
    glPopMatrix();
 
-  
+
    // right arm
    glPushMatrix();
    glTranslatef(1.2, 0, 0.65);
@@ -65,7 +65,7 @@ void Man::drawImmediate()
    glutSolidSphere(0.5, 30, 30);
    glPopMatrix();
 
-    // left hand
+   // left hand
    glPushMatrix();
    glTranslatef(-1.2, 0, 0.65);
    glRotatef(90, 0, 1, 0);
@@ -83,22 +83,25 @@ void Man::drawImmediate()
    glScalef(0.5,1,1);
    glutSolidCube(0.3);
    glPopMatrix();
- 
+
+
+
+   // baton
+   glPushMatrix();
+   glTranslatef(1.5,0,1.5);
    glColor3f(1,1,1);
+   glutSolidSphere(0.22, 30, 30);
+   glColor3ub(100,53,16);
 
-
-  // baton
-  glPushMatrix();
-  glTranslatef(1.5,0,1.03);
-  glutSolidSphere(0.22, 30, 30);
-  glPushMatrix();
-  glTranslatef(0, 0, -0.05); 
-  glRotatef(180, 1, 0, 0);
-  solidCone(0.3, 0.6, 30, 30);
-  glPopMatrix();
-  glTranslatef(0,0,-0.8);
-  drawCylinder(0.1, 0.9);
-  glPopMatrix();
+   glPushMatrix();
+   glTranslatef(0, 0, -0.05); 
+   glRotatef(180, 1, 0, 0);
+   solidCone(0.3, 0.6, 30, 30);
+   glPopMatrix();
+   
+   glTranslatef(0,0,-1.3);
+   drawCylinder(0.05, 1.2);
+   glPopMatrix();
 
 
 }
