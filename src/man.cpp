@@ -53,6 +53,14 @@ void Man::drawImmediate()
    glRotatef(60, 1, -0.2, 0);
    drawCylinder(0.2, 0.5);
    glPopMatrix();
+
+   // hat
+   glPushMatrix();
+   glTranslatef(0, 0, 1.6);
+   solidCone(0.5, 0.8, 30, 30);
+   solidDisk(0.7, 0.01, 30, 30);
+   glPopMatrix();
+
 }
 
 void Man::drawCylinder(float radius, float height)
@@ -109,4 +117,35 @@ void Man::solidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks)
       glVertex3f(cos(degInRad)*base,sin(degInRad)*base, 0);
    }
    glEnd();
+}
+
+
+void Man::solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks)
+{
+   GLUquadricObj* quadric = gluNewQuadric();
+   gluCylinder(quadric, base, base, thickness, slices, stacks);
+   gluDeleteQuadric(quadric);
+
+   // le dessous
+   const float DEG2RAD = 3.14159/180;
+   glBegin(GL_POLYGON);
+   glNormal3f(0, 0 , -1.0);
+   for (int i=0; i < 360; i++)
+   {
+      float degInRad = i*DEG2RAD;
+      glVertex3f(cos(degInRad)*base,sin(degInRad)*base, 0);
+   }
+   glEnd();
+
+   // le dessus
+   glBegin(GL_POLYGON);
+   glNormal3f(0, 0 , 1.0);
+   for (int i=0; i < 360; i++)
+   {
+      float degInRad = i*DEG2RAD;
+      glVertex3f(cos(degInRad)*base,sin(degInRad)*base, thickness);
+   }
+   glEnd();
+
+
 }
