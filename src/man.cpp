@@ -2,7 +2,7 @@
 #include <math.h>
 using namespace std;
 #include "man.h"
-
+#include "sdlglutils.h"
 /*
 	cylinder's drawing
 */
@@ -20,11 +20,16 @@ void Man::draw()
 // immediate definition of individual vertex properties
 void Man::drawImmediate()
 {
+  GLuint texture1;
    // torsal
 	glPushMatrix();
+  glEnable(GL_TEXTURE_2D);
+  texture1 = loadTexture("corps.jpeg");
+  glBindTexture(GL_TEXTURE_2D, texture1);
    //drawCylinder(0.7, 0.7);
 	glTranslatef(0, 0, -0.8);
    glutSolidCone(0.8, 1.8, 30, 30);
+   glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
    // head

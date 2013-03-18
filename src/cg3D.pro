@@ -3,8 +3,8 @@ TARGET   = cg3D
 CONFIG  += qt opengl glut warn_on release thread openmp debug
 QT *= xml opengl 
 
-HEADERS  = viewer.h renderable.h man.h 
-SOURCES  = viewer.cpp main.cpp man.cpp 
+HEADERS  = viewer.h renderable.h man.h sdlglutils.h 
+SOURCES  = viewer.cpp main.cpp man.cpp sdlglutils.cpp
 
 
 # Qt 2.3 users must edit config.pri
