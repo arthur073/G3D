@@ -22,7 +22,9 @@ void Man::drawImmediate()
 {
    // torsal
 	glPushMatrix();
-   drawCylinder(0.7, 0.7);
+   //drawCylinder(0.7, 0.7);
+	glTranslatef(0, 0, -0.8);
+   glutSolidCone(0.8, 1.8, 30, 30);
 	glPopMatrix();
 
    // head
@@ -44,33 +46,6 @@ void Man::drawImmediate()
 	glTranslatef(0.8, 0.3, 0.2);
    glRotatef(60, 1, -0.2, 0);
    drawCylinder(0.2, 0.5);
-	glPopMatrix();
-
-
-   // right leg
-	glPushMatrix();
-	glTranslatef(0.4, 0, -1);
-   drawCylinder(0.25, 0.6);
-	glPopMatrix();
-
-   // left leg
-	glPushMatrix();
-	glTranslatef(-0.4, 0, -1);
-   drawCylinder(0.25, 0.6);
-	glPopMatrix();
-
-   // right foot 
-	glPushMatrix();
-	glTranslatef(0.4, 0, -1.6);
-   glRotatef(90, 1, 0, 0);
-   glutSolidSphere(0.5, 2, 3);
-	glPopMatrix();
-
-   // left foot 
-	glPushMatrix();
-	glTranslatef(-0.4, 0, -1.6);
-   glRotatef(90, 1, 0, 0);
-   glutSolidSphere(0.5, 2, 3);
 	glPopMatrix();
 }
 
