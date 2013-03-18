@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 #include <math.h>
 #include<unistd.h>
 using namespace std;
@@ -7,6 +8,12 @@ using namespace std;
    cylinder's drawing
    */
 
+/* free angles */
+GLfloat belly = 0;
+GLfloat neck = 0;
+GLfloat leftShoulder = 0;
+GLfloat rightShoulder = 0;
+GLfloat rightWrist = 0;
 
 void Man::draw()
 {
@@ -18,6 +25,8 @@ void Man::draw()
 // immediate definition of individual vertex properties
 void Man::drawImmediate()
 {
+   glColor3ub(118,70,185);
+
    // dress
    glPushMatrix();
    glTranslatef(0, 0, -1);
@@ -27,51 +36,29 @@ void Man::drawImmediate()
    // torsal
    glPushMatrix();
    glTranslatef(0, 0, 0.8);
+   //glRotatef(belly, 1, 0, 0);
    glRotatef(180, 1, 0, 0);
    solidCone(0.5, 1.5, 30, 30);
    glPopMatrix();
 
 
-   // head
-   glPushMatrix();
-   glTranslatef(0, 0, 1.2);
-   glutSolidSphere(0.5, 30, 30);
-   glPopMatrix();
 
    // left arm
    glPushMatrix();
+   glRotatef(leftShoulder, 0, 0, 1);
    glTranslatef(-1.2, 0, 0.65);
    glRotatef(90, 0, 1, 0);
    solidCone(0.2, 1.2, 30, 30);
-   glPopMatrix();
-
-   // left hand
-   glPushMatrix();
-   glTranslatef(-1.2, 0, 0.65);
-   glRotatef(90, 0, 1, 0);
-   glTranslatef(0, 0, -0.1);
-   glScalef(0.5,1,1);
-   glutSolidCube(0.3);
    glPopMatrix();
 
 
    // right arm
    glPushMatrix();
+   glRotatef(rightShoulder, 0, 0, 1);
    glTranslatef(1.2, 0, 0.65);
    glRotatef(90, 0, -1, 0);
    solidCone(0.2, 1.2, 30, 30);
    glPopMatrix();
-
-
-   // right hand
-   glPushMatrix();
-   glTranslatef(1.2, 0, 0.65);
-   glRotatef(90, 0, -1, 0);
-   glTranslatef(0, 0, -0.1);
-   glScalef(0.5,1,1);
-   glutSolidCube(0.3);
-   glPopMatrix();
- 
 
    // hat
    glPushMatrix();
@@ -80,6 +67,38 @@ void Man::drawImmediate()
    solidDisk(0.7, 0.01, 30, 30);
    glPopMatrix();
 
+
+   glColor3ub(246,198,224);
+   // head
+   glPushMatrix();
+   glRotatef(neck, 1, 0, 0);
+   glTranslatef(0, 0, 1.2);
+   glutSolidSphere(0.5, 30, 30);
+   glPopMatrix();
+
+   // left hand
+   glPushMatrix();
+   glRotatef(leftShoulder, 0, 0, 1);
+   glTranslatef(-1.2, 0, 0.65);
+   glRotatef(90, 0, 1, 0);
+   glTranslatef(0, 0, -0.1);
+   glScalef(0.5,1,1);
+   glutSolidCube(0.3);
+   glPopMatrix();
+
+
+   // right hand
+   glPushMatrix();
+   glRotatef(rightShoulder, 0, 0, 1);
+   glTranslatef(1.2, 0, 0.65);
+   glRotatef(90, 0, -1, 0);
+   glTranslatef(0, 0, -0.1);
+   glScalef(0.5,1,1);
+   glutSolidCube(0.3);
+   glPopMatrix();
+
+
+<<<<<<< HEAD
   // baton
   glPushMatrix();
   glTranslatef(1.5,0,1.7);
@@ -96,8 +115,31 @@ void Man::drawImmediate()
   drawCylinder(0.1, 1.2);
   glColor3ub(255,255,255);
   glPopMatrix();
+=======
+>>>>>>> e46e79f45043ba3a103f60cb8df5d636276c103e
 
+   // baton
+   glPushMatrix();
+   glRotatef(rightShoulder, 0, 0, 1);
+   glTranslatef(1.5,0,0);
+   glTranslatef(0,0,0.65);
+   glRotatef(rightWrist, 1, 0, 0);
+   glTranslatef(0,0,1.35);
+   glColor3f(1,1,1);
+   glutSolidSphere(0.22, 30, 30);
+   glColor3ub(100,53,16);
 
+   glPushMatrix();
+   glTranslatef(0, 0, -0.05); 
+   glRotatef(180, 1, 0, 0);
+   solidCone(0.3, 0.6, 30, 30);
+   glPopMatrix();
+   
+   glTranslatef(0,0,-1.3);
+   drawCylinder(0.05, 1.2);
+   glPopMatrix();
+
+   //glutPostRedisplay();
 }
 
 void Man::drawCylinder(float radius, float height)
@@ -183,6 +225,19 @@ void Man::solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks)
       glVertex3f(cos(degInRad)*base,sin(degInRad)*base, thickness);
    }
    glEnd();
+}
 
 
+
+void Man::animate() 
+{
+   //belly+=1;
+   //neck+=1;
+   if (leftShoulder > -70) {
+      leftShoulder-=1;
+      rightShoulder+=1;
+   }
+   if (rightWrist > -90) {
+      rightWrist-=1;
+   }
 }
