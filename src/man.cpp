@@ -7,10 +7,15 @@ using namespace std;
    cylinder's drawing
    */
 
+/* free angles */
+GLfloat belly = 0;
+GLfloat neck = 0;
+GLfloat leftShoulder = 0;
+GLfloat rightShoulder = 0;
+GLfloat rightWrist = 0;
 
 void Man::draw()
 {
-
    // draw immediate 
    drawImmediate();
 }
@@ -20,6 +25,7 @@ void Man::draw()
 void Man::drawImmediate()
 {
    glColor3ub(118,70,185);
+
    // dress
    glPushMatrix();
    glTranslatef(0, 0, -1);
@@ -29,6 +35,7 @@ void Man::drawImmediate()
    // torsal
    glPushMatrix();
    glTranslatef(0, 0, 0.8);
+   //glRotatef(belly, 1, 0, 0);
    glRotatef(180, 1, 0, 0);
    solidCone(0.5, 1.5, 30, 30);
    glPopMatrix();
@@ -37,6 +44,7 @@ void Man::drawImmediate()
 
    // left arm
    glPushMatrix();
+   glRotatef(leftShoulder, 0, 0, 1);
    glTranslatef(-1.2, 0, 0.65);
    glRotatef(90, 0, 1, 0);
    solidCone(0.2, 1.2, 30, 30);
@@ -45,6 +53,7 @@ void Man::drawImmediate()
 
    // right arm
    glPushMatrix();
+   glRotatef(rightShoulder, 0, 0, 1);
    glTranslatef(1.2, 0, 0.65);
    glRotatef(90, 0, -1, 0);
    solidCone(0.2, 1.2, 30, 30);
@@ -61,12 +70,14 @@ void Man::drawImmediate()
    glColor3ub(246,198,224);
    // head
    glPushMatrix();
+   glRotatef(neck, 1, 0, 0);
    glTranslatef(0, 0, 1.2);
    glutSolidSphere(0.5, 30, 30);
    glPopMatrix();
 
    // left hand
    glPushMatrix();
+   glRotatef(leftShoulder, 0, 0, 1);
    glTranslatef(-1.2, 0, 0.65);
    glRotatef(90, 0, 1, 0);
    glTranslatef(0, 0, -0.1);
@@ -77,6 +88,7 @@ void Man::drawImmediate()
 
    // right hand
    glPushMatrix();
+   glRotatef(rightShoulder, 0, 0, 1);
    glTranslatef(1.2, 0, 0.65);
    glRotatef(90, 0, -1, 0);
    glTranslatef(0, 0, -0.1);
@@ -88,7 +100,11 @@ void Man::drawImmediate()
 
    // baton
    glPushMatrix();
-   glTranslatef(1.5,0,1.5);
+   glRotatef(rightShoulder, 0, 0, 1);
+   glTranslatef(1.5,0,0);
+   glTranslatef(0,0,0.65);
+   glRotatef(rightWrist, 1, 0, 0);
+   glTranslatef(0,0,1.35);
    glColor3f(1,1,1);
    glutSolidSphere(0.22, 30, 30);
    glColor3ub(100,53,16);
@@ -103,7 +119,7 @@ void Man::drawImmediate()
    drawCylinder(0.05, 1.2);
    glPopMatrix();
 
-
+   //glutPostRedisplay();
 }
 
 void Man::drawCylinder(float radius, float height)
@@ -189,6 +205,19 @@ void Man::solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks)
       glVertex3f(cos(degInRad)*base,sin(degInRad)*base, thickness);
    }
    glEnd();
+}
 
 
+
+void Man::animate() 
+{
+   //belly+=1;
+   //neck+=1;
+   if (leftShoulder > -70) {
+      leftShoulder-=1;
+      rightShoulder+=1;
+   }
+   if (rightWrist > -90) {
+      rightWrist-=1;
+   }
 }

@@ -8,6 +8,7 @@ class Man : public Renderable
 {
 	public:
 		void draw();
+		void animate();
 
 	private:
 		void drawImmediate();
