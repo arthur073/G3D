@@ -87,6 +87,20 @@ void Man::drawImmediate()
    glColor3f(1,1,1);
 
 
+  // baton
+  glPushMatrix();
+  glTranslatef(1.5,0,1.03);
+  glutSolidSphere(0.22, 30, 30);
+  glPushMatrix();
+  glTranslatef(0, 0, -0.05); 
+  glRotatef(180, 1, 0, 0);
+  solidCone(0.3, 0.6, 30, 30);
+  glPopMatrix();
+  glTranslatef(0,0,-0.8);
+  drawCylinder(0.1, 0.9);
+  glPopMatrix();
+
+
 }
 
 void Man::drawCylinder(float radius, float height)
