@@ -41,18 +41,38 @@ void Man::drawImmediate()
 
    // left arm
    glPushMatrix();
-   glTranslatef(-0.8, 0.3, 0.2);
-   glRotatef(60, 1, 0.2, 0);
-   drawCylinder(0.2, 0.5);
+   glTranslatef(-1.2, 0, 0.65);
+   glRotatef(90, 0, 1, 0);
+   solidCone(0.2, 1.2, 30, 30);
+   glPopMatrix();
+
+   // left hand
+   glPushMatrix();
+   glTranslatef(-1.2, 0, 0.65);
+   glRotatef(90, 0, 1, 0);
+   glTranslatef(0, 0, -0.1);
+   glScalef(0.5,1,1);
+   glutSolidCube(0.3);
    glPopMatrix();
 
 
    // right arm
    glPushMatrix();
-   glTranslatef(0.8, 0.3, 0.2);
-   glRotatef(60, 1, -0.2, 0);
-   drawCylinder(0.2, 0.5);
+   glTranslatef(1.2, 0, 0.65);
+   glRotatef(90, 0, -1, 0);
+   solidCone(0.2, 1.2, 30, 30);
    glPopMatrix();
+
+
+   // right hand
+   glPushMatrix();
+   glTranslatef(1.2, 0, 0.65);
+   glRotatef(90, 0, -1, 0);
+   glTranslatef(0, 0, -0.1);
+   glScalef(0.5,1,1);
+   glutSolidCube(0.3);
+   glPopMatrix();
+ 
 
    // hat
    glPushMatrix();
