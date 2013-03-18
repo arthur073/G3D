@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 #include <math.h>
 using namespace std;
 #include "man.h"
@@ -12,13 +13,13 @@ void Man::draw()
 
    // draw immediate 
    drawImmediate();
-
 }
 
 //==================== 1. Immediate method ===================================
 // immediate definition of individual vertex properties
 void Man::drawImmediate()
 {
+   glColor3ub(118,70,185);
    // dress
    glPushMatrix();
    glTranslatef(0, 0, -1);
@@ -33,12 +34,7 @@ void Man::drawImmediate()
    glPopMatrix();
 
 
-   // head
-   glPushMatrix();
-   glTranslatef(0, 0, 1.2);
-   glutSolidSphere(0.5, 30, 30);
-   glPopMatrix();
-
+ 
    // left arm
    glPushMatrix();
    glTranslatef(-1.2, 0, 0.65);
@@ -46,21 +42,36 @@ void Man::drawImmediate()
    solidCone(0.2, 1.2, 30, 30);
    glPopMatrix();
 
-   // left hand
+  
+   // right arm
+   glPushMatrix();
+   glTranslatef(1.2, 0, 0.65);
+   glRotatef(90, 0, -1, 0);
+   solidCone(0.2, 1.2, 30, 30);
+   glPopMatrix();
+
+   // hat
+   glPushMatrix();
+   glTranslatef(0, 0, 1.6);
+   solidCone(0.5, 0.8, 30, 30);
+   solidDisk(0.7, 0.01, 30, 30);
+   glPopMatrix();
+
+
+   glColor3ub(246,198,224);
+   // head
+   glPushMatrix();
+   glTranslatef(0, 0, 1.2);
+   glutSolidSphere(0.5, 30, 30);
+   glPopMatrix();
+
+    // left hand
    glPushMatrix();
    glTranslatef(-1.2, 0, 0.65);
    glRotatef(90, 0, 1, 0);
    glTranslatef(0, 0, -0.1);
    glScalef(0.5,1,1);
    glutSolidCube(0.3);
-   glPopMatrix();
-
-
-   // right arm
-   glPushMatrix();
-   glTranslatef(1.2, 0, 0.65);
-   glRotatef(90, 0, -1, 0);
-   solidCone(0.2, 1.2, 30, 30);
    glPopMatrix();
 
 
@@ -73,13 +84,8 @@ void Man::drawImmediate()
    glutSolidCube(0.3);
    glPopMatrix();
  
+   glColor3f(1,1,1);
 
-   // hat
-   glPushMatrix();
-   glTranslatef(0, 0, 1.6);
-   solidCone(0.5, 0.8, 30, 30);
-   solidDisk(0.7, 0.01, 30, 30);
-   glPopMatrix();
 
 }
 
