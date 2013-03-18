@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+#include<unistd.h>
 using namespace std;
 #include "man.h"
 /*
@@ -9,10 +10,8 @@ using namespace std;
 
 void Man::draw()
 {
-
    // draw immediate 
    drawImmediate();
-
 }
 
 //==================== 1. Immediate method ===================================
@@ -83,15 +82,19 @@ void Man::drawImmediate()
 
   // baton
   glPushMatrix();
-  glTranslatef(1.5,0,1.03);
+  glTranslatef(1.5,0,1.7);
+  glColor3ub(0,0,255);
   glutSolidSphere(0.22, 30, 30);
+  glColor3ub(255,255,255);
   glPushMatrix();
   glTranslatef(0, 0, -0.05); 
   glRotatef(180, 1, 0, 0);
+  glColor3ub(255,0,0);
   solidCone(0.3, 0.6, 30, 30);
   glPopMatrix();
-  glTranslatef(0,0,-0.8);
-  drawCylinder(0.1, 0.9);
+  glTranslatef(0,0,-1.1);
+  drawCylinder(0.1, 1.2);
+  glColor3ub(255,255,255);
   glPopMatrix();
 
 
