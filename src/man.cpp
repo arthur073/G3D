@@ -53,14 +53,15 @@ void Man::drawImmediate()
  
    // hat
    glPushMatrix();
+   glColor3ub(118,70,185);
    glTranslatef(0, 0, 1.6);
    solidCone(0.5, 0.8, 30, 30);
    solidDisk(0.7, 0.01, 30, 30);
    glPopMatrix();
 
 
-   glColor3ub(246,198,224);
    // head
+   glColor3ub(246,198,224);
    glPushMatrix();
    glRotatef(neck, 1, 0, 0);
    glTranslatef(0, 0, 1.2);
@@ -182,10 +183,11 @@ void Man::solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks)
 
 
 
-void drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left) 
+void Man::drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left) 
 {
-   // left arm
+   // arm
    glPushMatrix();
+   glColor3ub(118,70,185);
    glRotatef(shoulder, 0, 0, 1);
    if (left) 
    {
@@ -199,7 +201,8 @@ void drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left)
    glPopMatrix();
 
 
-   // left hand
+   // hand
+   glColor3ub(246,198,224);
    glPushMatrix();
    glRotatef(shoulder, 0, 0, 1);
    if (left) {
