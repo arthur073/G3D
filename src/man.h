@@ -11,11 +11,16 @@ class Man : public Renderable
 		void animate();
 
 	private:
+      // drawings
       void drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left);
+      void drawFoot(GLfloat knee, bool left);
 		void drawImmediate();
 		void drawCylinder(float radius, float height);
       void solidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks);
-      void solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks);
+      void solidDisk(GLfloat base1, GLfloat base2, GLfloat thickness, GLint slices, GLint stacks);
+
+      // animation 
+      void walk();
 };
 
 #endif

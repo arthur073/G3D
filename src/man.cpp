@@ -17,8 +17,11 @@ GLfloat leftShoulder = 0;
 GLfloat rightShoulder = 0;
 GLfloat leftWrist = 0;
 GLfloat rightWrist = 0;
+GLfloat leftKnee = 0;
+GLfloat rightKnee = 0;
 
 bool reverseAnim = false;
+bool reverseAnimWalk = false;
 
 void Man::draw()
 {
@@ -30,18 +33,22 @@ void Man::draw()
 // immediate definition of individual vertex properties
 void Man::drawImmediate()
 {
-   glColor3ub(118,70,185);
 
    // dress
    glPushMatrix();
-   glTranslatef(0, 0, -1);
-   solidCone(1, 1.8, 30, 30);
+   glColor3ub(118,70,185);
+   glTranslatef(0, 0, -0.8);
+   solidCone(1, 1.6, 30, 30);
    glPopMatrix();
+
+   // feet
+   drawFoot(leftKnee, true);
+   drawFoot(rightKnee, false);
 
    // torsal
    glPushMatrix();
+   glColor3ub(118,70,185);
    glTranslatef(0, 0, 0.8);
-   //glRotatef(belly, 1, 0, 0);
    glRotatef(180, 1, 0, 0);
    solidCone(0.5, 1.5, 30, 30);
    glPopMatrix();
@@ -56,7 +63,7 @@ void Man::drawImmediate()
    glColor3ub(118,70,185);
    glTranslatef(0, 0, 1.6);
    solidCone(0.5, 0.8, 30, 30);
-   solidDisk(0.7, 0.01, 30, 30);
+   solidDisk(0.7, 0.7, 0.01, 30, 30);
    glPopMatrix();
 
 
@@ -67,9 +74,6 @@ void Man::drawImmediate()
    glTranslatef(0, 0, 1.2);
    glutSolidSphere(0.5, 30, 30);
    glPopMatrix();
-
- 
- 
 
 
    // baton
@@ -153,10 +157,10 @@ void Man::solidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks)
 }
 
 
-void Man::solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks)
+void Man::solidDisk(GLfloat base1, GLfloat base2, GLfloat thickness, GLint slices, GLint stacks)
 {
    GLUquadricObj* quadric = gluNewQuadric();
-   gluCylinder(quadric, base, base, thickness, slices, stacks);
+   gluCylinder(quadric, base1, base2, thickness, slices, stacks);
    gluDeleteQuadric(quadric);
 
    // le dessous
@@ -166,7 +170,7 @@ void Man::solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks)
    for (int i=0; i < 360; i++)
    {
       float degInRad = i*DEG2RAD;
-      glVertex3f(cos(degInRad)*base,sin(degInRad)*base, 0);
+      glVertex3f(cos(degInRad)*base1,sin(degInRad)*base1, 0);
    }
    glEnd();
 
@@ -176,7 +180,7 @@ void Man::solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks)
    for (int i=0; i < 360; i++)
    {
       float degInRad = i*DEG2RAD;
-      glVertex3f(cos(degInRad)*base,sin(degInRad)*base, thickness);
+      glVertex3f(cos(degInRad)*base2,sin(degInRad)*base2, thickness);
    }
    glEnd();
 }
@@ -218,6 +222,22 @@ void Man::drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left)
    glPopMatrix();
 }
 
+void Man::drawFoot(GLfloat knee, bool left)
+{
+   glPushMatrix();
+   glColor3f(0.5,0.5,0.5);
+   glRotatef(knee, 1, 0, 0);
+   glTranslatef(0, 0, -0.9);
+   if (left) {
+      glTranslatef(-0.5, 0, 0);
+   } else {
+      glTranslatef(0.5, 0, 0);
+   } 
+   glScalef(1,2,0.5);
+   glutSolidCube(0.4);
+   glPopMatrix();
+
+} 
 
 
 void Man::animate() 
@@ -258,4 +278,27 @@ void Man::animate()
      reverseAnim = false;
    }
   }
+
+  walk();
+}
+
+
+void Man::walk() 
+{
+   if (reverseAnimWalk == false) 
+   {
+      if (leftKnee < 15) {
+         leftKnee+=0.3;
+         rightKnee-=0.3;
+      } else {
+         reverseAnimWalk = true;
+      }
+   } else {
+      if (leftKnee > -10) {
+         leftKnee-=0.3;
+         rightKnee+=0.3;
+      } else {
+         reverseAnimWalk = false;
+      }
+   }
 }
