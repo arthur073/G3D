@@ -6,21 +6,24 @@
 
 class Man : public Renderable
 {
-	public:
-		void draw();
-		void animate();
+   public:
+      void draw();
+      void animate();
 
-	private:
+   private:
       // drawings
       void drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left);
       void drawFoot(GLfloat knee, bool left);
-		void drawImmediate();
-		void drawCylinder(float radius, float height);
+      void drawImmediate();
+      void drawCylinder(float radius, float height);
       void solidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks);
       void solidDisk(GLfloat base1, GLfloat base2, GLfloat thickness, GLint slices, GLint stacks);
 
       // animation 
       void walk();
+      void solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks);
+      void animateArmsHorizontal();
+      void animateArmsVertical();
 };
 
 #endif

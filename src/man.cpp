@@ -19,6 +19,7 @@ GLfloat leftWrist = 0;
 GLfloat rightWrist = 0;
 GLfloat leftKnee = 0;
 GLfloat rightKnee = 0;
+int horizontalVector = 1;
 
 bool reverseAnim = false;
 bool reverseAnimWalk = false;
@@ -192,14 +193,14 @@ void Man::drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left)
    // arm
    glPushMatrix();
    glColor3ub(118,70,185);
-   glRotatef(shoulder, 0, 0, 1);
+   glRotatef(shoulder, 0, 0, horizontalVector);
    if (left) 
    {
       glTranslatef(-1.2, 0, 0.65);
-      glRotatef(90, 0, 1, 0);
+      glRotatef(90, 0, horizontalVector, 0);
    } else {
       glTranslatef(1.2, 0, 0.65);
-      glRotatef(90, 0, -1, 0);
+      glRotatef(90, 0, -horizontalVector, 0);
    }
    solidCone(0.2, 1.2, 30, 30);
    glPopMatrix();
@@ -208,13 +209,13 @@ void Man::drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left)
    // hand
    glColor3ub(246,198,224);
    glPushMatrix();
-   glRotatef(shoulder, 0, 0, 1);
+   glRotatef(shoulder, 0, 0, horizontalVector);
    if (left) {
       glTranslatef(-1.2, 0, 0.65);
-      glRotatef(90, 0, 1, 0);
+      glRotatef(90, 0, horizontalVector, 0);
    } else {
       glTranslatef(1.2, 0, 0.65);
-      glRotatef(90, 0, -1, 0);
+      glRotatef(90, 0, -horizontalVector, 0);
    } 
    glTranslatef(0, 0, -0.1);
    glScalef(0.5,1,1);
@@ -239,11 +240,61 @@ void Man::drawFoot(GLfloat knee, bool left)
 
 } 
 
+void Man::animate()
+{
+  animateArmsHorizontal();
+  //animateArmsVertical();
 
-void Man::animate() 
+  walk();
+}
+
+void Man::animateArmsHorizontal() 
 {
    //belly+=1;
    //neck+=1;
+  horizontalVector = 1;
+  if( reverseAnim == false )
+  {
+   if (leftShoulder > -70) {
+      leftShoulder-=1;
+      rightShoulder+=1;
+   }
+   else {
+     reverseAnim = true;
+   }
+
+   if (rightWrist > -90) {
+      rightWrist-=1;
+   }
+   else {
+     reverseAnim = true;
+   }
+  }
+  else
+  {
+   if (leftShoulder < 0) {
+      leftShoulder+=1;
+      rightShoulder-=1;
+   }
+   else {
+     reverseAnim = false;
+   }
+
+   if (rightWrist < 0) {
+      rightWrist+=1;
+   }
+   else {
+     reverseAnim = false;
+   }
+  }
+}
+
+
+void Man::animateArmsVertical() 
+{
+   //belly+=1;
+   //neck+=1;
+  horizontalVector = 0;
   if( reverseAnim == false )
   {
    if (leftShoulder > -70) {
@@ -279,7 +330,6 @@ void Man::animate()
    }
   }
 
-  walk();
 }
 
 
