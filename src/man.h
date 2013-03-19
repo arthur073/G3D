@@ -16,6 +16,8 @@ class Man : public Renderable
 		void drawCylinder(float radius, float height);
       void solidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks);
       void solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks);
+    void animateArmsHorizontal();
+    void animateArmsVertical();
 };
 
 #endif
