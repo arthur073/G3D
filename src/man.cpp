@@ -11,8 +11,11 @@ using namespace std;
 /* free angles */
 GLfloat belly = 0;
 GLfloat neck = 0;
+GLfloat leftElbow = 0;
+GLfloat rightElbow = 0;
 GLfloat leftShoulder = 0;
 GLfloat rightShoulder = 0;
+GLfloat leftWrist = 0;
 GLfloat rightWrist = 0;
 
 void Man::draw()
@@ -41,25 +44,11 @@ void Man::drawImmediate()
    solidCone(0.5, 1.5, 30, 30);
    glPopMatrix();
 
+   // arms
+   drawArm(leftShoulder, leftElbow, leftWrist, true);
+   drawArm(rightShoulder, rightElbow, rightWrist, false);
 
-
-   // left arm
-   glPushMatrix();
-   glRotatef(leftShoulder, 0, 0, 1);
-   glTranslatef(-1.2, 0, 0.65);
-   glRotatef(90, 0, 1, 0);
-   solidCone(0.2, 1.2, 30, 30);
-   glPopMatrix();
-
-
-   // right arm
-   glPushMatrix();
-   glRotatef(rightShoulder, 0, 0, 1);
-   glTranslatef(1.2, 0, 0.65);
-   glRotatef(90, 0, -1, 0);
-   solidCone(0.2, 1.2, 30, 30);
-   glPopMatrix();
-
+ 
    // hat
    glPushMatrix();
    glTranslatef(0, 0, 1.6);
@@ -76,27 +65,8 @@ void Man::drawImmediate()
    glutSolidSphere(0.5, 30, 30);
    glPopMatrix();
 
-   // left hand
-   glPushMatrix();
-   glRotatef(leftShoulder, 0, 0, 1);
-   glTranslatef(-1.2, 0, 0.65);
-   glRotatef(90, 0, 1, 0);
-   glTranslatef(0, 0, -0.1);
-   glScalef(0.5,1,1);
-   glutSolidCube(0.3);
-   glPopMatrix();
-
-
-   // right hand
-   glPushMatrix();
-   glRotatef(rightShoulder, 0, 0, 1);
-   glTranslatef(1.2, 0, 0.65);
-   glRotatef(90, 0, -1, 0);
-   glTranslatef(0, 0, -0.1);
-   glScalef(0.5,1,1);
-   glutSolidCube(0.3);
-   glPopMatrix();
-
+ 
+ 
 
 
    // baton
@@ -206,6 +176,41 @@ void Man::solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks)
       glVertex3f(cos(degInRad)*base,sin(degInRad)*base, thickness);
    }
    glEnd();
+}
+
+
+
+void drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left) 
+{
+   // left arm
+   glPushMatrix();
+   glRotatef(shoulder, 0, 0, 1);
+   if (left) 
+   {
+      glTranslatef(-1.2, 0, 0.65);
+      glRotatef(90, 0, 1, 0);
+   } else {
+      glTranslatef(1.2, 0, 0.65);
+      glRotatef(90, 0, -1, 0);
+   }
+   solidCone(0.2, 1.2, 30, 30);
+   glPopMatrix();
+
+
+   // left hand
+   glPushMatrix();
+   glRotatef(shoulder, 0, 0, 1);
+   if (left) {
+      glTranslatef(-1.2, 0, 0.65);
+      glRotatef(90, 0, 1, 0);
+   } else {
+      glTranslatef(1.2, 0, 0.65);
+      glRotatef(90, 0, -1, 0);
+   } 
+   glTranslatef(0, 0, -0.1);
+   glScalef(0.5,1,1);
+   glutSolidCube(0.3);
+   glPopMatrix();
 }
 
 

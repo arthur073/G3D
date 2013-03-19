@@ -11,6 +11,7 @@ class Man : public Renderable
 		void animate();
 
 	private:
+      void drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left);
 		void drawImmediate();
 		void drawCylinder(float radius, float height);
       void solidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks);
