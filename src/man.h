@@ -22,6 +22,7 @@ class Man : public Renderable
       // animation 
       void walk();
       void solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks);
+      void applause();
       void animateArmsHorizontal();
       void animateArmsVertical();
 };

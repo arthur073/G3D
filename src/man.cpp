@@ -24,6 +24,10 @@ int horizontalVector = 1;
 bool reverseAnim = false;
 bool reverseAnimWalk = false;
 
+// Anim Applause
+GLint AnimApplause = 1;
+GLint CptApplause = 0;
+
 void Man::draw()
 {
    // draw immediate 
@@ -58,7 +62,7 @@ void Man::drawImmediate()
    drawArm(leftShoulder, leftElbow, leftWrist, true);
    drawArm(rightShoulder, rightElbow, rightWrist, false);
 
- 
+
    // hat
    glPushMatrix();
    glColor3ub(118,70,185);
@@ -93,7 +97,7 @@ void Man::drawImmediate()
    glRotatef(180, 1, 0, 0);
    solidCone(0.3, 0.6, 30, 30);
    glPopMatrix();
-   
+
    glTranslatef(0,0,-1.3);
    drawCylinder(0.05, 1.2);
    glPopMatrix();
@@ -196,30 +200,36 @@ void Man::drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left)
    glRotatef(shoulder, 0, 0, horizontalVector);
    if (left) 
    {
-      glTranslatef(-1.2, 0, 0.65);
+      glTranslatef(-0.6, 0, 0.60);
+      glRotatef(90, 0, horizontalVector, 0);
+      solidDisk(0.15, 0.2, 0.6, 30, 30);
+      glRotatef(elbow, -1, 0, 0);
+      glRotatef(-90, 0, horizontalVector, 0);
+      glTranslatef(-0.6, 0, 0);
       glRotatef(90, 0, horizontalVector, 0);
    } else {
-      glTranslatef(1.2, 0, 0.65);
+      glTranslatef(0.6, 0, 0.60);
+      glRotatef(90, 0, -horizontalVector, 0);
+      solidDisk(0.15, 0.2, 0.6, 30, 30);
+      glRotatef(elbow, 1, 0, 0);
+      glRotatef(-90, 0, -horizontalVector, 0);
+      glTranslatef(0.6, 0, 0);
       glRotatef(90, 0, -horizontalVector, 0);
    }
-   solidCone(0.2, 1.2, 30, 30);
-   glPopMatrix();
-
+   solidDisk(0.2, 0.15, 0.6, 30, 30);
 
    // hand
    glColor3ub(246,198,224);
-   glPushMatrix();
-   glRotatef(shoulder, 0, 0, horizontalVector);
-   if (left) {
-      glTranslatef(-1.2, 0, 0.65);
-      glRotatef(90, 0, horizontalVector, 0);
-   } else {
-      glTranslatef(1.2, 0, 0.65);
-      glRotatef(90, 0, -horizontalVector, 0);
-   } 
    glTranslatef(0, 0, -0.1);
+   if (left) 
+   {
+      glRotatef(wrist, 0, 0.5, 1);
+   } else {
+      glRotatef(-wrist, 0, 0.5, 1);
+   }
    glScalef(0.5,1,1);
    glutSolidCube(0.3);
+
    glPopMatrix();
 }
 
@@ -240,53 +250,106 @@ void Man::drawFoot(GLfloat knee, bool left)
 
 } 
 
-void Man::animate()
-{
-  animateArmsHorizontal();
-  //animateArmsVertical();
 
-  walk();
-}
+
+void Man::applause()
+{
+   if (AnimApplause == 1) {
+      if (leftShoulder > -40) {
+         leftShoulder-=0.5;
+         rightShoulder+=0.5;
+         leftElbow-=0.95;
+         rightElbow+=0.95;
+         leftWrist-=0.40;
+         rightWrist+=0.40;
+      } else {
+         if (AnimApplause == 1) {
+            // on va à la phase 2
+            AnimApplause = 2;
+         }
+      }
+   } 
+
+   if (AnimApplause == 2) {
+      // on applause
+      if (leftElbow < -60) {
+         leftElbow+=1;
+         rightElbow-=1;
+      } else {
+         AnimApplause = 3;
+      }
+   }
+
+   if (AnimApplause == 3) {
+      if (leftElbow > -80) {
+         leftElbow-=1;
+         rightElbow+=1;
+      } else {
+         AnimApplause = 2;
+         CptApplause++;
+      }
+   }
+
+   if (AnimApplause == 4) {
+      if (leftShoulder < 0) {
+         leftShoulder+=0.5;
+         rightShoulder-=0.5;
+         leftElbow+=0.95;
+         rightElbow-=0.95;
+         leftWrist+=0.40;
+         rightWrist-=0.40;
+      }
+   } 
+
+
+   if (CptApplause > 3) {
+      AnimApplause = 4;
+   }
+} 
 
 void Man::animateArmsHorizontal() 
 {
    //belly+=1;
    //neck+=1;
-  horizontalVector = 1;
-  if( reverseAnim == false )
-  {
-   if (leftShoulder > -70) {
-      leftShoulder-=1;
-      rightShoulder+=1;
-   }
-   else {
-     reverseAnim = true;
-   }
+   horizontalVector = 1;
+   if( reverseAnim == false )
+   {
+      if (leftShoulder > -70) {
+         leftShoulder-=1;
+         leftElbow-=0.5;
+         rightShoulder+=1;
+         rightElbow+=0.5;
+      }
+      else {
+         reverseAnim = true;
+      }
 
-   if (rightWrist > -90) {
-      rightWrist-=1;
+      if (rightWrist > -90) {
+         rightWrist-=1;
+      }
+      else {
+         reverseAnim = true;
+      }
    }
-   else {
-     reverseAnim = true;
-   }
-  }
-  else
-  {
-   if (leftShoulder < 0) {
-      leftShoulder+=1;
-      rightShoulder-=1;
-   }
-   else {
-     reverseAnim = false;
-   }
+   else
+   {
+      if (leftShoulder < 0) {
+         leftShoulder+=1;
+         leftElbow+=0.5;
+         rightShoulder-=1;
+         rightElbow-=0.5;
+      }
+      else {
+         reverseAnim = false;
+      }
 
-   if (rightWrist < 0) {
-      rightWrist+=1;
+      if (rightWrist < 0) {
+         rightWrist+=1;
+      }
+      else {
+         reverseAnim = false;
+      }
    }
-   else {
-     reverseAnim = false;
-   }
-  }
 }
 
 
@@ -294,41 +357,41 @@ void Man::animateArmsVertical()
 {
    //belly+=1;
    //neck+=1;
-  horizontalVector = 0;
-  if( reverseAnim == false )
-  {
-   if (leftShoulder > -70) {
-      leftShoulder-=1;
-      rightShoulder+=1;
-   }
-   else {
-     reverseAnim = true;
-   }
+   horizontalVector = 0;
+   if( reverseAnim == false )
+   {
+      if (leftShoulder > -70) {
+         leftShoulder-=1;
+         rightShoulder+=1;
+      }
+      else {
+         reverseAnim = true;
+      }
 
-   if (rightWrist > -90) {
-      rightWrist-=1;
+      if (rightWrist > -90) {
+         rightWrist-=1;
+      }
+      else {
+         reverseAnim = true;
+      }
    }
-   else {
-     reverseAnim = true;
-   }
-  }
-  else
-  {
-   if (leftShoulder < 0) {
-      leftShoulder+=1;
-      rightShoulder-=1;
-   }
-   else {
-     reverseAnim = false;
-   }
+   else
+   {
+      if (leftShoulder < 0) {
+         leftShoulder+=1;
+         rightShoulder-=1;
+      }
+      else {
+         reverseAnim = false;
+      }
 
-   if (rightWrist < 0) {
-      rightWrist+=1;
+      if (rightWrist < 0) {
+         rightWrist+=1;
+      }
+      else {
+         reverseAnim = false;
+      }
    }
-   else {
-     reverseAnim = false;
-   }
-  }
 
 }
 
@@ -352,3 +415,13 @@ void Man::walk()
       }
    }
 }
+
+void Man::animate()
+{
+   //animateArmsHorizontal();
+   //animateArmsVertical();
+   applause();
+   walk();
+}
+
+
