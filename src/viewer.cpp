@@ -91,6 +91,17 @@ void Viewer::keyPressEvent(QKeyEvent *e)
 		updateGL();
 
 	// ... and so on with all events to handle here!
+   } else if (e->key()==Qt::Key_F1) {
+      cout<<"To be implemented";
+
+   } else if (e->key()==Qt::Key_F2) {
+      cout<<"animate!";
+      list<Renderable *>::iterator it;
+      for(it = renderableList.begin(); it != renderableList.end(); ++it) {
+         (*it)->animate();
+      }
+
+
 
 	} else {
 		// if the event is not handled here, process it as default
