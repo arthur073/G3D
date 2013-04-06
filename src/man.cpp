@@ -25,7 +25,7 @@ bool reverseAnim = false;
 bool reverseAnimWalk = false;
 
 // Anim Applause
-GLint AnimApplause = 5;
+GLint AnimApplause = 1;
 GLint CptApplause = 0;
 GLint CptWait = 0;
 
@@ -309,8 +309,8 @@ void Man::applause()
       if (belly > -40) {
          belly-=1;
          neck-=0.5;
-         leftShoulder+=0.5;
-         rightShoulder-=0.5;
+         leftShoulder+=0.6;
+         rightShoulder-=0.6;
 
       } else {
          AnimApplause = 6;
@@ -318,22 +318,25 @@ void Man::applause()
    }
 
    if (AnimApplause == 6) {
-  //    CptWait++;
-  //    if (CptWait > 40) {
+      if (belly > -41) {
+         belly-=0.01;
+      } else {
          AnimApplause = 7;
-  //    }
+      }
    }
 
    if (AnimApplause == 7) {
       if (belly < 0) {
          belly+=1;
          neck+=0.5;
-         leftShoulder-=0.5;
-         rightShoulder+=0.5;
+         leftShoulder-=0.7;
+         rightShoulder+=0.7;
+         leftElbow-=0.4;
+         rightElbow+=0.4;
       }
    }
 
-   if (CptApplause > 3) {
+   if ( AnimApplause == 3 && CptApplause > 3) {
       AnimApplause = 4;
    }
 } 
