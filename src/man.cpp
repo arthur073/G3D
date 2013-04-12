@@ -252,8 +252,6 @@ void Man::drawFoot(GLfloat knee, bool left)
 
 } 
 
-
-
 void Man::applause()
 {
    if (AnimApplause == 1) {
