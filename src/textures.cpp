@@ -24,22 +24,12 @@ void Textures::init()
 {
 	// load and init all the textures used in this practical
 	initGrassPlane();
-//	initCrate();
-// 	initMipmap();
-//	initMultiTexturing();
-//	initBillBoard();
 }
 
 
 void Textures::draw()
 {
-// [un]comment these functions when required with the questions...
-
 	drawGrassPlane(10.0);
-//	drawCrate(2.0);
-// 	drawMipmap();
-// 	drawMultiTexturing();
-// 	drawBillBoard();
 }
 
 
@@ -114,134 +104,6 @@ void Textures::drawPlane(float s)
 	glEnd();
 		
 	glPopMatrix();
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-//   CRATE
-
-void Textures::initCrate()
-{
-	// TODO!
-	loadTexture(TEX_CRATE, "images/crate.tiff");
-	
-	// set its parameters
-	glBindTexture(GL_TEXTURE_2D, textures[TEX_CRATE]);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-}
-
-void Textures::drawCrate(float size)
-{
-	// TODO : define the texture coordinates to map the crate.tiff
-	// texture on each face
-
-	// ...
-
-	// use the grass texture
-	glBindTexture(GL_TEXTURE_2D, textures[TEX_CRATE]);
-	// use filtering option (toogled with 'f' key)
-	setFiltering();
-	glBegin(GL_QUADS);
-
-	glTexCoord3f(0, 0, 1);
-	glVertex3f(0, 0, 0);
-	glTexCoord3f(1, 0, 1);
-	glVertex3f(size, 0, 0);
-	glTexCoord3f(1, 0, 1);
-	glVertex3f(size, 0, size);
-	glTexCoord3f(0, 0, 1);
-	glVertex3f(0, 0, size);
-
-	glTexCoord3f(1, 0, 1);
-	glVertex3f(size, 0, 0);
-	glTexCoord3f(1, 1, 1);
-	glVertex3f(size, size, 0);
-	glTexCoord3f(1, 1, 1);
-	glVertex3f(size, size, size);
-	glTexCoord3f(1, 0, 1);
-	glVertex3f(size, 0, size);
-
-	glTexCoord3f(1, 1, 1);
-	glVertex3f(size, size, 0);
-	glTexCoord3f(0, 1, 1);
-	glVertex3f(0, size, 0);
-	glTexCoord3f(0, 1, 1);
-	glVertex3f(0, size, size);
-	glTexCoord3f(1, 1, 1);
-	glVertex3f(size, size, size);
-
-	glTexCoord3f(0, 1, 1);
-	glVertex3f(0, size, 0);
-	glTexCoord3f(0, 0, 1);
-	glVertex3f(0, 0, 0);
-	glTexCoord3f(0, 0, 1);
-	glVertex3f(0, 0, size);
-	glTexCoord3f(0, 1, 1);
-	glVertex3f(0, size, size);
-
-	glTexCoord3f(0, 0, 1);
-	glVertex3f(0, 0, size);
-	glTexCoord3f(1, 0, 1);
-	glVertex3f(size, 0, size);
-	glTexCoord3f(1, 1, 1);
-	glVertex3f(size, size, size);
-	glTexCoord3f(0, 1, 1);
-	glVertex3f(0, size, size);
-
-	glEnd();
-
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-//   MIPMAP
-
-void Textures::initMipmap()
-{
-	// TODO!
-}
-
-void Textures::drawMipmap()
-{
-	// TODO!
-}
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-//   MULTI-TEXTURING
-
-void Textures::initMultiTexturing()
-{
-	// TODO!
-}
-
-
-void Textures::drawMultiTexturing()
-{
-	// TODO!
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-//   BILLBOARDS
-
-void Textures::initBillBoard()
-{
-	// TODO!
-}
-
-void Textures::drawBillBoard()
-{
-	// TODO!
 }
 
 

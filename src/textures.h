@@ -23,12 +23,7 @@ public:
 private:
 	// id of all textures used in this practical
 	enum TextureId {
-		TEX_GRASS,
-		TEX_CRATE, 
-		TEX_MIPMAP,
-		TEX_FLOWERS,
-		TEX_LIGHT,
-		TEX_TREE
+		TEX_GRASS
 	};
 
 	// association bewteen a TextureId and its OpenGL texture id
@@ -47,22 +42,6 @@ private:
 	// init and draw a plane with the grass texture
 	void initGrassPlane();
 	void drawGrassPlane(float size);
-
-	// init and draw a crate with texture on each face
-	void initCrate();
-	void drawCrate(float size);
-
-	// use mipmaps
-	void initMipmap();
-	void drawMipmap();
-
-	// use multi-texturing
-	void initMultiTexturing();
-	void drawMultiTexturing();
-
-	// use billboards
-	void initBillBoard();
-	void drawBillBoard();
 
 public:
 	// activated by the 'f' key

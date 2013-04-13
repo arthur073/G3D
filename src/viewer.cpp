@@ -35,6 +35,7 @@ void Viewer::init()
 		glDisable(GL_LIGHTING);
 	
 	setSceneRadius(5.0f);
+  glClearColor(.7, .7, .7, .0);
 
 	
 //=== INIT SCENE: add everything you want in your scene to the renderableList
@@ -43,8 +44,8 @@ void Viewer::init()
 	Textures *tex = new Textures();
 	tex->init();
   renderableList.push_back(tex);
-  //Man *man = new Man();
-	//renderableList.push_back(man);
+  Man *man = new Man();
+	renderableList.push_back(man);
 }
 
 
