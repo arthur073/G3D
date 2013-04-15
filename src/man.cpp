@@ -18,6 +18,8 @@ GLfloat leftWrist = 0;
 GLfloat rightWrist = 0;
 GLfloat leftKnee = 0;
 GLfloat rightKnee = 0;
+GLfloat leftPelvis = 0;
+GLfloat rightPelvis = 0;
 int horizontalVector = 1;
 
 bool reverseAnim = false;
@@ -29,6 +31,7 @@ string Man::currentMove = "";
 
 // Anim Applause
 GLint AnimApplause = 1;
+GLint AnimWalk = 0;
 GLint CptApplause = 0;
 GLint CptWait = 0;
 
@@ -44,17 +47,19 @@ void Man::drawImmediate()
 {
 
    // dress
-   glPushMatrix();
-   glColor3ub(118,70,185);
-   glTranslatef(0, 0, -0.5);
-   solidDisk(0.7, 0.1, 0.8, 30, 30);
-   glTranslatef(0, 0, -0.3);
-   solidDisk(1, 0.3, 0.8, 30, 30);
-   glPopMatrix();
+ //  glPushMatrix();
+ //  glColor3ub(118,70,185);
+ //  glTranslatef(0, 0, -0.5);
+ //  solidDisk(0.7, 0.1, 0.8, 30, 30);
+ //  glTranslatef(0, 0, -0.3);
+ //  solidDisk(1, 0.3, 0.8, 30, 30);
+ //  glPopMatrix();
+ 
 
-   // feet
-   drawFoot(leftKnee, true);
-   drawFoot(rightKnee, false);
+   // legs
+   drawLeg(leftPelvis, leftKnee, true);
+   drawLeg(rightPelvis, rightKnee, false);
+
 
    // torsal
    glPushMatrix();
@@ -62,15 +67,12 @@ void Man::drawImmediate()
    glColor3ub(118,70,185);
    glTranslatef(0, 0, 0.8);
    glRotatef(180, 1, 0, 0);
-   solidCone(0.5, 1.5, 30, 30);
+   solidDisk(0.5, 0.35, 1, 30, 30);
    glPopMatrix();
 
    // arms
    drawArm(leftShoulder, leftElbow, leftWrist, true);
    drawArm(rightShoulder, rightElbow, rightWrist, false);
-
-
-
 
    // head
    glColor3ub(246,198,224);
@@ -238,22 +240,35 @@ void Man::drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left)
    glPopMatrix();
 }
 
-void Man::drawFoot(GLfloat knee, bool left)
-{
+void Man::drawLeg(GLfloat pelvis, GLfloat knee, bool left) {
    glPushMatrix();
-   glColor3f(0.5,0.5,0.5);
-   glRotatef(knee, 1, 0, 0);
-   glTranslatef(0, 0, -0.9);
+   glColor3ub(118,70,185);
    if (left) {
-      glTranslatef(-0.5, 0, 0);
+      glRotatef(pelvis, 1, 0, 0);
+      glTranslatef(0.16, 0, -0.8);
+      solidDisk(0.12, 0.2, 0.7, 30, 30);
+      glRotatef(knee, 1, 0, 0);
+      glTranslatef(0, 0, -0.5);
+      solidDisk(0.1, 0.12, 0.5, 30, 30);
+      glTranslatef(0, 0.1, 0);
+      glScalef(0.6,1,0.3);
+      glColor3f(0.2,0.2,0.2);
+      glutSolidCube(0.4);
    } else {
-      glTranslatef(0.5, 0, 0);
-   } 
-   glScalef(1,2,0.5);
-   glutSolidCube(0.4);
+      glRotatef(pelvis, 1, 0, 0);
+      glTranslatef(-0.16, 0, -0.8);
+      solidDisk(0.12, 0.2, 0.7, 30, 30);
+      glRotatef(knee, 1, 0, 0);
+      glTranslatef(0, 0, -0.5);
+      solidDisk(0.1, 0.12, 0.5, 30, 30);
+      glTranslatef(0, 0.1, 0);
+      glScalef(0.6,1,0.3);
+      glColor3f(0.2,0.2,0.2);
+      glutSolidCube(0.4);
+   
+   }
    glPopMatrix();
-
-} 
+}
 
 void Man::applause()
 {
@@ -345,21 +360,33 @@ void Man::applause()
 
 void Man::walk() 
 {
+   if (AnimWalk == 0) {
+      leftShoulder += 1;
+      rightShoulder += 1;
+   }
+
+
+   if (AnimWalk == 1) {
    if (reverseAnimWalk == false) 
    {
       if (leftKnee < 15) {
-         leftKnee+=0.3;
-         rightKnee-=0.3;
+         leftKnee+=0.5;
+         leftPelvis+=0.5;
+         rightKnee-=0.5;
+         rightPelvis-=0.5;
       } else {
          reverseAnimWalk = true;
       }
    } else {
       if (leftKnee > -10) {
-         leftKnee-=0.3;
-         rightKnee+=0.3;
+         leftKnee-=0.5;
+         leftPelvis-=0.5;
+         rightKnee+=0.5;
+         rightPelvis+=0.5;
       } else {
          reverseAnimWalk = false;
       }
+   }
    }
 }
 
