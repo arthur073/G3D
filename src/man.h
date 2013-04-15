@@ -14,8 +14,7 @@ class Man : public Renderable
    private:
       // drawings
       void drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left);
-      void drawFoot(GLfloat knee, bool left);
-      void drawLeg(GLfloat knee, bool left);
+      void drawLeg(GLfloat pelvis, GLfloat knee, bool left);
       void drawImmediate();
       void drawCylinder(float radius, float height);
       void solidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks);
