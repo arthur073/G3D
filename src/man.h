@@ -15,6 +15,7 @@ class Man : public Renderable
       void draw();
       void animate();
       void applause();
+      static bool isAnimationEnded();
 
    private:
       // drawings
