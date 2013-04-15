@@ -359,6 +359,8 @@ void Man::applause()
          rightShoulder+=0.7;
          leftElbow-=0.4;
          rightElbow+=0.4;
+      } else {
+         AnimApplause = 8 ;
       }
    }
 
