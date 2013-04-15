@@ -11,9 +11,13 @@
 GLfloat belly = 0;
 GLfloat neck = 0;
 GLfloat leftElbow = 0;
+GLfloat leftElbow2 = 0;
 GLfloat rightElbow = 0;
+GLfloat rightElbow2 = 0;
 GLfloat leftShoulder = 0;
 GLfloat rightShoulder = 0;
+GLfloat leftShoulder2 = 0;
+GLfloat rightShoulder2 = 0;
 GLfloat leftWrist = 0;
 GLfloat rightWrist = 0;
 GLfloat leftKnee = 0;
@@ -72,8 +76,8 @@ void Man::drawImmediate()
    glPopMatrix();
 
    // arms
-   drawArm(leftShoulder, leftElbow, leftWrist, true);
-   drawArm(rightShoulder, rightElbow, rightWrist, false);
+   drawArm(leftShoulder, leftShoulder2,  leftElbow, leftElbow2, leftWrist, true);
+   drawArm(rightShoulder, rightShoulder2, rightElbow, rightElbow2, rightWrist, false);
 
    // head
    glColor3ub(246,198,224);
@@ -199,7 +203,7 @@ void Man::solidDisk(GLfloat base1, GLfloat base2, GLfloat thickness, GLint slice
 
 
 
-void Man::drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left) 
+void Man::drawArm(GLfloat shoulder, GLfloat shoulder2, GLfloat elbow, GLfloat elbow2, GLfloat wrist, bool left) 
 {
    // arm
    glPushMatrix();
@@ -208,18 +212,24 @@ void Man::drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left)
    glRotatef(shoulder, 0, 0, horizontalVector);
    if (left) 
    {
-      glTranslatef(-0.6, 0, 0.60);
+      glTranslatef(-0.25, 0, 0.60);
+      glRotatef(shoulder2, 0, horizontalVector, 0);
+      glTranslatef(-0.25, 0, 0);
       glRotatef(90, 0, horizontalVector, 0);
       solidDisk(0.15, 0.2, 0.6, 30, 30);
       glRotatef(elbow, -1, 0, 0);
+      glRotatef(elbow2, 0, 1, 0);
       glRotatef(-90, 0, horizontalVector, 0);
       glTranslatef(-0.6, 0, 0);
       glRotatef(90, 0, horizontalVector, 0);
    } else {
-      glTranslatef(0.6, 0, 0.60);
+      glTranslatef(0.2, 0, 0.60);
+      glRotatef(shoulder2, 0, horizontalVector, 0);
+      glTranslatef(0.3, 0, 0);
       glRotatef(90, 0, -horizontalVector, 0);
       solidDisk(0.15, 0.2, 0.6, 30, 30);
       glRotatef(elbow, 1, 0, 0);
+      glRotatef(elbow2, 0, 1, 0);
       glRotatef(-90, 0, -horizontalVector, 0);
       glTranslatef(0.6, 0, 0);
       glRotatef(90, 0, -horizontalVector, 0);
@@ -362,8 +372,16 @@ void Man::applause()
 void Man::walk() 
 {
    if (AnimWalk == 0) {
-      leftShoulder += 1;
-      rightShoulder += 1;
+      if (leftShoulder2 > -30) {
+         leftShoulder2 -= 1;
+         rightShoulder2 += 1;
+      }
+      if (leftElbow2 > -40) {
+         leftElbow2 -= 1;
+         rightElbow2 += 1;
+      } else {
+         AnimWalk = 1;
+      }
    }
 
 
@@ -375,6 +393,8 @@ void Man::walk()
          leftPelvis+=0.5;
          rightKnee-=0.5;
          rightPelvis-=0.5;
+         leftElbow+=0.4;
+         rightElbow+=0.4;
       } else {
          reverseAnimWalk = true;
       }
@@ -384,6 +404,8 @@ void Man::walk()
          leftPelvis-=0.5;
          rightKnee+=0.5;
          rightPelvis+=0.5;
+         leftElbow-=0.4;
+         rightElbow-=0.4;
       } else {
          reverseAnimWalk = false;
       }
