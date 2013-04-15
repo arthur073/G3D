@@ -2,7 +2,6 @@
 #include <unistd.h>
 #include <math.h>
 #include<unistd.h>
-using namespace std;
 #include "man.h"
 /*
    cylinder's drawing
@@ -23,6 +22,10 @@ int horizontalVector = 1;
 
 bool reverseAnim = false;
 bool reverseAnimWalk = false;
+
+const string Man::EVENT_APPLAUSE = "applause";
+const string Man::EVENT_WALK = "walk";
+string Man::currentMove = "";
 
 // Anim Applause
 GLint AnimApplause = 1;
@@ -362,7 +365,15 @@ void Man::walk()
 
 void Man::animate()
 {
-   applause();
+  if( Man::currentMove == Man::EVENT_APPLAUSE )
+  {
+    applause();
+  }
+  else if ( Man::currentMove == Man::EVENT_WALK )
+  {
+    walk();
+  }
+  
    //walk();
 }
 

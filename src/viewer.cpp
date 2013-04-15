@@ -98,11 +98,13 @@ void Viewer::keyPressEvent(QKeyEvent *e)
 
 	// ... and so on with all events to handle here!
    } else if (e->key()==Qt::Key_F1) {
-      cout<<"To be implemented";
-
+     Man::currentMove = Man::EVENT_WALK;
+     animate();
+     updateGL();
    } else if (e->key()==Qt::Key_F2) {
-      animate();
-		updateGL();
+     Man::currentMove = Man::EVENT_APPLAUSE;
+	   animate();
+     updateGL();
 
 	} else {
 		// if the event is not handled here, process it as default

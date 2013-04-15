@@ -3,10 +3,15 @@
 
 #include "renderable.h"
 #include <GL/glut.h>
+#include <string>
+using namespace std;
 
 class Man : public Renderable
 {
    public:
+      static const string EVENT_APPLAUSE;
+      static const string EVENT_WALK; 
+      static string currentMove;
       void draw();
       void animate();
       void applause();
