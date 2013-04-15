@@ -98,11 +98,17 @@ void Viewer::keyPressEvent(QKeyEvent *e)
 
 	// ... and so on with all events to handle here!
    } else if (e->key()==Qt::Key_F1) {
-     Man::currentMove = Man::EVENT_WALK;
+     if( Man::isAnimationEnded() )
+     {
+       Man::currentMove = Man::EVENT_WALK;
+     }
      animate();
      updateGL();
    } else if (e->key()==Qt::Key_F2) {
-     Man::currentMove = Man::EVENT_APPLAUSE;
+     if( Man::isAnimationEnded() )
+     {
+        Man::currentMove = Man::EVENT_APPLAUSE;
+     }
 	   animate();
      updateGL();
 

@@ -27,6 +27,7 @@ bool reverseAnimWalk = false;
 
 const string Man::EVENT_APPLAUSE = "applause";
 const string Man::EVENT_WALK = "walk";
+
 string Man::currentMove = "";
 
 // Anim Applause
@@ -392,6 +393,7 @@ void Man::walk()
 
 void Man::animate()
 {
+  //  //on traite le nouveau mouvement
   if( Man::currentMove == Man::EVENT_APPLAUSE )
   {
     applause();
@@ -401,7 +403,22 @@ void Man::animate()
     walk();
   }
   
-   //walk();
+}
+
+bool Man::isAnimationEnded()
+{
+  if( Man::currentMove == Man::EVENT_APPLAUSE )
+  {
+    return ( AnimApplause == 8 ? true : false );
+  }
+  else if ( Man::currentMove == Man::EVENT_WALK )
+  {
+    return ( AnimWalk == 2 ? true : false );
+  }
+  else
+  {
+    return true;
+  }
 }
 
 
