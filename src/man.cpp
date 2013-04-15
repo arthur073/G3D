@@ -41,13 +41,18 @@ void Man::drawImmediate()
 {
 
    // dress
-   glPushMatrix();
-   glColor3ub(118,70,185);
-   glTranslatef(0, 0, -0.5);
-   solidDisk(0.7, 0.1, 0.8, 30, 30);
-   glTranslatef(0, 0, -0.3);
-   solidDisk(1, 0.3, 0.8, 30, 30);
-   glPopMatrix();
+ //  glPushMatrix();
+ //  glColor3ub(118,70,185);
+ //  glTranslatef(0, 0, -0.5);
+ //  solidDisk(0.7, 0.1, 0.8, 30, 30);
+ //  glTranslatef(0, 0, -0.3);
+ //  solidDisk(1, 0.3, 0.8, 30, 30);
+ //  glPopMatrix();
+ 
+
+   // legs
+   drawLeg(leftKnee, true);
+   drawLeg(rightKnee, false);
 
    // feet
    drawFoot(leftKnee, true);
@@ -59,15 +64,12 @@ void Man::drawImmediate()
    glColor3ub(118,70,185);
    glTranslatef(0, 0, 0.8);
    glRotatef(180, 1, 0, 0);
-   solidCone(0.5, 1.5, 30, 30);
+   solidDisk(0.5, 0.35, 1, 30, 30);
    glPopMatrix();
 
    // arms
    drawArm(leftShoulder, leftElbow, leftWrist, true);
    drawArm(rightShoulder, rightElbow, rightWrist, false);
-
-
-
 
    // head
    glColor3ub(246,198,224);
@@ -235,18 +237,37 @@ void Man::drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left)
    glPopMatrix();
 }
 
+void Man::drawLeg(GLfloat knee, bool left) {
+   glPushMatrix();
+   if (left) {
+      glTranslatef(0.16, 0, -0.8);
+      solidDisk(0.12, 0.2, 0.7, 30, 30);
+      glRotatef(knee, 1, 0, 0);
+      glTranslatef(0, 0, -0.5);
+      solidDisk(0.1, 0.12, 0.5, 30, 30);
+   } else {
+      glTranslatef(-0.16, 0, -0.8);
+      solidDisk(0.12, 0.2, 0.7, 30, 30);
+      glRotatef(knee, 1, 0, 0);
+      glTranslatef(0, 0, -0.5);
+      solidDisk(0.1, 0.12, 0.5, 30, 30);
+   
+   }
+   glPopMatrix();
+}
+
 void Man::drawFoot(GLfloat knee, bool left)
 {
    glPushMatrix();
-   glColor3f(0.5,0.5,0.5);
+   glColor3f(0.2,0.2,0.2);
    glRotatef(knee, 1, 0, 0);
-   glTranslatef(0, 0, -0.9);
+   glTranslatef(0, 0.1, -1.3);
    if (left) {
-      glTranslatef(-0.5, 0, 0);
+      glTranslatef(-0.16, 0, 0);
    } else {
-      glTranslatef(0.5, 0, 0);
+      glTranslatef(0.16, 0, 0);
    } 
-   glScalef(1,2,0.5);
+   glScalef(0.6,1,0.3);
    glutSolidCube(0.4);
    glPopMatrix();
 
