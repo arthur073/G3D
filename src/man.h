@@ -13,7 +13,7 @@ class Man : public Renderable
 
    private:
       // drawings
-      void drawArm(GLfloat shoulder, GLfloat elbow, GLfloat wrist, bool left);
+      void drawArm(GLfloat shoulder, GLfloat shoulder2, GLfloat elbow, GLfloat elbow2, GLfloat wrist, bool left);
       void drawLeg(GLfloat pelvis, GLfloat knee, bool left);
       void drawImmediate();
       void drawCylinder(float radius, float height);
