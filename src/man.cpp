@@ -373,6 +373,10 @@ void Man::applause()
 
 void Man::walk() 
 {
+  //only for changing the move
+  if (AnimWalk == 2) {
+    AnimWalk = 1;
+  }
    if (AnimWalk == 0) {
       if (leftShoulder2 > -30) {
          leftShoulder2 -= 1;
@@ -388,6 +392,10 @@ void Man::walk()
 
 
    if (AnimWalk == 1) {
+     if( leftKnee == 0 ) {
+        AnimWalk = 2;
+        cout << "ok" << endl;
+     }
    if (reverseAnimWalk == false) 
    {
       if (leftKnee < 15) {
