@@ -4,6 +4,7 @@
 #include "man.h"
 #include "textures.h"
 
+int lastPressed = 0;
 
 Viewer::Viewer() {
 	init();
@@ -97,16 +98,22 @@ void Viewer::keyPressEvent(QKeyEvent *e)
 		updateGL();
 
 	// ... and so on with all events to handle here!
-   } else if (e->key()==Qt::Key_F1) {
+   } else if (e->key()==Qt::Key_F1 || lastPressed==Qt::Key_F1) {
+     
+     if( e->key() == Qt::Key_F1 )  
+        lastPressed = e->key();
      if( Man::isAnimationEnded() )
      {
        Man::currentMove = Man::EVENT_WALK;
      }
      animate();
      updateGL();
-   } else if (e->key()==Qt::Key_F2) {
-     if( Man::isAnimationEnded() )
+   } else if (e->key()==Qt::Key_F2 || lastPressed==Qt::Key_F2) {
+        if( e->key() == Qt::Key_F2 )  
+        lastPressed = e->key();
+ if( Man::isAnimationEnded() )
      {
+        lastPressed = e->key();
         Man::currentMove = Man::EVENT_APPLAUSE;
      }
 	   animate();

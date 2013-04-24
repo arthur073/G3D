@@ -394,7 +394,6 @@ void Man::walk()
    if (AnimWalk == 1) {
      if( leftKnee == 0 ) {
         AnimWalk = 2;
-        cout << "ok" << endl;
      }
    if (reverseAnimWalk == false) 
    {
