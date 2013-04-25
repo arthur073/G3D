@@ -93,6 +93,9 @@ void Man::drawImmediate()
    solidDisk(0.7, 0.7, 0.01, 30, 30);
    glPopMatrix();
 
+   //cape
+   drawCape();
+
 
    // baton
 //   glPushMatrix();
@@ -279,6 +282,64 @@ void Man::drawLeg(GLfloat pelvis, GLfloat knee, bool left) {
    
    }
    glPopMatrix();
+}
+
+void Man::drawCape()
+{
+  glPushMatrix();
+
+  float points[ 45 ][ 45 ] [ 3 ];
+  int wiggle_count = 0;
+  GLfloat hold;
+ // glPolygonMode( GL_BACK, GL_FILL );
+  //glPolygonMode( GL_FRONT, GL_LINE );
+
+  for(int x=0;x<45; x++)
+  {
+    for(int y=0;y<45;y++)
+    {
+      points[x][y][0] = float((x/5.0f)-4.5f);
+      points[x][y][1] = float((y/5.0f)-4.5f);
+      points[x][y][2] = float(sin((((x/5.0f)*40.0f)/360.0f)*3.141592654*2.0f));
+    }
+  }
+  int x, y;                       // Loop Variables
+  float float_x, float_y, float_xb, float_yb;     // Used To Break The Flag Into Tiny Quads
+ // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear The Screen And Depth Buffer   
+ // glLoadIdentity();                   // Reset The Current Matrix
+ 
+  glTranslatef(0.0f,0.0f,-12.0f);             // Translate 12 Units Into The Screen
+ 
+  //glRotatef(xrot,1.0f,0.0f,0.0f);             // Rotate On The X Axis
+  //glRotatef(yrot,0.0f,1.0f,0.0f);             // Rotate On The Y Axis 
+  //glRotatef(zrot,0.0f,0.0f,1.0f);             // Rotate On The Z Axis
+ 
+  //glBindTexture(GL_TEXTURE_2D, texture[0]);       // Select Our Texture
+
+  glBegin(GL_QUADS);                  // Start Drawing Our Quads
+  for( x = 0; x < 44; x++ )                // Loop Through The X Plane (44 Points)
+  {
+    for( y = 0; y < 44; y++ )            // Loop Through The Y Plane (44 Points)
+    {
+      float_x = float(x)/44.0f;       // Create A Floating Point X Value
+      float_y = float(y)/44.0f;       // Create A Floating Point Y Value
+      float_xb = float(x+1)/44.0f;        // Create A Floating Point Y Value+0.0227f
+      float_yb = float(y+1)/44.0f;        // Create A Floating Point Y Value+0.0227f
+    //  glTexCoord2f( float_x, float_y);    // First Texture Coordinate (Bottom Left)
+      glVertex3f( points[x][y][0], points[x][y][1], points[x][y][2] );
+     //   glTexCoord2f( float_x, float_yb );  // Second Texture Coordinate (Top Left)
+      glVertex3f( points[x][y+1][0], points[x][y+1][1], points[x][y+1][2] );
+         
+      //  glTexCoord2f( float_xb, float_yb ); // Third Texture Coordinate (Top Right)
+      glVertex3f( points[x+1][y+1][0], points[x+1][y+1][1], points[x+1][y+1][2] );
+         
+      //  glTexCoord2f( float_xb, float_y );  // Fourth Texture Coordinate (Bottom Right)
+      glVertex3f( points[x+1][y][0], points[x+1][y][1], points[x+1][y][2] );
+    }
+  }
+  glEnd();                        // Done Drawing Our Quads
+
+  glPopMatrix();
 }
 
 void Man::applause()
