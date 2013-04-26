@@ -14,7 +14,6 @@ class Man : public Renderable
       static string currentMove;
       void draw();
       void animate();
-      void applause();
       static bool isAnimationEnded();
 
    private:
@@ -28,7 +27,9 @@ class Man : public Renderable
       void solidDisk(GLfloat base1, GLfloat base2, GLfloat thickness, GLint slices, GLint stacks);
 
       // animation 
+      void applause();
       void walk();
+      void capeWave();
       void solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks);
 };
 

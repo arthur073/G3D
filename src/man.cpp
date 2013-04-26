@@ -284,50 +284,42 @@ void Man::drawLeg(GLfloat pelvis, GLfloat knee, bool left) {
    glPopMatrix();
 }
 
+int wiggle_count = 0;
+GLfloat hold;
+
+float capePoints[ 50 ][ 50 ] [ 3 ];
+float xRotation = 80;
+float yRotation = 0;
+float zRotation = 0;
+
 void Man::drawCape()
 {
   glPushMatrix();
 
   glColor3f(1,0,0);
-  float points[ 50 ][ 50 ] [ 3 ];
-  int wiggle_count = 0;
-  GLfloat hold;
- // glPolygonMode( GL_BACK, GL_FILL );
-  //glPolygonMode( GL_FRONT, GL_LINE );
+  //placement de la cape
+  glTranslatef(1.2f,-0.4f,1.05f);
+  glRotatef(xRotation,1.0f,0.0f,0.0f);
+  glRotatef(yRotation, 0.0f, 1.0f, 0.0f);
+  glRotatef(zRotation, 0.0f, 0.0f, 1.0f);
 
+  //init du tableau des points de la cape
   for(int x=0;x<50; x++)
   {
     for(int y=0;y<50;y++)
     {
-        points[x][y][0] = float((x/60.0f)-1.5f);
-       // if( y > 40 || y < 10 )
-        //{
-         // points[x][y][1] = float((y/(2000.0f/(x+1)))-1.5f);
-        //}
-        //else
-        //{
-          points[x][y][1] = float((y/40.0f)-1.5f);
-       // }
-        points[x][y][2] = float(sin((((x/2.0f)*25.0f)/360.0f)*3.141592654*2.0f))/15.0f;
+        capePoints[x][y][0] = (x/60.0f)-1.5f;
+        capePoints[x][y][1] = (y/40.0f)-1.5f;
+        capePoints[x][y][2] = sin((((x/2.0f)*25.0f)/360.0f)*3.141592654*2.0f)/15.0f;
       }
   }
-  int x, y;                       // Loop Variables
-  //float float_x, float_y, float_xb, float_yb;     // Used To Break The Flag Into Tiny Quads
- // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear The Screen And Depth Buffer   
- // glLoadIdentity();                   // Reset The Current Matrix
- 
-  glTranslatef(1.2f,-0.4f,1.05f);             // Translate 12 Units Into The Screen
- 
-  glRotatef(80,1.0f,0.0f,0.0f);             // Rotate On The X Axis
-  //glRotatef(30,0.0f,1.0f,0.0f);             // Rotate On The Y Axis 
-  //glRotatef(30,0.0f,0.0f,1.0f);             // Rotate On The Z Axis
- 
+
   //glBindTexture(GL_TEXTURE_2D, texture[0]);       // Select Our Texture
 
-  glBegin(GL_QUADS);                  // Start Drawing Our Quads
-  for( x = 0; x < 49; x++ )                // Loop Through The X Plane (44 Points)
+  glBegin(GL_QUADS);
+  for(int x = 0; x < 49; x++ )                // Loop Through The X Plane (44 Points)
   {
-    for( y = 0; y < 49; y++ )            // Loop Through The Y Plane (44 Points)
+    for(int y = 0; y < 49; y++ )            // Loop Through The Y Plane (44 Points)
     {
      
      // float_x = float(x)/14.0f;       // Create A Floating Point X Value
@@ -336,19 +328,18 @@ void Man::drawCape()
      // float_yb = float(y+1)/14.0f;        // Create A Floating Point Y Value+0.0227fi
 
     //  glTexCoord2f( float_x, float_y);    // First Texture Coordinate (Bottom Left)
-      glVertex3f( points[x][y][0], points[x][y][1], points[x][y][2] );
+      glVertex3f( capePoints[x][y][0], capePoints[x][y][1], capePoints[x][y][2] );
      //   glTexCoord2f( float_x, float_yb );  // Second Texture Coordinate (Top Left)
-      glVertex3f( points[x][y+1][0], points[x][y+1][1], points[x][y+1][2] );
+      glVertex3f( capePoints[x][y+1][0], capePoints[x][y+1][1], capePoints[x][y+1][2] );
          
       //  glTexCoord2f( float_xb, float_yb ); // Third Texture Coordinate (Top Right)
-      glVertex3f( points[x+1][y+1][0], points[x+1][y+1][1], points[x+1][y+1][2] );
+      glVertex3f( capePoints[x+1][y+1][0], capePoints[x+1][y+1][1], capePoints[x+1][y+1][2] );
          
       //  glTexCoord2f( float_xb, float_y );  // Fourth Texture Coordinate (Bottom Right)
-      glVertex3f( points[x+1][y][0], points[x+1][y][1], points[x+1][y][2] );
+      glVertex3f( capePoints[x+1][y][0], capePoints[x+1][y][1], capePoints[x+1][y][2] );
     }
   }
-  glEnd();                        // Done Drawing Our Quads
-
+  glEnd();
   glPopMatrix();
 }
 
@@ -493,8 +484,36 @@ void Man::walk()
    }
 }
 
+void Man::capeWave()
+{
+  //on ralenti le movement
+  if( wiggle_count == 2 )
+  {
+    for( int y = 0; y < 49; y++ )
+    {
+        //on garde le 1er point sur la gauche (1)
+        hold=capePoints[0][y][2];
+        for( int x = 0; x < 49; x++)
+        {
+            // on decale d'un cran
+          capePoints[x][y][2] = capePoints[x+1][y][2];
+        }
+        //on le met dans le point à droite (2)
+        capePoints[49][y][2]=hold;
+    }
+    wiggle_count = 0;
+  }
+  wiggle_count++;
+  //xRotation+=0.3f;
+  //yRotation+=0.2f;
+  //zRotation+=0.4f;
+}
+
 void Man::animate()
 {
+  //la cape bouge tout le temps
+  capeWave();
+  drawImmediate();
   //  //on traite le nouveau mouvement
   if( Man::currentMove == Man::EVENT_APPLAUSE )
   {
