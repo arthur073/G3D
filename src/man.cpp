@@ -94,28 +94,29 @@ void Man::drawImmediate()
    glPopMatrix();
 
    //cape
+   initCape();
    drawCape();
 
 
    // baton
-//   glPushMatrix();
-//   glTranslatef(1.5,0,0);
-//   glTranslatef(0,0,0.65);
-//   glTranslatef(0,0,1.35);
-//   glColor3f(1,1,1);
-//   glutSolidSphere(0.22, 30, 30);
-//   glColor3ub(100,53,16);
-//
-//   glPushMatrix();
-//   glTranslatef(0, 0, -0.05); 
-//   glRotatef(180, 1, 0, 0);
-//   solidCone(0.3, 0.6, 30, 30);
-//   glPopMatrix();
-//
-//   glTranslatef(0,0,-1.3);
-//   drawCylinder(0.05, 1.2);
-//   glPopMatrix();
-//   glColor3f(1,1,1);
+ //  glPushMatrix();
+ //  glTranslatef(1.3,0,0);
+ //  glTranslatef(0,0,0.65);
+ //  glTranslatef(0,0,1.35);
+ //  glColor3f(1,1,1);
+ //  glutSolidSphere(0.22, 30, 30);
+ //  glColor3ub(100,53,16);
+
+ //  glPushMatrix();
+ //  glTranslatef(0, 0, -0.05); 
+ //  glRotatef(180+belly, 1, 0, 0);
+ //  solidCone(0.3, 0.6, 30, 30);
+ //  glPopMatrix();
+
+ //  glTranslatef(0,0,-1.3);
+ //  drawCylinder(0.05, 1.2);
+ //  glPopMatrix();
+   glColor3f(1,1,1);
 
 }
 
@@ -250,7 +251,6 @@ void Man::drawArm(GLfloat shoulder, GLfloat shoulder2, GLfloat elbow, GLfloat el
    }
    glScalef(0.5,1,1);
    glutSolidCube(0.3);
-
    glPopMatrix();
 }
 
@@ -292,6 +292,20 @@ float xRotation = 80;
 float yRotation = 0;
 float zRotation = 0;
 
+void Man::initCape()
+{
+  for(int x=0;x<50; x++)
+  {
+    for(int y=0;y<50;y++)
+    {
+        capePoints[x][y][0] = (x/60.0f)-1.5f;
+        capePoints[x][y][1] = (y/40.0f)-1.5f;
+        capePoints[x][y][2] = sin((((x/2.0f)*25.0f)/360.0f)*3.141592654*2.0f)/15.0f;
+      }
+  }
+}
+
+
 void Man::drawCape()
 {
   glPushMatrix();
@@ -304,24 +318,13 @@ void Man::drawCape()
   glRotatef(zRotation, 0.0f, 0.0f, 1.0f);
 
   //init du tableau des points de la cape
-  for(int x=0;x<50; x++)
-  {
-    for(int y=0;y<50;y++)
-    {
-        capePoints[x][y][0] = (x/60.0f)-1.5f;
-        capePoints[x][y][1] = (y/40.0f)-1.5f;
-        capePoints[x][y][2] = sin((((x/2.0f)*25.0f)/360.0f)*3.141592654*2.0f)/15.0f;
-      }
-  }
-
+ 
   //glBindTexture(GL_TEXTURE_2D, texture[0]);       // Select Our Texture
-
- glBegin(GL_QUADS);
- for(int x = 0; x < 49; x++ )                // Loop Through The X Plane (44 Points)
+  glBegin(GL_QUADS);
+  for(int x = 0; x < 49; x++ )                // Loop Through The X Plane (44 Points)
   {
     for(int y = 0; y < 49; y++ )            // Loop Through The Y Plane (44 Points)
     {
-     
      // float_x = float(x)/14.0f;       // Create A Floating Point X Value
      // float_y = float(y)/14.0f;       // Create A Floating Point Y Value
      // float_xb = float(x+1)/14.0f;        // Create A Floating Point Y Value+0.0227f
@@ -486,12 +489,11 @@ void Man::walk()
 
 void Man::capeWave()
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //on ralenti le movement
   if( wiggle_count == 2 )
   {
-    for( int y = 0; y < 49; y++ )
-    {
+     for( int y = 0; y < 49; y++ )
+     {
         //on garde le 1er point sur la gauche (1)
         hold=capePoints[0][y][2];
         for( int x = 0; x < 49; x++)
@@ -501,37 +503,11 @@ void Man::capeWave()
         }
         //on le met dans le point à droite (2)
         capePoints[49][y][2]=hold;
-    }
-    wiggle_count = 0;
-  glPushMatrix(); 
-  glBegin(GL_QUADS);
-  for(int x = 0; x < 49; x++ )                // Loop Through The X Plane (44 Points)
-  {
-    for(int y = 0; y < 49; y++ )            // Loop Through The Y Plane (44 Points)
-    {
-     
-     // float_x = float(x)/14.0f;       // Create A Floating Point X Value
-     // float_y = float(y)/14.0f;       // Create A Floating Point Y Value
-     // float_xb = float(x+1)/14.0f;        // Create A Floating Point Y Value+0.0227f
-     // float_yb = float(y+1)/14.0f;        // Create A Floating Point Y Value+0.0227fi
-
-    //  glTexCoord2f( float_x, float_y);    // First Texture Coordinate (Bottom Left)
-      glVertex3f( capePoints[x][y][0], capePoints[x][y][1], capePoints[x][y][2] );
-     //   glTexCoord2f( float_x, float_yb );  // Second Texture Coordinate (Top Left)
-      glVertex3f( capePoints[x][y+1][0], capePoints[x][y+1][1], capePoints[x][y+1][2] );
-         
-      //  glTexCoord2f( float_xb, float_yb ); // Third Texture Coordinate (Top Right)
-      glVertex3f( capePoints[x+1][y+1][0], capePoints[x+1][y+1][1], capePoints[x+1][y+1][2] );
-         
-      //  glTexCoord2f( float_xb, float_y );  // Fourth Texture Coordinate (Bottom Right)
-      glVertex3f( capePoints[x+1][y][0], capePoints[x+1][y][1], capePoints[x+1][y][2] );
-    }
-  }
-  glEnd();
-  glPopMatrix();
- 
+     }
+     wiggle_count = 0;
   }
   wiggle_count++;
+  // on peut utiliser ces rotations pour faire graviter des trucs
   //xRotation+=0.3f;
   //yRotation+=0.2f;
   //zRotation+=0.4f;
@@ -539,10 +515,10 @@ void Man::capeWave()
 
 void Man::animate()
 {
-  draw();
   //la cape bouge tout le temps
+  drawCape();
   capeWave();
-  //  //on traite le nouveau mouvement
+  //on traite le nouveau mouvement
   if( Man::currentMove == Man::EVENT_APPLAUSE )
   {
     applause();
