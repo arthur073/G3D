@@ -316,8 +316,8 @@ void Man::drawCape()
 
   //glBindTexture(GL_TEXTURE_2D, texture[0]);       // Select Our Texture
 
-  glBegin(GL_QUADS);
-  for(int x = 0; x < 49; x++ )                // Loop Through The X Plane (44 Points)
+ glBegin(GL_QUADS);
+ for(int x = 0; x < 49; x++ )                // Loop Through The X Plane (44 Points)
   {
     for(int y = 0; y < 49; y++ )            // Loop Through The Y Plane (44 Points)
     {
@@ -486,6 +486,7 @@ void Man::walk()
 
 void Man::capeWave()
 {
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //on ralenti le movement
   if( wiggle_count == 2 )
   {
@@ -502,6 +503,33 @@ void Man::capeWave()
         capePoints[49][y][2]=hold;
     }
     wiggle_count = 0;
+  glPushMatrix(); 
+  glBegin(GL_QUADS);
+  for(int x = 0; x < 49; x++ )                // Loop Through The X Plane (44 Points)
+  {
+    for(int y = 0; y < 49; y++ )            // Loop Through The Y Plane (44 Points)
+    {
+     
+     // float_x = float(x)/14.0f;       // Create A Floating Point X Value
+     // float_y = float(y)/14.0f;       // Create A Floating Point Y Value
+     // float_xb = float(x+1)/14.0f;        // Create A Floating Point Y Value+0.0227f
+     // float_yb = float(y+1)/14.0f;        // Create A Floating Point Y Value+0.0227fi
+
+    //  glTexCoord2f( float_x, float_y);    // First Texture Coordinate (Bottom Left)
+      glVertex3f( capePoints[x][y][0], capePoints[x][y][1], capePoints[x][y][2] );
+     //   glTexCoord2f( float_x, float_yb );  // Second Texture Coordinate (Top Left)
+      glVertex3f( capePoints[x][y+1][0], capePoints[x][y+1][1], capePoints[x][y+1][2] );
+         
+      //  glTexCoord2f( float_xb, float_yb ); // Third Texture Coordinate (Top Right)
+      glVertex3f( capePoints[x+1][y+1][0], capePoints[x+1][y+1][1], capePoints[x+1][y+1][2] );
+         
+      //  glTexCoord2f( float_xb, float_y );  // Fourth Texture Coordinate (Bottom Right)
+      glVertex3f( capePoints[x+1][y][0], capePoints[x+1][y][1], capePoints[x+1][y][2] );
+    }
+  }
+  glEnd();
+  glPopMatrix();
+ 
   }
   wiggle_count++;
   //xRotation+=0.3f;
@@ -511,9 +539,9 @@ void Man::capeWave()
 
 void Man::animate()
 {
+  draw();
   //la cape bouge tout le temps
   capeWave();
-  drawImmediate();
   //  //on traite le nouveau mouvement
   if( Man::currentMove == Man::EVENT_APPLAUSE )
   {
