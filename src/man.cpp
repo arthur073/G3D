@@ -288,6 +288,7 @@ void Man::drawCape()
 {
   glPushMatrix();
 
+  glColor3f(1,0,0);
   float points[ 50 ][ 50 ] [ 3 ];
   int wiggle_count = 0;
   GLfloat hold;
@@ -299,7 +300,14 @@ void Man::drawCape()
     for(int y=0;y<50;y++)
     {
         points[x][y][0] = float((x/60.0f)-1.5f);
-        points[x][y][1] = float((y/40.0f)-1.5f);
+       // if( y > 40 || y < 10 )
+        //{
+         // points[x][y][1] = float((y/(2000.0f/(x+1)))-1.5f);
+        //}
+        //else
+        //{
+          points[x][y][1] = float((y/40.0f)-1.5f);
+       // }
         points[x][y][2] = float(sin((((x/2.0f)*25.0f)/360.0f)*3.141592654*2.0f))/15.0f;
       }
   }
@@ -308,11 +316,11 @@ void Man::drawCape()
  // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear The Screen And Depth Buffer   
  // glLoadIdentity();                   // Reset The Current Matrix
  
-  glTranslatef(0.8f,1.1f,1.3f);             // Translate 12 Units Into The Screen
+  glTranslatef(1.2f,-0.4f,1.05f);             // Translate 12 Units Into The Screen
  
-  glRotatef(90,1.0f,0.0f,0.0f);             // Rotate On The X Axis
-  //glRotatef(90,0.0f,1.0f,0.0f);             // Rotate On The Y Axis 
- // glRotatef(90,0.0f,0.0f,1.0f);             // Rotate On The Z Axis
+  glRotatef(80,1.0f,0.0f,0.0f);             // Rotate On The X Axis
+  //glRotatef(30,0.0f,1.0f,0.0f);             // Rotate On The Y Axis 
+  //glRotatef(30,0.0f,0.0f,1.0f);             // Rotate On The Z Axis
  
   //glBindTexture(GL_TEXTURE_2D, texture[0]);       // Select Our Texture
 
