@@ -77,6 +77,65 @@ void Viewer::animate()
 
 void Viewer::keyPressEvent(QKeyEvent *e)
 {
+    if ( lastPressed == Qt::Key_F1 )
+    {
+      animate();
+      updateGL();
+      if( Man::isAnimationEnded() )
+      {
+         if (Man::currentMove != Man::EVENT_WALK) {
+            // départ d'une animation
+            Man::resetAnim();
+         }
+         Man::currentMove = Man::EVENT_WALK;
+         lastPressed = 0;
+         return;
+     } else {
+        keyPressEvent(e);
+   //   return;
+     }
+    }
+    else if( lastPressed == Qt::Key_F2 )
+    {
+      animate();
+      updateGL();
+      if( Man::isAnimationEnded() )
+      {
+         if (Man::currentMove != Man::EVENT_APPLAUSE) {
+            // départ d'une animation
+            Man::resetAnim();
+         }
+         Man::currentMove = Man::EVENT_APPLAUSE;
+         lastPressed = 0;
+      }
+     // } else {
+        keyPressEvent(e);
+        
+      
+      return;
+    }
+    else if( lastPressed == Qt::Key_F3 )
+    {
+      animate();
+      updateGL();
+      if( Man::isAnimationEnded() )
+      {
+         if (Man::currentMove != Man::EVENT_SPELL) {
+            // départ d'une animation
+            Man::resetAnim();
+         }
+         Man::currentMove = Man::EVENT_SPELL;
+         lastPressed = 0;
+      }
+    //  } else {
+        keyPressEvent(e);
+       // return;
+      
+      return;
+    }
+
+
+
    // Get event modifiers key
    const Qt::KeyboardModifiers modifiers = e->modifiers();
 
@@ -96,57 +155,19 @@ void Viewer::keyPressEvent(QKeyEvent *e)
       else
          glDisable(GL_LIGHTING);
       updateGL();
-
-      // Walk animation
-   } else if (e->key()==Qt::Key_F1 || lastPressed==Qt::Key_F1) {
-      if( e->key() == Qt::Key_F1 )  
-         lastPressed = e->key();
-      if( Man::isAnimationEnded() )
-      {
-         if (Man::currentMove != Man::EVENT_WALK) {
-            // départ d'une animation
-            Man::resetAnim();
-         }
-         lastPressed = e->key();
-         Man::currentMove = Man::EVENT_WALK;
-      }
-      animate();
-      updateGL();
-
+   // Walk animation
+   } else if (e->key()==Qt::Key_F1) {
+      lastPressed = e->key();
+      keyPressEvent(e);
       // Applause animation
-   } else if (e->key()==Qt::Key_F2 || lastPressed==Qt::Key_F2) {
-      if( e->key() == Qt::Key_F2 )  
-         lastPressed = e->key();
-      if( Man::isAnimationEnded() )
-      {
-         if (Man::currentMove != Man::EVENT_APPLAUSE) {
-            // départ d'une animation
-            Man::resetAnim();
-         }
-         lastPressed = e->key();
-         Man::currentMove = Man::EVENT_APPLAUSE;
-      }
-      animate();
-      updateGL();
-
+   } else if (e->key()==Qt::Key_F2) {
+      lastPressed = e->key();
+      keyPressEvent(e);
    // Spell animation
-   } else if (e->key()==Qt::Key_F3 || lastPressed==Qt::Key_F3) {
-      if( e->key() == Qt::Key_F3 )  
-         lastPressed = e->key();
-      if( Man::isAnimationEnded() )
-      {
-         if (Man::currentMove != Man::EVENT_SPELL) {
-            // départ d'une animation
-            Man::resetAnim();
-         }
-         lastPressed = e->key();
-         Man::currentMove = Man::EVENT_SPELL;
-      }
-      animate();
-      updateGL();
-      
-
-   } else {
+   } else if (e->key()==Qt::Key_F3) {
+      lastPressed = e->key();
+      keyPressEvent(e);
+       } else {
       // if the event is not handled here, process it as default
       QGLViewer::keyPressEvent(e);
    }
