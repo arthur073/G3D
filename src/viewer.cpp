@@ -77,23 +77,17 @@ void Viewer::animate()
 
 void Viewer::keyPressEvent(QKeyEvent *e)
 {
-    if ( lastPressed == Qt::Key_F1 )
+  if ( lastPressed == Qt::Key_F1 )
     {
-      animate();
-      updateGL();
+      Man::currentMove = Man::EVENT_WALK;
       if( Man::isAnimationEnded() )
       {
          if (Man::currentMove != Man::EVENT_WALK) {
             // départ d'une animation
-            Man::resetAnim();
+          //  Man::resetAnim();
          }
-         Man::currentMove = Man::EVENT_WALK;
          lastPressed = 0;
-         return;
-     } else {
-        keyPressEvent(e);
-   //   return;
-     }
+      }
     }
     else if( lastPressed == Qt::Key_F2 )
     {
@@ -103,16 +97,11 @@ void Viewer::keyPressEvent(QKeyEvent *e)
       {
          if (Man::currentMove != Man::EVENT_APPLAUSE) {
             // départ d'une animation
-            Man::resetAnim();
+          //  Man::resetAnim();
          }
          Man::currentMove = Man::EVENT_APPLAUSE;
          lastPressed = 0;
       }
-     // } else {
-        keyPressEvent(e);
-        
-      
-      return;
     }
     else if( lastPressed == Qt::Key_F3 )
     {
@@ -122,20 +111,12 @@ void Viewer::keyPressEvent(QKeyEvent *e)
       {
          if (Man::currentMove != Man::EVENT_SPELL) {
             // départ d'une animation
-            Man::resetAnim();
+           // Man::resetAnim();
          }
          Man::currentMove = Man::EVENT_SPELL;
          lastPressed = 0;
       }
-    //  } else {
-        keyPressEvent(e);
-       // return;
-      
-      return;
     }
-
-
-
    // Get event modifiers key
    const Qt::KeyboardModifiers modifiers = e->modifiers();
 
@@ -158,18 +139,21 @@ void Viewer::keyPressEvent(QKeyEvent *e)
    // Walk animation
    } else if (e->key()==Qt::Key_F1) {
       lastPressed = e->key();
-      keyPressEvent(e);
-      // Applause animation
+   // Applause animation
    } else if (e->key()==Qt::Key_F2) {
       lastPressed = e->key();
-      keyPressEvent(e);
    // Spell animation
    } else if (e->key()==Qt::Key_F3) {
       lastPressed = e->key();
-      keyPressEvent(e);
-       } else {
+   } else {
       // if the event is not handled here, process it as default
       QGLViewer::keyPressEvent(e);
+   }
+
+   if( lastPressed != 0 )
+   {
+      animate();
+      updateGL();
    }
 }
 
