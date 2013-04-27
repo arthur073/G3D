@@ -24,6 +24,9 @@ GLfloat leftKnee = 0;
 GLfloat rightKnee = 0;
 GLfloat leftPelvis = 0;
 GLfloat rightPelvis = 0;
+
+GLfloat ballZ = 0;
+GLfloat alphaBall = 0;
 int horizontalVector = 1;
 
 bool reverseAnim = false;
@@ -31,12 +34,14 @@ bool reverseAnimWalk = false;
 
 const string Man::EVENT_APPLAUSE = "applause";
 const string Man::EVENT_WALK = "walk";
+const string Man::EVENT_SPELL = "spell";
 
 string Man::currentMove = "";
 
 // Anim Applause
 GLint AnimApplause = 1;
 GLint AnimWalk = 0;
+GLint AnimSpell = 0;
 GLint CptApplause = 0;
 GLint CptWait = 0;
 GLint cptWalk = 0;
@@ -99,24 +104,10 @@ void Man::drawImmediate()
    drawCape();
 
 
-   // baton
-   //  glPushMatrix();
-   //  glTranslatef(1.3,0,0);
-   //  glTranslatef(0,0,0.65);
-   //  glTranslatef(0,0,1.35);
-   //  glColor3f(1,1,1);
-   //  glutSolidSphere(0.22, 30, 30);
-   //  glColor3ub(100,53,16);
+   // balle
+   drawBall();
 
-   //  glPushMatrix();
-   //  glTranslatef(0, 0, -0.05); 
-   //  glRotatef(180+belly, 1, 0, 0);
-   //  solidCone(0.3, 0.6, 30, 30);
-   //  glPopMatrix();
 
-   //  glTranslatef(0,0,-1.3);
-   //  drawCylinder(0.05, 1.2);
-   //  glPopMatrix();
    glColor3f(1,1,1);
 
 }
@@ -347,6 +338,21 @@ void Man::drawCape()
    glPopMatrix();
 }
 
+
+void Man::drawBall() 
+{
+   // La balle qui apparaît dans l'animation de sort
+   glPushMatrix();
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+   
+   glTranslatef(0,1.5,0.5+ballZ/200);
+   glColor4f(1,1,1,alphaBall);
+   glutSolidSphere(0.5, 30, 30);
+   glDisable(GL_BLEND);
+   glPopMatrix();
+}
+
 void Man::applause()
 {
    if (AnimApplause == 1) {
@@ -501,6 +507,49 @@ void Man::walk()
    }
 }
 
+void Man::spell() 
+{
+
+   if (AnimSpell == 0) {
+      if (leftShoulder2 < 20) {
+         leftShoulder-=0.5;
+         leftShoulder2+=0.35;
+         rightShoulder2-=0.35;
+         rightShoulder+=0.5;
+         alphaBall+=0.01;
+         ballZ++;
+      } else {
+         AnimSpell = 1;
+      }   
+      if (leftElbow2 < 10) {
+         leftElbow2++;
+         rightElbow2--;
+      }
+   }
+
+   if (AnimSpell == 1) {
+      if (leftShoulder2 < 25) {
+         leftShoulder2+=0.05;
+         rightShoulder2-=0.05;
+         alphaBall+=0.01;
+         ballZ++;
+      } else {
+         AnimSpell = 2;
+      }   
+      if (leftElbow2 < 15) {
+         leftElbow2+=0.1;
+         rightElbow2-=0.1;
+      }
+   }
+
+   //if (AnimSpell == 2) {
+   //}
+
+
+}
+
+
+
 void Man::capeWave()
 {
    //on ralenti le movement
@@ -541,7 +590,10 @@ void Man::animate()
    {
       walk();
    }
-
+   else if ( Man::currentMove == Man::EVENT_SPELL )
+   {
+      spell();
+   }
 }
 
 bool Man::isAnimationEnded()
@@ -554,6 +606,11 @@ bool Man::isAnimationEnded()
    {
       return ( AnimWalk == 3 ? true : false );
    }
+   else if ( Man::currentMove == Man::EVENT_SPELL )
+   {
+      return ( AnimSpell == 3 ? true : false );
+   }
+
    else
    {
       return true;
@@ -564,6 +621,7 @@ bool Man::isAnimationEnded()
 void Man::resetAnim() {
    AnimWalk = 0;
    AnimApplause = 1;
+   AnimSpell = 0;
    CptApplause = 0;
    CptWait = 0;
    cptWalk = 0;

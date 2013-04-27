@@ -129,6 +129,23 @@ void Viewer::keyPressEvent(QKeyEvent *e)
       animate();
       updateGL();
 
+   // Spell animation
+   } else if (e->key()==Qt::Key_F3 || lastPressed==Qt::Key_F3) {
+      if( e->key() == Qt::Key_F3 )  
+         lastPressed = e->key();
+      if( Man::isAnimationEnded() )
+      {
+         if (Man::currentMove != Man::EVENT_SPELL) {
+            // départ d'une animation
+            Man::resetAnim();
+         }
+         lastPressed = e->key();
+         Man::currentMove = Man::EVENT_SPELL;
+      }
+      animate();
+      updateGL();
+      
+
    } else {
       // if the event is not handled here, process it as default
       QGLViewer::keyPressEvent(e);
