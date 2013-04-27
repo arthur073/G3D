@@ -621,11 +621,58 @@ void Man::spell()
          belly -=3;
          leftShoulder2+=0.5;
          rightShoulder2-=0.5;
-      }
+      } else {
+         AnimSpell = 9;
+      }  
       if (ballYLength < 100 && belly < -10) {
          ballYLength+=0.1;
+      } 
+  }
+
+  if (AnimSpell == 9) {
+     if (ballYLength < 10) {
+         ballYLength+=0.2;
+     } else {
+        AnimSpell = 10;
       }
   }
+
+   if (AnimSpell == 10) {
+      // insérer ici une explosion de la boule
+      AnimSpell = 11;
+   }
+
+   if (AnimSpell == 11) {
+      Light1Power= 0;
+      AnimSpell = 12;
+   }
+
+   if (AnimSpell == 12) {
+      if (Light0Power < 1) {
+         Light0Power+=0.01;
+      }
+      if (leftShoulder2 >0) {
+         leftShoulder2--;
+         rightShoulder2++;
+      }
+      if (leftElbow2>0) {
+         leftElbow2--;
+         rightElbow2++;
+      }
+      if (neck>0) {
+         neck-=0.1;
+      } else {
+         AnimSpell = 13;
+      }
+      if (leftShoulder<0) {
+         leftShoulder++;
+         rightShoulder--;
+      }
+      if (belly < 0) {
+         belly++;
+      }
+   }
+
 }
 
 
@@ -688,7 +735,7 @@ bool Man::isAnimationEnded()
    }
    else if ( Man::currentMove == Man::EVENT_SPELL )
    {
-      return ( AnimSpell == 3 ? true : false );
+      return ( AnimSpell == 13 ? true : false );
    }
 
    else
@@ -705,5 +752,10 @@ void Man::resetAnim() {
    CptApplause = 0;
    CptWait = 0;
    cptWalk = 0;
+   AnimSpell = 0;
+   ballZ= 0;
+   ballY= 0;
+   ballYLength = 0;
+   ballSize = 0;
+   alphaBall = 0;
 }
-
