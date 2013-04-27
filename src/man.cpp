@@ -600,6 +600,11 @@ void Man::animate()
    //la cape bouge tout le temps
    drawCape();
    capeWave();
+
+   updateGl();
+   // ne marche pas
+   //glutPostRedisplay();
+
    //on traite le nouveau mouvement
    if( Man::currentMove == Man::EVENT_APPLAUSE )
    {
