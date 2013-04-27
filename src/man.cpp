@@ -26,7 +26,12 @@ GLfloat leftPelvis = 0;
 GLfloat rightPelvis = 0;
 
 GLfloat ballZ = 0;
+GLfloat ballY = 0;
+GLfloat ballYLength = 0;
+GLfloat ballSize = 0;
 GLfloat alphaBall = 0;
+GLfloat Light0Power = 1.0;
+GLfloat Light1Power = 0.0;
 int horizontalVector = 1;
 
 bool reverseAnim = false;
@@ -47,12 +52,6 @@ GLint CptWait = 0;
 GLint cptWalk = 0;
 
 
-// lights
-GLfloat black[]   = { 0.0f, 0.0f, 0.0f, 1.0f };
-GLfloat white[]   = { 1.0f, 1.0f, 1.0f, 1.0f };
-GLfloat red[]     = { 1.0f, 0.0f, 0.0f, 1.0f };
-
-
 void Man::draw()
 {
    // draw immediate 
@@ -63,15 +62,7 @@ void Man::draw()
 // immediate definition of individual vertex properties
 void Man::drawImmediate()
 {
-
-   // dress
-   //  glPushMatrix();
-   //  glColor3ub(118,70,185);
-   //  glTranslatef(0, 0, -0.5);
-   //  solidDisk(0.7, 0.1, 0.8, 30, 30);
-   //  glTranslatef(0, 0, -0.3);
-   //  solidDisk(1, 0.3, 0.8, 30, 30);
-   //  glPopMatrix();
+   glEnable(GL_LIGHT1);
 
 
    // legs
@@ -348,16 +339,27 @@ void Man::drawCape()
 
 void Man::drawBall() 
 {
-   // La balle qui apparaît dans l'animation de sort
-   GLfloat light1_position[] = { 0.0f, 1.5f, 0.7f, 0.3f };
-   glLightfv(GL_LIGHT1, GL_POSITION, light1_position); 
+
+   // Lumière ambiante
+   float fTemp0[4] = { Light0Power, Light0Power, Light0Power, 1.0f };
+   glLightfv(GL_LIGHT0, GL_DIFFUSE, fTemp0);
 
    glPushMatrix();
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
    
-   glTranslatef(0,1.5,0.5+ballZ/200);
+   glRotatef(ballY, 0, 0, 1);
+
+   // Lumière de la balle
+   GLfloat light1_position[] = { 0.0f, 1.5f, 0.7f, 0.3f };
+   float fTemp1[4] = { Light1Power, Light1Power, Light1Power, 1.0f };
+   glLightfv(GL_LIGHT1, GL_DIFFUSE, fTemp1);
+   glLightfv(GL_LIGHT1, GL_POSITION, light1_position); 
+
+
+   glTranslatef(0,1.5+ballYLength,0.9+ballZ/200);
    glColor4f(1,1,1,alphaBall);
+   glScalef(ballSize/40,ballSize/40,ballSize/40);
    glutSolidSphere(0.3, 30, 30);
    glDisable(GL_BLEND);
    glPopMatrix();
@@ -526,8 +528,7 @@ void Man::spell()
          leftShoulder2+=0.35;
          rightShoulder2-=0.35;
          rightShoulder+=0.5;
-         alphaBall+=0.01;
-         ballZ++;
+         Light0Power-=0.017;
       } else {
          AnimSpell = 1;
       }   
@@ -538,19 +539,9 @@ void Man::spell()
    }
 
    if (AnimSpell == 1) {
-
-
-      glDisable(GL_LIGHT0);	
-      glEnable(GL_LIGHT1);
-      glLightfv(GL_LIGHT1, GL_AMBIENT,  black);
-      glLightfv(GL_LIGHT1, GL_DIFFUSE,  white);
-      glLightfv(GL_LIGHT1, GL_SPECULAR, black);
-
       if (leftShoulder2 < 25) {
          leftShoulder2+=0.05;
          rightShoulder2-=0.05;
-         //alphaBall+=0.01;
-         ballZ++;
       } else {
          AnimSpell = 2;
       }   
@@ -561,10 +552,80 @@ void Man::spell()
    }
 
    if (AnimSpell == 2) {
-      //glDisable ( GL_LIGHTING ) ;
+         if (ballSize < 20) {
+            alphaBall+=0.03;
+            ballZ++;
+            ballSize++;
+            Light1Power+=0.03;
+         } else {
+            AnimSpell = 3;
+         }
    }
 
+   if (AnimSpell == 3) {
+         if (ballZ < 100) {
+            ballZ++;
+            neck+=0.1;
+            leftShoulder2+=0.1;
+            rightShoulder2-=0.1;
+         } else {
+            AnimSpell = 4;
+         }
+   }
 
+   if (AnimSpell == 4) {
+      if (ballY < 90) {
+         ballZ+=0.1;
+         ballY++;
+      } else {
+         AnimSpell = 5;
+      }
+   } 
+
+  if (AnimSpell == 5) {
+      if (ballY < 3600) {
+         ballY= ballY + (ballY/100);
+         Light1Power+=0.009;
+      } else {
+         AnimSpell = 6;
+      }
+   } 
+
+  if ( AnimSpell == 6) {
+      if (ballY < 7200) {
+         ballY= ballY + ((7250 - ballY)/100);
+         ballSize+=0.1;
+      } else {
+         AnimSpell = 7;
+      }
+      if (ballY > 7100) {
+         belly+=0.1;
+      }
+  }
+
+  if (AnimSpell == 7) {
+      
+     if (belly < 20) {
+         belly+=0.1;
+         leftShoulder2-=0.1;
+         rightShoulder2+=0.1;
+         Light1Power+=0.1;
+      } else {
+         AnimSpell = 8;
+      }
+  } 
+
+  if (AnimSpell == 8) {
+      // lancé de la boule
+      if (belly > -20) {
+         belly -=3;
+         leftShoulder2+=0.5;
+         rightShoulder2-=0.5;
+      }
+      if (ballYLength < 100 && belly < -10) {
+         ballYLength+=0.1;
+      }
+  }
 }
 
 
@@ -601,7 +662,6 @@ void Man::animate()
    drawCape();
    capeWave();
 
-   updateGl();
    // ne marche pas
    //glutPostRedisplay();
 
