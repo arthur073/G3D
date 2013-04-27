@@ -154,9 +154,11 @@ void Viewer::keyPressEvent(QKeyEvent *e)
    {
       animate();
       updateGL();
+      //decommenter pr mouvement auto, mais se fait une seule fois
+      //et on peut plus zoomer ni rien
+      //keyPressEvent(e);
    }
 }
-
 
 QString Viewer::helpString() const
 {
