@@ -46,6 +46,13 @@ GLint CptApplause = 0;
 GLint CptWait = 0;
 GLint cptWalk = 0;
 
+
+// lights
+GLfloat black[]   = { 0.0f, 0.0f, 0.0f, 1.0f };
+GLfloat white[]   = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat red[]     = { 1.0f, 0.0f, 0.0f, 1.0f };
+
+
 void Man::draw()
 {
    // draw immediate 
@@ -342,13 +349,16 @@ void Man::drawCape()
 void Man::drawBall() 
 {
    // La balle qui apparaît dans l'animation de sort
+   GLfloat light1_position[] = { 0.0f, 1.5f, 0.7f, 0.3f };
+   glLightfv(GL_LIGHT1, GL_POSITION, light1_position); 
+
    glPushMatrix();
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
    
    glTranslatef(0,1.5,0.5+ballZ/200);
    glColor4f(1,1,1,alphaBall);
-   glutSolidSphere(0.5, 30, 30);
+   glutSolidSphere(0.3, 30, 30);
    glDisable(GL_BLEND);
    glPopMatrix();
 }
@@ -528,10 +538,18 @@ void Man::spell()
    }
 
    if (AnimSpell == 1) {
+
+
+      glDisable(GL_LIGHT0);	
+      glEnable(GL_LIGHT1);
+      glLightfv(GL_LIGHT1, GL_AMBIENT,  black);
+      glLightfv(GL_LIGHT1, GL_DIFFUSE,  white);
+      glLightfv(GL_LIGHT1, GL_SPECULAR, black);
+
       if (leftShoulder2 < 25) {
          leftShoulder2+=0.05;
          rightShoulder2-=0.05;
-         alphaBall+=0.01;
+         //alphaBall+=0.01;
          ballZ++;
       } else {
          AnimSpell = 2;
@@ -542,8 +560,9 @@ void Man::spell()
       }
    }
 
-   //if (AnimSpell == 2) {
-   //}
+   if (AnimSpell == 2) {
+      //glDisable ( GL_LIGHTING ) ;
+   }
 
 
 }
