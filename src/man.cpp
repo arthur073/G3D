@@ -659,8 +659,10 @@ void Man::capeWave()
 void Man::animate()
 {
    //la cape bouge tout le temps
-   drawCape();
+   //on deplace les points de la cape
    capeWave();
+   //on redessine la cape
+   drawCape();
 
    // ne marche pas
    //glutPostRedisplay();
