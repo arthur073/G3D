@@ -39,6 +39,7 @@ GLint AnimApplause = 1;
 GLint AnimWalk = 0;
 GLint CptApplause = 0;
 GLint CptWait = 0;
+GLint cptWalk = 0;
 
 void Man::draw()
 {
@@ -52,14 +53,14 @@ void Man::drawImmediate()
 {
 
    // dress
- //  glPushMatrix();
- //  glColor3ub(118,70,185);
- //  glTranslatef(0, 0, -0.5);
- //  solidDisk(0.7, 0.1, 0.8, 30, 30);
- //  glTranslatef(0, 0, -0.3);
- //  solidDisk(1, 0.3, 0.8, 30, 30);
- //  glPopMatrix();
- 
+   //  glPushMatrix();
+   //  glColor3ub(118,70,185);
+   //  glTranslatef(0, 0, -0.5);
+   //  solidDisk(0.7, 0.1, 0.8, 30, 30);
+   //  glTranslatef(0, 0, -0.3);
+   //  solidDisk(1, 0.3, 0.8, 30, 30);
+   //  glPopMatrix();
+
 
    // legs
    drawLeg(leftPelvis, leftKnee, true);
@@ -93,26 +94,30 @@ void Man::drawImmediate()
    solidDisk(0.7, 0.7, 0.01, 30, 30);
    glPopMatrix();
 
+   //cape
+   initCape();
+   drawCape();
+
 
    // baton
-//   glPushMatrix();
-//   glTranslatef(1.5,0,0);
-//   glTranslatef(0,0,0.65);
-//   glTranslatef(0,0,1.35);
-//   glColor3f(1,1,1);
-//   glutSolidSphere(0.22, 30, 30);
-//   glColor3ub(100,53,16);
-//
-//   glPushMatrix();
-//   glTranslatef(0, 0, -0.05); 
-//   glRotatef(180, 1, 0, 0);
-//   solidCone(0.3, 0.6, 30, 30);
-//   glPopMatrix();
-//
-//   glTranslatef(0,0,-1.3);
-//   drawCylinder(0.05, 1.2);
-//   glPopMatrix();
-//   glColor3f(1,1,1);
+   //  glPushMatrix();
+   //  glTranslatef(1.3,0,0);
+   //  glTranslatef(0,0,0.65);
+   //  glTranslatef(0,0,1.35);
+   //  glColor3f(1,1,1);
+   //  glutSolidSphere(0.22, 30, 30);
+   //  glColor3ub(100,53,16);
+
+   //  glPushMatrix();
+   //  glTranslatef(0, 0, -0.05); 
+   //  glRotatef(180+belly, 1, 0, 0);
+   //  solidCone(0.3, 0.6, 30, 30);
+   //  glPopMatrix();
+
+   //  glTranslatef(0,0,-1.3);
+   //  drawCylinder(0.05, 1.2);
+   //  glPopMatrix();
+   glColor3f(1,1,1);
 
 }
 
@@ -247,7 +252,6 @@ void Man::drawArm(GLfloat shoulder, GLfloat shoulder2, GLfloat elbow, GLfloat el
    }
    glScalef(0.5,1,1);
    glutSolidCube(0.3);
-
    glPopMatrix();
 }
 
@@ -276,8 +280,70 @@ void Man::drawLeg(GLfloat pelvis, GLfloat knee, bool left) {
       glScalef(0.6,1,0.3);
       glColor3f(0.2,0.2,0.2);
       glutSolidCube(0.4);
-   
+
    }
+   glPopMatrix();
+}
+
+int wiggle_count = 0;
+GLfloat hold;
+
+float capePoints[ 50 ][ 50 ] [ 3 ];
+float xRotation = 80;
+float yRotation = 0;
+float zRotation = 0;
+
+void Man::initCape()
+{
+   for(int x=0;x<50; x++)
+   {
+      for(int y=0;y<50;y++)
+      {
+         capePoints[x][y][0] = (x/60.0f)-1.5f;
+         capePoints[x][y][1] = (y/40.0f)-1.5f;
+         capePoints[x][y][2] = sin((((x/2.0f)*25.0f)/360.0f)*3.141592654*2.0f)/15.0f;
+      }
+   }
+}
+
+
+void Man::drawCape()
+{
+   glPushMatrix();
+
+   glColor3f(1,0,0);
+   //placement de la cape
+   glTranslatef(1.2f,-0.4f,1.05f);
+   glRotatef(xRotation,1.0f,0.0f,0.0f);
+   glRotatef(yRotation, 0.0f, 1.0f, 0.0f);
+   glRotatef(zRotation, 0.0f, 0.0f, 1.0f);
+
+   //init du tableau des points de la cape
+
+   //glBindTexture(GL_TEXTURE_2D, texture[0]);       // Select Our Texture
+   glBegin(GL_QUADS);
+   for(int x = 0; x < 49; x++ )                // Loop Through The X Plane (44 Points)
+   {
+      for(int y = 0; y < 49; y++ )            // Loop Through The Y Plane (44 Points)
+      {
+         // float_x = float(x)/14.0f;       // Create A Floating Point X Value
+         // float_y = float(y)/14.0f;       // Create A Floating Point Y Value
+         // float_xb = float(x+1)/14.0f;        // Create A Floating Point Y Value+0.0227f
+         // float_yb = float(y+1)/14.0f;        // Create A Floating Point Y Value+0.0227fi
+
+         //  glTexCoord2f( float_x, float_y);    // First Texture Coordinate (Bottom Left)
+         glVertex3f( capePoints[x][y][0], capePoints[x][y][1], capePoints[x][y][2] );
+         //   glTexCoord2f( float_x, float_yb );  // Second Texture Coordinate (Top Left)
+         glVertex3f( capePoints[x][y+1][0], capePoints[x][y+1][1], capePoints[x][y+1][2] );
+
+         //  glTexCoord2f( float_xb, float_yb ); // Third Texture Coordinate (Top Right)
+         glVertex3f( capePoints[x+1][y+1][0], capePoints[x+1][y+1][1], capePoints[x+1][y+1][2] );
+
+         //  glTexCoord2f( float_xb, float_y );  // Fourth Texture Coordinate (Bottom Right)
+         glVertex3f( capePoints[x+1][y][0], capePoints[x+1][y][1], capePoints[x+1][y][2] );
+      }
+   }
+   glEnd();
    glPopMatrix();
 }
 
@@ -388,61 +454,118 @@ void Man::walk()
 
 
    if (AnimWalk == 1) {
-   if (reverseAnimWalk == false) 
+      if( leftKnee == 0 ) {
+         cptWalk++;
+      }
+      if (cptWalk == 6) {
+         AnimWalk = 2;
+      }
+      if (reverseAnimWalk == false) 
+      {
+         if (leftKnee < 15) {
+            leftKnee+=0.5;
+            leftPelvis+=0.5;
+            rightKnee-=0.5;
+            rightPelvis-=0.5;
+            leftElbow+=0.4;
+            rightElbow+=0.4;
+         } else {
+            reverseAnimWalk = true;
+         }
+      } else {
+         if (leftKnee > -10) {
+            leftKnee-=0.5;
+            leftPelvis-=0.5;
+            rightKnee+=0.5;
+            rightPelvis+=0.5;
+            leftElbow-=0.4;
+            rightElbow-=0.4;
+         } else {
+            reverseAnimWalk = false;
+         }
+      }
+   }
+
+   if (AnimWalk == 2) {
+      // On remonte au point de départ
+      if (leftShoulder2 < 0) {
+         leftShoulder2 += 1;
+         rightShoulder2 -= 1;
+      }
+      if (leftElbow2 < 0) {
+         leftElbow2 += 1;
+         rightElbow2 -= 1;
+      } else {
+         AnimWalk = 3;
+      }
+   }
+}
+
+void Man::capeWave()
+{
+   //on ralenti le movement
+   if( wiggle_count == 2 )
    {
-      if (leftKnee < 15) {
-         leftKnee+=0.5;
-         leftPelvis+=0.5;
-         rightKnee-=0.5;
-         rightPelvis-=0.5;
-         leftElbow+=0.4;
-         rightElbow+=0.4;
-      } else {
-         reverseAnimWalk = true;
+      for( int y = 0; y < 49; y++ )
+      {
+         //on garde le 1er point sur la gauche (1)
+         hold=capePoints[0][y][2];
+         for( int x = 0; x < 49; x++)
+         {
+            // on decale d'un cran
+            capePoints[x][y][2] = capePoints[x+1][y][2];
+         }
+         //on le met dans le point à droite (2)
+         capePoints[49][y][2]=hold;
       }
-   } else {
-      if (leftKnee > -10) {
-         leftKnee-=0.5;
-         leftPelvis-=0.5;
-         rightKnee+=0.5;
-         rightPelvis+=0.5;
-         leftElbow-=0.4;
-         rightElbow-=0.4;
-      } else {
-         reverseAnimWalk = false;
-      }
+      wiggle_count = 0;
    }
-   }
+   wiggle_count++;
+   // on peut utiliser ces rotations pour faire graviter des trucs
+   //xRotation+=0.3f;
+   //yRotation+=0.2f;
+   //zRotation+=0.4f;
 }
 
 void Man::animate()
 {
-  //  //on traite le nouveau mouvement
-  if( Man::currentMove == Man::EVENT_APPLAUSE )
-  {
-    applause();
-  }
-  else if ( Man::currentMove == Man::EVENT_WALK )
-  {
-    walk();
-  }
-  
+   //la cape bouge tout le temps
+   drawCape();
+   capeWave();
+   //on traite le nouveau mouvement
+   if( Man::currentMove == Man::EVENT_APPLAUSE )
+   {
+      applause();
+   }
+   else if ( Man::currentMove == Man::EVENT_WALK )
+   {
+      walk();
+   }
+
 }
 
 bool Man::isAnimationEnded()
 {
-  if( Man::currentMove == Man::EVENT_APPLAUSE )
-  {
-    return ( AnimApplause == 8 ? true : false );
-  }
-  else if ( Man::currentMove == Man::EVENT_WALK )
-  {
-    return ( AnimWalk == 2 ? true : false );
-  }
-  else
-  {
-    return true;
-  }
+   if( Man::currentMove == Man::EVENT_APPLAUSE )
+   {
+      return ( AnimApplause == 8 ? true : false );
+   }
+   else if ( Man::currentMove == Man::EVENT_WALK )
+   {
+      return ( AnimWalk == 3 ? true : false );
+   }
+   else
+   {
+      return true;
+   }
 }
 
+
+void Man::resetAnim() {
+   AnimWalk = 0;
+   AnimApplause = 1;
+   CptApplause = 0;
+   CptWait = 0;
+   cptWalk = 0;
+}
 
