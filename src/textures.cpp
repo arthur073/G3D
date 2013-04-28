@@ -100,6 +100,7 @@ void Textures::drawPlane(float s)
 	glEnd();
 		
 	glPopMatrix();
+
 }
 
 /*void Textures::setFiltering()

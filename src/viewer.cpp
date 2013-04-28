@@ -42,12 +42,11 @@ void Viewer::init()
    //=== INIT SCENE: add everything you want in your scene to the renderableList
    //    (just an instance of Cube in this example)
 
-   Textures *tex = new Textures();
-   renderableList.push_back(tex);
-   
    Man *man = new Man();
    renderableList.push_back(man);
 
+   //Textures *tex = new Textures();
+   //renderableList.push_back(tex);
 }
 
 

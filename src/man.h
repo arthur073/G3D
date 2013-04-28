@@ -27,6 +27,7 @@ class Man : public Renderable
       void initCape();
       void drawCape();
       void drawBall();
+      void drawFog();
       void solidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks);
       void solidDisk(GLfloat base1, GLfloat base2, GLfloat thickness, GLint slices, GLint stacks);
 

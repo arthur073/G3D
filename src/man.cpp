@@ -105,6 +105,8 @@ void Man::drawImmediate()
    // balle
    drawBall();
 
+   //fog
+   //drawFog();
 
    glColor3f(1,1,1);
 
@@ -363,6 +365,23 @@ void Man::drawBall()
    glutSolidSphere(0.3, 30, 30);
    glDisable(GL_BLEND);
    glPopMatrix();
+}
+
+void Man::drawFog()
+{
+  GLuint fogMode[] = { GL_EXP, GL_EXP2, GL_LINEAR };
+  GLuint fogFilter = 0;
+  GLfloat fogColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
+  glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+
+  glFogi(GL_FOG_MODE, fogMode[fogFilter]);
+  glFogfv(GL_FOG_COLOR, fogColor);
+  glFogf(GL_FOG_DENSITY, 0.15f);
+  glHint(GL_FOG_HINT, GL_DONT_CARE);
+  glFogf(GL_FOG_START, 1.0f);
+  glFogf(GL_FOG_END, 5.0f);
+  glEnable(GL_FOG);
+
 }
 
 void Man::applause()
