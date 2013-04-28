@@ -28,7 +28,7 @@ void Textures::init()
 
 void Textures::draw()
 {
-  init();
+  //init();
 	drawGrassPlane(10.0);
 }
 
