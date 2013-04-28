@@ -4,8 +4,6 @@
 #include "man.h"
 #include "textures.h"
 
-int lastPressed = 0;
-
 Viewer::Viewer() {
    init();
 }
@@ -77,47 +75,7 @@ void Viewer::animate()
 
 void Viewer::keyPressEvent(QKeyEvent *e)
 {
-  if ( lastPressed == Qt::Key_F1 )
-    {
-      Man::currentMove = Man::EVENT_WALK;
-      if( Man::isAnimationEnded() )
-      {
-         if (Man::currentMove != Man::EVENT_WALK) {
-            // départ d'une animation
-          //  Man::resetAnim();
-         }
-         lastPressed = 0;
-      }
-    }
-    else if( lastPressed == Qt::Key_F2 )
-    {
-      animate();
-      updateGL();
-      if( Man::isAnimationEnded() )
-      {
-         if (Man::currentMove != Man::EVENT_APPLAUSE) {
-            // départ d'une animation
-          //  Man::resetAnim();
-         }
-         Man::currentMove = Man::EVENT_APPLAUSE;
-         lastPressed = 0;
-      }
-    }
-    else if( lastPressed == Qt::Key_F3 )
-    {
-      animate();
-      updateGL();
-      if( Man::isAnimationEnded() )
-      {
-         if (Man::currentMove != Man::EVENT_SPELL) {
-            // départ d'une animation
-           // Man::resetAnim();
-         }
-         Man::currentMove = Man::EVENT_SPELL;
-         lastPressed = 0;
-      }
-    }
-   // Get event modifiers key
+    // Get event modifiers key
    const Qt::KeyboardModifiers modifiers = e->modifiers();
 
    if ((e->key()==Qt::Key_W) && (modifiers==Qt::NoButton)) {
@@ -137,26 +95,33 @@ void Viewer::keyPressEvent(QKeyEvent *e)
          glDisable(GL_LIGHTING);
       updateGL();
    // Walk animation
-   } else if (e->key()==Qt::Key_F1) {
-      lastPressed = e->key();
-   // Applause animation
-   } else if (e->key()==Qt::Key_F2) {
-      lastPressed = e->key();
-   // Spell animation
-   } else if (e->key()==Qt::Key_F3) {
-      lastPressed = e->key();
+  } else if (e->key()==Qt::Key_F1) {
+        if( Man::isAnimationEnded() )
+        {
+          Man::currentMove = Man::EVENT_WALK;
+          Man::resetAnim();
+        }
+        animate();
+        updateGL();
+  } else if (e->key()==Qt::Key_F2) {
+        if( Man::isAnimationEnded() )
+        {
+          Man::currentMove = Man::EVENT_APPLAUSE;
+          Man::resetAnim();
+        }
+        animate();
+        updateGL();
+  } else if (e->key()==Qt::Key_F3) {
+        if( Man::isAnimationEnded() )
+        {
+          Man::currentMove = Man::EVENT_SPELL;
+          Man::resetAnim();
+        }
+        animate();
+        updateGL();
    } else {
       // if the event is not handled here, process it as default
       QGLViewer::keyPressEvent(e);
-   }
-
-   if( lastPressed != 0 )
-   {
-      animate();
-      updateGL();
-      //decommenter pr mouvement auto, mais se fait une seule fois
-      //et on peut plus zoomer ni rien
-      //keyPressEvent(e);
    }
 }
 
