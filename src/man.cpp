@@ -40,6 +40,7 @@ bool reverseAnimWalk = false;
 const string Man::EVENT_APPLAUSE = "applause";
 const string Man::EVENT_WALK = "walk";
 const string Man::EVENT_SPELL = "spell";
+const string Man::EVENT_DISAPPEAR = "disappear";
 
 string Man::currentMove = "";
 
@@ -47,6 +48,7 @@ string Man::currentMove = "";
 GLint AnimApplause = 1;
 GLint AnimWalk = 0;
 GLint AnimSpell = 0;
+GLint AnimDisappear = 0;
 GLint CptApplause = 0;
 GLint CptWait = 0;
 GLint cptWalk = 0;
@@ -106,7 +108,7 @@ void Man::drawImmediate()
    drawBall();
 
    //fog
-   //drawFog();
+   drawFog();
 
    glColor3f(1,1,1);
 
@@ -355,16 +357,17 @@ void Man::drawBall()
    glPopMatrix();
 }
 
+float fogDensity = 0.0f;
+
 void Man::drawFog()
 {
   GLuint fogMode[] = { GL_EXP, GL_EXP2, GL_LINEAR };
-  GLuint fogFilter = 0;
   GLfloat fogColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
   glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
-  glFogi(GL_FOG_MODE, fogMode[fogFilter]);
+  glFogi(GL_FOG_MODE, GL_EXP);
   glFogfv(GL_FOG_COLOR, fogColor);
-  glFogf(GL_FOG_DENSITY, 0.15f);
+  glFogf(GL_FOG_DENSITY, fogDensity);
   glHint(GL_FOG_HINT, GL_DONT_CARE);
   glFogf(GL_FOG_START, 1.0f);
   glFogf(GL_FOG_END, 5.0f);
@@ -635,6 +638,26 @@ void Man::spell()
   }
 }
 
+void Man::disappear()
+{
+  if( AnimDisappear == 0 ) {
+    if( fogDensity < 1.0f ) {
+      fogDensity += 0.005f;
+    } else {
+      AnimDisappear = 1;
+    }
+  } else if( AnimDisappear == 1 ) {
+    //faire disparaitre le bonhomme
+    AnimDisappear = 2;
+  } else if( AnimDisappear == 2 ) {
+    if( fogDensity > 0 ) {
+      fogDensity -= 0.005f;
+    } else {
+      AnimDisappear = 3;
+    }
+  }
+}
+
 
 
 void Man::capeWave()
@@ -687,6 +710,10 @@ void Man::animate()
    {
       spell();
    }
+   else if( Man::currentMove == Man::EVENT_DISAPPEAR )
+   {
+     disappear();
+   }
 }
 
 bool Man::isAnimationEnded()
@@ -703,7 +730,10 @@ bool Man::isAnimationEnded()
    {
       return ( AnimSpell == 3 ? true : false );
    }
-
+   else if ( Man::currentMove == Man::EVENT_DISAPPEAR )
+   {
+     return ( AnimDisappear == 3 ? true : false );
+   }
    else
    {
       return true;
@@ -715,6 +745,7 @@ void Man::resetAnim() {
    AnimWalk = 0;
    AnimApplause = 1;
    AnimSpell = 0;
+   AnimDisappear = 0;
    CptApplause = 0;
    CptWait = 0;
    cptWalk = 0;
