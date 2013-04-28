@@ -32,6 +32,9 @@ GLfloat ballSize = 0;
 GLfloat alphaBall = 0;
 GLfloat Light0Power = 1.0;
 GLfloat Light1Power = 0.0;
+
+float translateCompletZ = 0.0f;
+
 int horizontalVector = 1;
 
 bool reverseAnim = false;
@@ -65,7 +68,7 @@ void Man::draw()
 void Man::drawImmediate()
 {
    glEnable(GL_LIGHT1);
-
+   glTranslatef(0,0,translateCompletZ);
 
    // legs
    drawLeg(leftPelvis, leftKnee, true);
@@ -648,6 +651,7 @@ void Man::disappear()
     }
   } else if( AnimDisappear == 1 ) {
     //faire disparaitre le bonhomme
+    translateCompletZ = 500;
     AnimDisappear = 2;
   } else if( AnimDisappear == 2 ) {
     if( fogDensity > 0 ) {
@@ -696,6 +700,10 @@ void Man::animate()
 
    // ne marche pas
    //glutPostRedisplay();
+   
+   //on fait reapparaitre le bonhomme au cas ou
+   if( Man::currentMove != Man::EVENT_DISAPPEAR )
+     translateCompletZ = 0;
 
    //on traite le nouveau mouvement
    if( Man::currentMove == Man::EVENT_APPLAUSE )
