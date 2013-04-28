@@ -11,7 +11,6 @@ Textures::Textures()
 {
 	// make sure this flag is enable to use textures!
 	glEnable(GL_TEXTURE_2D);
-	filteringMode = 0;
 }
 
 
@@ -29,6 +28,7 @@ void Textures::init()
 
 void Textures::draw()
 {
+  init();
 	drawGrassPlane(10.0);
 }
 
@@ -73,25 +73,21 @@ void Textures::drawGrassPlane(float s)
 {
 	// use the grass texture
 	glBindTexture(GL_TEXTURE_2D, textures[TEX_GRASS]);
-	// use filtering option (toogled with 'f' key)
-	setFiltering();
-
 	// draw a plane
 	drawPlane(s);
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
 void Textures::drawPlane(float s)
 {
-	glNormal3f(0.0, 0.0, 1.0);
 	float height = 0;
 
 	glPushMatrix();
-	glTranslatef(-s / 2.0, -s / 2.0, 0.0);
-	
-	// Qu 1: the all texture is directly mapped to the quad angles
-	//       => glTexCoord2f(0,1),(1,1),(1,0),(0,0)
 
+	glNormal3f(1.0, 0.0, 1.0);
+	glTranslatef(-s / 2.0, -s / 2.0, -1.35);
+	
 	glBegin(GL_QUADS);	
 	glTexCoord2f(0, 0);
 	glVertex3f(0, 0, height);
@@ -106,23 +102,7 @@ void Textures::drawPlane(float s)
 	glPopMatrix();
 }
 
-
-
-///////////////////////////////////////////////////////////////////////////////
-// CONTROLS 
-
-// filteringMode (for GL_TEXTURE_MIN_FILTER) can be 
-//	GL_NEAREST, GL_LINEAR, 
-//	GL_NEAREST_MIPMAP_NEAREST,GL_LINEAR_MIPMAP_NEAREST, 
-//	GL_NEAREST_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR
-
-void Textures::toogleFiltering()
-{
-	filteringMode = ++filteringMode % 6;
-	cout << "filteringMode = " << filteringMode << endl;
-}
-
-void Textures::setFiltering()
+/*void Textures::setFiltering()
 {
 	switch (filteringMode) {
 	case 0:
@@ -138,50 +118,5 @@ void Textures::setFiltering()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		break;
 	}
-}
-
-void Textures::setFilteringMipmap()
-{
-	// MIN FILTER
-	switch (filteringMode) {
-	case 0:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		break;
-	case 1:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		break;
-	case 2:
-		// nearest ds les levels, puis nearest
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-		break;
-	case 3:
-		// interp ds les levels, puis nearest
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-		break;
-	case 4:
-		// nearest ds les levels, puis interpolation
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-		break;
-	case 5:
-		// interp ds les levels, puis interpolation
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		break;
-	default:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	}
-
-	// MAG FILTER
-	switch (filteringMode) {
-	case 0:
-	case 2:
-	case 4:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		break;
-	case 1:
-	case 3:
-	case 5:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		break;
-	}
-}
+}*/
 

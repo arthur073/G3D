@@ -28,7 +28,7 @@ void Viewer::init()
 
    toogleWireframe = false;  // filled faces
    toogleLight = true;       // light on
-   help();                   // display help
+   //help();                   // display help
 
    if (toogleLight == true)
       glEnable(GL_LIGHTING);
@@ -42,11 +42,12 @@ void Viewer::init()
    //=== INIT SCENE: add everything you want in your scene to the renderableList
    //    (just an instance of Cube in this example)
 
-   //	Textures *tex = new Textures();
-   //	tex->init();
-   //  renderableList.push_back(tex);
+   Textures *tex = new Textures();
+   renderableList.push_back(tex);
+   
    Man *man = new Man();
    renderableList.push_back(man);
+
 }
 
 
