@@ -35,6 +35,7 @@ private:
 	
 	// draw a quad centered in the XY place (z=0), of size s
 	void drawPlane(float s = 10.0);
+  void drawSkyDome();
 	
 
 // METHODS TO IMPLEMENT / MODIFY IN THE PRATICAL SESSION

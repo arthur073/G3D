@@ -29,6 +29,7 @@ void Textures::init()
 void Textures::draw()
 {
 	drawGrassPlane(10.0);
+ // drawSkyDome();
 }
 
 
@@ -84,7 +85,7 @@ void Textures::drawPlane(float s)
 
 	glPushMatrix();
 
-	glNormal3f(1.0, 0.0, 1.0);
+	glNormal3f(0.0f, 0.0f, 1.0f);
 	glTranslatef(-s / 2.0, -s / 2.0, -1.35);
 	
 	glBegin(GL_QUADS);	
@@ -100,6 +101,30 @@ void Textures::drawPlane(float s)
 		
 	glPopMatrix();
 
+}
+
+void Textures::drawSkyDome()
+{
+  int radius = 200;
+  double phi, theta;
+  double x, y, z;
+  double PI = 3.141592;
+  glPushMatrix();
+  for (phi = 0.0; phi <= 80.0; phi += 10.0) {
+        glBegin(GL_TRIANGLE_STRIP);
+            for (theta = -180.0; theta <= 180.0; theta += 10.0) {
+                x = radius * sin(PI/180 * theta) * cos(PI/180 * phi);
+                y = radius * cos(PI/180 * theta) * cos(PI/180 * phi);
+                z = radius * sin(PI/180 * phi);
+                glVertex3d (x,y,z);
+                x = radius * sin(PI/180 * theta) * cos(PI/180 * (phi + 10.0));
+                y = radius * cos(PI/180 * theta) * cos(PI/180 * (phi + 10.0));
+                z = radius * sin(PI/180 * (phi + 10.0));
+                glVertex3d (x,y,z);
+           }
+         glEnd();
+  }
+  glPopMatrix();
 }
 
 /*void Textures::setFiltering()

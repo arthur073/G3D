@@ -104,6 +104,7 @@ void Viewer::keyPressEvent(QKeyEvent *e)
         }
         animate();
         updateGL();
+        
   } else if (e->key()==Qt::Key_F2) {
         if( Man::isAnimationEnded() )
         {
