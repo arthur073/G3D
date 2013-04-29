@@ -6,7 +6,6 @@ using namespace std;
 #include "textures.h"
 
 
-
 Textures::Textures()
 {
 	// make sure this flag is enable to use textures!
@@ -23,13 +22,15 @@ void Textures::init()
 {
 	// load and init all the textures used in this practical
 	initGrassPlane();
+	initTree();
 }
 
 
 void Textures::draw()
 {
-  //init();
 	drawGrassPlane(10.0);
+   drawTree();
+   glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -69,13 +70,30 @@ void Textures::initGrassPlane()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
+
+void Textures::initTree() 
+{
+	// load the tree texture
+	loadTexture(TEX_TREE, "images/tree.tiff");
+
+
+	// set its parameters
+	glBindTexture(GL_TEXTURE_2D, textures[TEX_TREE]);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+}
+
 void Textures::drawGrassPlane(float s)
 {
 	// use the grass texture
 	glBindTexture(GL_TEXTURE_2D, textures[TEX_GRASS]);
 	// draw a plane
 	drawPlane(s);
-  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -120,4 +138,33 @@ void Textures::drawPlane(float s)
 		break;
 	}
 }*/
+
+
+void Textures::drawTree() {
+
+	glBindTexture(GL_TEXTURE_2D, textures[TEX_TREE]);
+	glPushMatrix();
+
+
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+   //glColor4f(1,1,1,1);
+
+	glNormal3f(1.0, 0.0, 1.0);
+   glRotatef(90, 1, 0, 0);
+	
+	glBegin(GL_QUADS);	
+	glTexCoord2f(0, 0);
+	glVertex3f(2, 0, 0);
+	glTexCoord2f(1, 0);
+	glVertex3f(2, 0, 1);
+	glTexCoord2f(1, 1);
+	glVertex3f(2, 3, 1);
+	glTexCoord2f(0, 1);
+	glVertex3f(2, 3, 0);
+	glEnd();
+
+   glDisable(GL_BLEND);
+	glPopMatrix();
+}
 

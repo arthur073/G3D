@@ -23,7 +23,8 @@ public:
 private:
 	// id of all textures used in this practical
 	enum TextureId {
-		TEX_GRASS
+		TEX_GRASS,
+		TEX_TREE
 	};
 
 	// association bewteen a TextureId and its OpenGL texture id
@@ -41,7 +42,9 @@ private:
 
 	// init and draw a plane with the grass texture
 	void initGrassPlane();
+	void initTree();
 	void drawGrassPlane(float size);
+   void drawTree();
 
 };
 
