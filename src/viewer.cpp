@@ -42,6 +42,7 @@ void Viewer::init()
 
    Textures *tex = new Textures();
    renderableList.push_back(tex);
+   (*renderableList.begin())->init();
    Man *man = new Man();
    renderableList.push_back(man);
 
