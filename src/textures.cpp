@@ -28,9 +28,11 @@ void Textures::init()
 
 void Textures::draw()
 {
-	drawGrassPlane(10.0);
-  drawSkyBox(0,0,0,150,150,150);
+  glDisable(GL_LIGHTING);
+	drawGrassPlane(400.0);
+  drawSkyBox(0,0,0,400,400,400);
   drawTree(4, 2, 2, 4);
+  glEnable(GL_LIGHTING);
   glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -124,22 +126,20 @@ void Textures::drawPlane(float s)
 
 void Textures::initSkyBox()
 {
-	int i;
-
-	//loadTexture(TEX_SKY_BACK, "images/ZN.bmp"); // pas ok
+	loadTexture(TEX_SKY_RIGHT, "images/XN.bmp"); //ok
+	loadTexture(TEX_SKY_BACK, "images/ZN.bmp"); // ok
 	loadTexture(TEX_SKY_FRONT, "images/ZP.bmp"); //ok
-	loadTexture(TEX_SKY_BOTTOM, "images/YN.bmp"); //ok
-	loadTexture(TEX_SKY_TOP, "images/YP.bmp"); //ok
-	loadTexture(TEX_SKY_LEFT, "images/XN.bmp"); // pas ok
-	loadTexture(TEX_SKY_RIGHT, "images/grass.tiff"); // pas ok
+  loadTexture(TEX_SKY_BOTTOM, "images/YN.bmp"); //ok
+  loadTexture(TEX_SKY_TOP, "images/YP.bmp"); //ok
+  loadTexture(TEX_SKY_LEFT, "images/XP.bmp"); //ok
 
   Textures::TextureId texturesMap[6] = {TEX_SKY_BACK,TEX_SKY_FRONT,TEX_SKY_BOTTOM, TEX_SKY_TOP, TEX_SKY_RIGHT, TEX_SKY_LEFT};
 	
-  for(i=0;i<6;i++)
+  for(int i=0;i<6;i++)
 	{
 		glBindTexture(GL_TEXTURE_2D, texturesMap[i]);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
@@ -170,10 +170,10 @@ void Textures::drawSkyBox(float x, float y, float z, float width, float height, 
 
   glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BACK]);
   glBegin(GL_TRIANGLE_STRIP);				
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x,y,z);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x,y,	z + length);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y,z);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y,z + length); 	
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x,y,z);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x,y,	z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y,z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y,z + length); 	
   glEnd();
 
   glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_FRONT]);
@@ -187,18 +187,18 @@ void Textures::drawSkyBox(float x, float y, float z, float width, float height, 
 
   glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_LEFT]);
   glBegin(GL_TRIANGLE_STRIP);				
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z + length);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z + length); 
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y, z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y + height, z + length); 
   glEnd();
 
   glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_RIGHT]);
   glBegin(GL_TRIANGLE_STRIP);				
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z + length);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z + length); 
+  glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y, z);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y + height, z + length); 
   glEnd();
 
  }
