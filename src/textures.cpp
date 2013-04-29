@@ -126,12 +126,12 @@ void Textures::initSkyBox()
 {
 	int i;
 
-	loadTexture(TEX_SKY_BACK, "images/XN.bmp");
-	loadTexture(TEX_SKY_FRONT, "images/ZP.bmp");
-	loadTexture(TEX_SKY_BOTTOM, "images/YN.bmp");
-	loadTexture(TEX_SKY_TOP, "images/YP.bmp");
-	loadTexture(TEX_SKY_LEFT, "images/grass.tiff");
-	loadTexture(TEX_SKY_RIGHT, "images/grass.tiff");
+	//loadTexture(TEX_SKY_BACK, "images/ZN.bmp"); // pas ok
+	loadTexture(TEX_SKY_FRONT, "images/ZP.bmp"); //ok
+	loadTexture(TEX_SKY_BOTTOM, "images/YN.bmp"); //ok
+	loadTexture(TEX_SKY_TOP, "images/YP.bmp"); //ok
+	loadTexture(TEX_SKY_LEFT, "images/XN.bmp"); // pas ok
+	loadTexture(TEX_SKY_RIGHT, "images/grass.tiff"); // pas ok
 
   Textures::TextureId texturesMap[6] = {TEX_SKY_BACK,TEX_SKY_FRONT,TEX_SKY_BOTTOM, TEX_SKY_TOP, TEX_SKY_RIGHT, TEX_SKY_LEFT};
 	
@@ -168,7 +168,7 @@ void Textures::drawSkyBox(float x, float y, float z, float width, float height, 
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z + length); 	
   glEnd();
 
-  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BOTTOM]);
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BACK]);
   glBegin(GL_TRIANGLE_STRIP);				
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(x,y,z);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(x,y,	z + length);
