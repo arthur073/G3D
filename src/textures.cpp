@@ -66,8 +66,8 @@ void Textures::initGrassPlane()
 	// set its parameters
 	glBindTexture(GL_TEXTURE_2D, textures[TEX_GRASS]);
 	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -112,11 +112,11 @@ void Textures::drawPlane(float s)
 	glBegin(GL_QUADS);	
 	glTexCoord2f(0, 0);
 	glVertex3f(0, 0, height);
-	glTexCoord2f(1, 0);
+	glTexCoord2f(100, 0);
 	glVertex3f(s, 0, height);
-	glTexCoord2f(1, 1);
+	glTexCoord2f(100, 100);
 	glVertex3f(s, s, height);
-	glTexCoord2f(0, 1);
+	glTexCoord2f(0, 100);
 	glVertex3f(0, s, height);
 	glEnd();
 		
