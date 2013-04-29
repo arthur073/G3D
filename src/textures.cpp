@@ -29,7 +29,7 @@ void Textures::init()
 void Textures::draw()
 {
 	drawGrassPlane(10.0);
-   drawTree();
+   drawTree(4, 2, 2, 4);
    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -164,31 +164,34 @@ void Textures::drawSkyDome()
 }*/
 
 
-void Textures::drawTree() {
+
+
+
+void Textures::drawTree(GLfloat posX, GLfloat posY, GLfloat width, GLfloat height) {
 
 	glBindTexture(GL_TEXTURE_2D, textures[TEX_TREE]);
 	glPushMatrix();
-
-
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-   //glColor4f(1,1,1,1);
 
-	glNormal3f(1.0, 0.0, 1.0);
+	glNormal3f(0, 0.0, 1.0);
+	glTranslatef(posX, posY, -1.35);
    glRotatef(90, 1, 0, 0);
 	
-	glBegin(GL_QUADS);	
+   glBegin(GL_QUADS);	
 	glTexCoord2f(0, 0);
 	glVertex3f(2, 0, 0);
 	glTexCoord2f(1, 0);
-	glVertex3f(2, 0, 1);
+	glVertex3f(2, 0, width);
 	glTexCoord2f(1, 1);
-	glVertex3f(2, 3, 1);
+	glVertex3f(2, height, width);
 	glTexCoord2f(0, 1);
-	glVertex3f(2, 3, 0);
+	glVertex3f(2, height, 0);
 	glEnd();
 
    glDisable(GL_BLEND);
 	glPopMatrix();
+
+
 }
 

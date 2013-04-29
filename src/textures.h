@@ -39,14 +39,11 @@ private:
   void drawSkyDome();
 	
 
-// METHODS TO IMPLEMENT / MODIFY IN THE PRATICAL SESSION
-
 	// init and draw a plane with the grass texture
 	void initGrassPlane();
 	void initTree();
 	void drawGrassPlane(float size);
-   void drawTree();
-
+   void drawTree(GLfloat posX, GLfloat posY, GLfloat width, GLfloat height);
 };
 
 #endif
