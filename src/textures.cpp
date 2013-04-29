@@ -5,7 +5,7 @@ using namespace std;
 #include <QGLViewer/qglviewer.h>
 #include "textures.h"
 
-
+string TexIDSkyBox[6];
 Textures::Textures()
 {
 	// make sure this flag is enable to use textures!
@@ -20,17 +20,18 @@ Textures::~Textures()
 
 void Textures::init()
 {
-	// load and init all the textures used in this practical
-	initGrassPlane();
+  initGrassPlane();
 	initTree();
+ // initSkyBox();
 }
 
 
 void Textures::draw()
 {
 	drawGrassPlane(10.0);
-   drawTree();
-   glBindTexture(GL_TEXTURE_2D, 0);
+  drawTree();
+ // drawSkyBox();
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -121,28 +122,94 @@ void Textures::drawPlane(float s)
 
 }
 
-void Textures::drawSkyDome()
+void Textures::initSkyBox()
 {
-  int radius = 200;
-  double phi, theta;
-  double x, y, z;
-  double PI = 3.141592;
+	int i;
+
+	loadTexture(TEX_SKY_BACK, "images/grass.tiff");
+	loadTexture(TEX_SKY_FRONT, "images/grass.tiff");
+	loadTexture(TEX_SKY_BOTTOM, "images/grass.tiff");
+	loadTexture(TEX_SKY_TOP, "images/grass.tiff");
+	loadTexture(TEX_SKY_LEFT, "images/grass.tiff");
+	loadTexture(TEX_SKY_RIGHT, "images/grass.tiff");
+
+  Textures::TextureId texturesMap[6] = {TEX_SKY_BACK,TEX_SKY_FRONT,TEX_SKY_BOTTOM, TEX_SKY_TOP, TEX_SKY_LEFT, TEX_SKY_RIGHT};
+	
+  for(i=0;i<6;i++)
+	{
+		glBindTexture(GL_TEXTURE_2D, texturesMap[i]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	}
+}
+
+void Textures::drawSkyBox()
+{
   glPushMatrix();
-  for (phi = 0.0; phi <= 80.0; phi += 10.0) {
-        glBegin(GL_TRIANGLE_STRIP);
-            for (theta = -180.0; theta <= 180.0; theta += 10.0) {
-                x = radius * sin(PI/180 * theta) * cos(PI/180 * phi);
-                y = radius * cos(PI/180 * theta) * cos(PI/180 * phi);
-                z = radius * sin(PI/180 * phi);
-                glVertex3d (x,y,z);
-                x = radius * sin(PI/180 * theta) * cos(PI/180 * (phi + 10.0));
-                y = radius * cos(PI/180 * theta) * cos(PI/180 * (phi + 10.0));
-                z = radius * sin(PI/180 * (phi + 10.0));
-                glVertex3d (x,y,z);
-           }
-         glEnd();
-  }
-  glPopMatrix();
+  glDisable(GL_DEPTH_TEST);
+  glDepthMask(GL_FALSE);
+    glScalef(150,150,150);
+   // Render the front quad
+    glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BACK]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0, 0); glVertex3f(  0.5f, -0.5f, -0.5f );
+        glTexCoord2f(1, 0); glVertex3f( -0.5f, -0.5f, -0.5f );
+        glTexCoord2f(1, 1); glVertex3f( -0.5f,  0.5f, -0.5f );
+        glTexCoord2f(0, 1); glVertex3f(  0.5f,  0.5f, -0.5f );
+    glEnd();
+ 
+    // Render the left quad
+    glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_FRONT]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0, 0); glVertex3f(  0.5f, -0.5f,  0.5f );
+        glTexCoord2f(1, 0); glVertex3f(  0.5f, -0.5f, -0.5f );
+        glTexCoord2f(1, 1); glVertex3f(  0.5f,  0.5f, -0.5f );
+        glTexCoord2f(0, 1); glVertex3f(  0.5f,  0.5f,  0.5f );
+    glEnd();
+ 
+    // Render the back quad
+    glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BOTTOM]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0, 0); glVertex3f( -0.5f, -0.5f,  0.5f );
+        glTexCoord2f(1, 0); glVertex3f(  0.5f, -0.5f,  0.5f );
+        glTexCoord2f(1, 1); glVertex3f(  0.5f,  0.5f,  0.5f );
+        glTexCoord2f(0, 1); glVertex3f( -0.5f,  0.5f,  0.5f );
+ 
+    glEnd();
+ 
+    // Render the right quad
+    glBindTexture(GL_TEXTURE_2D,  textures[TEX_SKY_TOP]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0, 0); glVertex3f( -0.5f, -0.5f, -0.5f );
+        glTexCoord2f(1, 0); glVertex3f( -0.5f, -0.5f,  0.5f );
+        glTexCoord2f(1, 1); glVertex3f( -0.5f,  0.5f,  0.5f );
+        glTexCoord2f(0, 1); glVertex3f( -0.5f,  0.5f, -0.5f );
+    glEnd();
+ 
+    // Render the top quad
+    glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_LEFT]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0, 1); glVertex3f( -0.5f,  0.5f, -0.5f );
+        glTexCoord2f(0, 0); glVertex3f( -0.5f,  0.5f,  0.5f );
+        glTexCoord2f(1, 0); glVertex3f(  0.5f,  0.5f,  0.5f );
+        glTexCoord2f(1, 1); glVertex3f(  0.5f,  0.5f, -0.5f );
+    glEnd();
+ 
+    // Render the bottom quad
+    glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_RIGHT]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0, 0); glVertex3f( -0.5f, -0.5f, -0.5f );
+        glTexCoord2f(0, 1); glVertex3f( -0.5f, -0.5f,  0.5f );
+        glTexCoord2f(1, 1); glVertex3f(  0.5f, -0.5f,  0.5f );
+        glTexCoord2f(1, 0); glVertex3f(  0.5f, -0.5f, -0.5f );
+    glEnd();
+
+  glDepthMask(GL_TRUE);
+  glEnable(GL_DEPTH_TEST);
+
 }
 
 /*void Textures::setFiltering()
