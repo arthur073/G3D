@@ -126,10 +126,10 @@ void Textures::initSkyBox()
 {
 	int i;
 
-	loadTexture(TEX_SKY_BACK, "images/grass.tiff");
-	loadTexture(TEX_SKY_FRONT, "images/grass.tiff");
-	loadTexture(TEX_SKY_BOTTOM, "images/grass.tiff");
-	loadTexture(TEX_SKY_TOP, "images/grass.tiff");
+	loadTexture(TEX_SKY_BACK, "images/XN.bmp");
+	loadTexture(TEX_SKY_FRONT, "images/ZP.bmp");
+	loadTexture(TEX_SKY_BOTTOM, "images/YN.bmp");
+	loadTexture(TEX_SKY_TOP, "images/YP.bmp");
 	loadTexture(TEX_SKY_LEFT, "images/grass.tiff");
 	loadTexture(TEX_SKY_RIGHT, "images/grass.tiff");
 
@@ -152,7 +152,7 @@ void Textures::drawSkyBox(float x, float y, float z, float width, float height, 
   y = y - height / 2;
   z = z - length / 2;
 
-  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BACK]);
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BOTTOM]);
   glBegin(GL_TRIANGLE_STRIP);					
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(x,y,z);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y,z);
@@ -160,7 +160,7 @@ void Textures::drawSkyBox(float x, float y, float z, float width, float height, 
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z); 
   glEnd();
 
-  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_FRONT]);
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_TOP]);
   glBegin(GL_TRIANGLE_STRIP);			
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(x,y,z + length);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(x,y + height, z + length);
@@ -176,7 +176,7 @@ void Textures::drawSkyBox(float x, float y, float z, float width, float height, 
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y,z + length); 	
   glEnd();
 
-  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_TOP]);
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_FRONT]);
   glBegin(GL_TRIANGLE_STRIP);					
     glTexCoord2f(1.0f, 1.0f); glVertex3f(x,y + height,z);
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
