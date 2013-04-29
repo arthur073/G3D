@@ -10,8 +10,9 @@ class Man : public Renderable
 {
    public:
       static const string EVENT_APPLAUSE;
-      static const string EVENT_WALK; 
-      static const string EVENT_SPELL; 
+      static const string EVENT_WALK;
+      static const string EVENT_SPELL;
+      static const string EVENT_DISAPPEAR;
       static string currentMove;
       void draw();
       void animate();
@@ -27,6 +28,7 @@ class Man : public Renderable
       void initCape();
       void drawCape();
       void drawBall();
+      void drawFog();
       void solidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks);
       void solidDisk(GLfloat base1, GLfloat base2, GLfloat thickness, GLint slices, GLint stacks);
 
@@ -34,6 +36,7 @@ class Man : public Renderable
       void applause();
       void walk();
       void spell();
+      void disappear();
       void capeWave();
       void solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks);
 };

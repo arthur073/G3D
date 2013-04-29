@@ -4,8 +4,6 @@
 #include "man.h"
 #include "textures.h"
 
-int lastPressed = 0;
-
 Viewer::Viewer() {
    init();
 }
@@ -28,7 +26,7 @@ void Viewer::init()
 
    toogleWireframe = false;  // filled faces
    toogleLight = true;       // light on
-   help();                   // display help
+   //help();                   // display help
 
    if (toogleLight == true)
       glEnable(GL_LIGHTING);
@@ -42,11 +40,11 @@ void Viewer::init()
    //=== INIT SCENE: add everything you want in your scene to the renderableList
    //    (just an instance of Cube in this example)
 
-   //	Textures *tex = new Textures();
-   //	tex->init();
-   //  renderableList.push_back(tex);
+   Textures *tex = new Textures();
+   renderableList.push_back(tex);
    Man *man = new Man();
    renderableList.push_back(man);
+
 }
 
 
@@ -77,7 +75,7 @@ void Viewer::animate()
 
 void Viewer::keyPressEvent(QKeyEvent *e)
 {
-   // Get event modifiers key
+    // Get event modifiers key
    const Qt::KeyboardModifiers modifiers = e->modifiers();
 
    if ((e->key()==Qt::Key_W) && (modifiers==Qt::NoButton)) {
@@ -96,62 +94,44 @@ void Viewer::keyPressEvent(QKeyEvent *e)
       else
          glDisable(GL_LIGHTING);
       updateGL();
-
-      // Walk animation
-   } else if (e->key()==Qt::Key_F1 || lastPressed==Qt::Key_F1) {
-      if( e->key() == Qt::Key_F1 )  
-         lastPressed = e->key();
-      if( Man::isAnimationEnded() )
-      {
-         if (Man::currentMove != Man::EVENT_WALK) {
-            // départ d'une animation
-            Man::resetAnim();
-         }
-         lastPressed = e->key();
-         Man::currentMove = Man::EVENT_WALK;
-      }
-      animate();
-      updateGL();
-
-      // Applause animation
-   } else if (e->key()==Qt::Key_F2 || lastPressed==Qt::Key_F2) {
-      if( e->key() == Qt::Key_F2 )  
-         lastPressed = e->key();
-      if( Man::isAnimationEnded() )
-      {
-         if (Man::currentMove != Man::EVENT_APPLAUSE) {
-            // départ d'une animation
-            Man::resetAnim();
-         }
-         lastPressed = e->key();
-         Man::currentMove = Man::EVENT_APPLAUSE;
-      }
-      animate();
-      updateGL();
-
-   // Spell animation
-   } else if (e->key()==Qt::Key_F3 || lastPressed==Qt::Key_F3) {
-      if( e->key() == Qt::Key_F3 )  
-         lastPressed = e->key();
-      if( Man::isAnimationEnded() )
-      {
-         if (Man::currentMove != Man::EVENT_SPELL) {
-            // départ d'une animation
-            Man::resetAnim();
-         }
-         lastPressed = e->key();
-         Man::currentMove = Man::EVENT_SPELL;
-      }
-      animate();
-      updateGL();
-      
-
+   // Walk animation
+  } else if (e->key()==Qt::Key_F1) {
+        if( Man::isAnimationEnded() )
+        {
+          Man::currentMove = Man::EVENT_WALK;
+          Man::resetAnim();
+        }
+        animate();
+        updateGL();
+  } else if (e->key()==Qt::Key_F2) {
+        if( Man::isAnimationEnded() )
+        {
+          Man::currentMove = Man::EVENT_APPLAUSE;
+          Man::resetAnim();
+        }
+        animate();
+        updateGL();
+  } else if (e->key()==Qt::Key_F3) {
+        if( Man::isAnimationEnded() )
+        {
+          Man::currentMove = Man::EVENT_SPELL;
+          Man::resetAnim();
+        }
+        animate();
+        updateGL();
+  } else if (e->key()==Qt::Key_F4) {
+        if( Man::isAnimationEnded() )
+        {
+          Man::currentMove = Man::EVENT_DISAPPEAR;
+          Man::resetAnim();
+        }
+        animate();
+        updateGL();
    } else {
       // if the event is not handled here, process it as default
       QGLViewer::keyPressEvent(e);
    }
 }
-
 
 QString Viewer::helpString() const
 {

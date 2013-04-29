@@ -32,6 +32,9 @@ GLfloat ballSize = 0;
 GLfloat alphaBall = 0;
 GLfloat Light0Power = 1.0;
 GLfloat Light1Power = 0.0;
+
+float translateCompletZ = 0.0f;
+
 int horizontalVector = 1;
 
 bool reverseAnim = false;
@@ -40,6 +43,7 @@ bool reverseAnimWalk = false;
 const string Man::EVENT_APPLAUSE = "applause";
 const string Man::EVENT_WALK = "walk";
 const string Man::EVENT_SPELL = "spell";
+const string Man::EVENT_DISAPPEAR = "disappear";
 
 string Man::currentMove = "";
 
@@ -47,6 +51,7 @@ string Man::currentMove = "";
 GLint AnimApplause = 1;
 GLint AnimWalk = 0;
 GLint AnimSpell = 0;
+GLint AnimDisappear = 0;
 GLint CptApplause = 0;
 GLint CptWait = 0;
 GLint cptWalk = 0;
@@ -63,7 +68,7 @@ void Man::draw()
 void Man::drawImmediate()
 {
    glEnable(GL_LIGHT1);
-
+   glTranslatef(0,0,translateCompletZ);
 
    // legs
    drawLeg(leftPelvis, leftKnee, true);
@@ -105,6 +110,8 @@ void Man::drawImmediate()
    // balle
    drawBall();
 
+   //fog
+   drawFog();
 
    glColor3f(1,1,1);
 
@@ -309,26 +316,14 @@ void Man::drawCape()
 
    //init du tableau des points de la cape
 
-   //glBindTexture(GL_TEXTURE_2D, texture[0]);       // Select Our Texture
    glBegin(GL_QUADS);
-   for(int x = 0; x < 49; x++ )                // Loop Through The X Plane (44 Points)
+   for(int x = 0; x < 49; x++ )
    {
-      for(int y = 0; y < 49; y++ )            // Loop Through The Y Plane (44 Points)
+      for(int y = 0; y < 49; y++ )
       {
-         // float_x = float(x)/14.0f;       // Create A Floating Point X Value
-         // float_y = float(y)/14.0f;       // Create A Floating Point Y Value
-         // float_xb = float(x+1)/14.0f;        // Create A Floating Point Y Value+0.0227f
-         // float_yb = float(y+1)/14.0f;        // Create A Floating Point Y Value+0.0227fi
-
-         //  glTexCoord2f( float_x, float_y);    // First Texture Coordinate (Bottom Left)
          glVertex3f( capePoints[x][y][0], capePoints[x][y][1], capePoints[x][y][2] );
-         //   glTexCoord2f( float_x, float_yb );  // Second Texture Coordinate (Top Left)
          glVertex3f( capePoints[x][y+1][0], capePoints[x][y+1][1], capePoints[x][y+1][2] );
-
-         //  glTexCoord2f( float_xb, float_yb ); // Third Texture Coordinate (Top Right)
          glVertex3f( capePoints[x+1][y+1][0], capePoints[x+1][y+1][1], capePoints[x+1][y+1][2] );
-
-         //  glTexCoord2f( float_xb, float_y );  // Fourth Texture Coordinate (Bottom Right)
          glVertex3f( capePoints[x+1][y][0], capePoints[x+1][y][1], capePoints[x+1][y][2] );
       }
    }
@@ -363,6 +358,24 @@ void Man::drawBall()
    glutSolidSphere(0.3, 30, 30);
    glDisable(GL_BLEND);
    glPopMatrix();
+}
+
+float fogDensity = 0.0f;
+
+void Man::drawFog()
+{
+  GLuint fogMode[] = { GL_EXP, GL_EXP2, GL_LINEAR };
+  GLfloat fogColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
+  glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+
+  glFogi(GL_FOG_MODE, GL_EXP);
+  glFogfv(GL_FOG_COLOR, fogColor);
+  glFogf(GL_FOG_DENSITY, fogDensity);
+  glHint(GL_FOG_HINT, GL_DONT_CARE);
+  glFogf(GL_FOG_START, 1.0f);
+  glFogf(GL_FOG_END, 5.0f);
+  glEnable(GL_FOG);
+
 }
 
 void Man::applause()
@@ -675,6 +688,27 @@ void Man::spell()
 
 }
 
+void Man::disappear()
+{
+  if( AnimDisappear == 0 ) {
+    if( fogDensity < 1.0f ) {
+      fogDensity += 0.005f;
+    } else {
+      AnimDisappear = 1;
+    }
+  } else if( AnimDisappear == 1 ) {
+    //faire disparaitre le bonhomme
+    translateCompletZ = 500;
+    AnimDisappear = 2;
+  } else if( AnimDisappear == 2 ) {
+    if( fogDensity > 0 ) {
+      fogDensity -= 0.005f;
+    } else {
+      AnimDisappear = 3;
+    }
+  }
+}
+
 
 
 void Man::capeWave()
@@ -706,8 +740,18 @@ void Man::capeWave()
 void Man::animate()
 {
    //la cape bouge tout le temps
-   drawCape();
+   //on deplace les points de la cape
    capeWave();
+   //on redessine la cape
+   drawCape();
+
+   // ne marche pas
+   //glutPostRedisplay();
+   
+   //on fait reapparaitre le bonhomme au cas ou
+   if( Man::currentMove != Man::EVENT_DISAPPEAR )
+     translateCompletZ = 0;
+
    //on traite le nouveau mouvement
    if( Man::currentMove == Man::EVENT_APPLAUSE )
    {
@@ -720,6 +764,10 @@ void Man::animate()
    else if ( Man::currentMove == Man::EVENT_SPELL )
    {
       spell();
+   }
+   else if( Man::currentMove == Man::EVENT_DISAPPEAR )
+   {
+     disappear();
    }
 }
 
@@ -737,7 +785,10 @@ bool Man::isAnimationEnded()
    {
       return ( AnimSpell == 13 ? true : false );
    }
-
+   else if ( Man::currentMove == Man::EVENT_DISAPPEAR )
+   {
+     return ( AnimDisappear == 3 ? true : false );
+   }
    else
    {
       return true;
@@ -749,6 +800,7 @@ void Man::resetAnim() {
    AnimWalk = 0;
    AnimApplause = 1;
    AnimSpell = 0;
+   AnimDisappear = 0;
    CptApplause = 0;
    CptWait = 0;
    cptWalk = 0;

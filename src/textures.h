@@ -43,12 +43,6 @@ private:
 	void initGrassPlane();
 	void drawGrassPlane(float size);
 
-public:
-	// activated by the 'f' key
-	GLint filteringMode;
-	void toogleFiltering();
-	void setFiltering();
-	void setFilteringMipmap();
 };
 
 #endif
