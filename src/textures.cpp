@@ -133,7 +133,7 @@ void Textures::initSkyBox()
 	loadTexture(TEX_SKY_LEFT, "images/grass.tiff");
 	loadTexture(TEX_SKY_RIGHT, "images/grass.tiff");
 
-  Textures::TextureId texturesMap[6] = {TEX_SKY_BACK,TEX_SKY_FRONT,TEX_SKY_BOTTOM, TEX_SKY_TOP, TEX_SKY_LEFT, TEX_SKY_RIGHT};
+  Textures::TextureId texturesMap[6] = {TEX_SKY_BACK,TEX_SKY_FRONT,TEX_SKY_BOTTOM, TEX_SKY_TOP, TEX_SKY_RIGHT, TEX_SKY_LEFT};
 	
   for(i=0;i<6;i++)
 	{
@@ -152,9 +152,6 @@ void Textures::drawSkyBox(float x, float y, float z, float width, float height, 
   y = y - height / 2;
   z = z - length / 2;
 
-  glDisable(GL_DEPTH_TEST);
-  glDepthMask(GL_FALSE);
-
   glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BACK]);
   glBegin(GL_TRIANGLE_STRIP);					
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(x,y,z);
@@ -163,7 +160,7 @@ void Textures::drawSkyBox(float x, float y, float z, float width, float height, 
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z); 
   glEnd();
 
-  /*glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_FRONT]);
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_FRONT]);
   glBegin(GL_TRIANGLE_STRIP);			
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(x,y,z + length);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(x,y + height, z + length);
@@ -188,7 +185,7 @@ void Textures::drawSkyBox(float x, float y, float z, float width, float height, 
   glEnd();
 
 
-  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_RIGHT]);
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_LEFT]);
   glBegin(GL_TRIANGLE_STRIP);				
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z);
@@ -196,16 +193,14 @@ void Textures::drawSkyBox(float x, float y, float z, float width, float height, 
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z + length); 
   glEnd();
 
-  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_LEFT]);
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_RIGHT]);
   glBegin(GL_TRIANGLE_STRIP);				
     glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z + length);
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z + length); 
-  glEnd();*/
+  glEnd();
 
-  glDepthMask(GL_TRUE);
-  glEnable(GL_DEPTH_TEST);
  }
 
 /*void Textures::setFiltering()
