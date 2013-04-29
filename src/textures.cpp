@@ -22,16 +22,16 @@ void Textures::init()
 {
   initGrassPlane();
 	initTree();
- // initSkyBox();
+  initSkyBox();
 }
 
 
 void Textures::draw()
 {
 	drawGrassPlane(10.0);
- // drawSkyBox();
-   drawTree(4, 2, 2, 4);
-   glBindTexture(GL_TEXTURE_2D, 0);
+  drawSkyBox(0,0,0,150,150,150);
+  drawTree(4, 2, 2, 4);
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -146,71 +146,67 @@ void Textures::initSkyBox()
 	}
 }
 
-void Textures::drawSkyBox()
+void Textures::drawSkyBox(float x, float y, float z, float width, float height, float length)
 {
-  glPushMatrix();
+  x = x - width  / 2;  // Calcul l'emplacement d'un coin du cube
+  y = y - height / 2;
+  z = z - length / 2;
+
   glDisable(GL_DEPTH_TEST);
   glDepthMask(GL_FALSE);
-    glScalef(150,150,150);
-   // Render the front quad
-    glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BACK]);
-    glBegin(GL_QUADS);
-        glTexCoord2f(0, 0); glVertex3f(  0.5f, -0.5f, -0.5f );
-        glTexCoord2f(1, 0); glVertex3f( -0.5f, -0.5f, -0.5f );
-        glTexCoord2f(1, 1); glVertex3f( -0.5f,  0.5f, -0.5f );
-        glTexCoord2f(0, 1); glVertex3f(  0.5f,  0.5f, -0.5f );
-    glEnd();
- 
-    // Render the left quad
-    glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_FRONT]);
-    glBegin(GL_QUADS);
-        glTexCoord2f(0, 0); glVertex3f(  0.5f, -0.5f,  0.5f );
-        glTexCoord2f(1, 0); glVertex3f(  0.5f, -0.5f, -0.5f );
-        glTexCoord2f(1, 1); glVertex3f(  0.5f,  0.5f, -0.5f );
-        glTexCoord2f(0, 1); glVertex3f(  0.5f,  0.5f,  0.5f );
-    glEnd();
- 
-    // Render the back quad
-    glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BOTTOM]);
-    glBegin(GL_QUADS);
-        glTexCoord2f(0, 0); glVertex3f( -0.5f, -0.5f,  0.5f );
-        glTexCoord2f(1, 0); glVertex3f(  0.5f, -0.5f,  0.5f );
-        glTexCoord2f(1, 1); glVertex3f(  0.5f,  0.5f,  0.5f );
-        glTexCoord2f(0, 1); glVertex3f( -0.5f,  0.5f,  0.5f );
- 
-    glEnd();
- 
-    // Render the right quad
-    glBindTexture(GL_TEXTURE_2D,  textures[TEX_SKY_TOP]);
-    glBegin(GL_QUADS);
-        glTexCoord2f(0, 0); glVertex3f( -0.5f, -0.5f, -0.5f );
-        glTexCoord2f(1, 0); glVertex3f( -0.5f, -0.5f,  0.5f );
-        glTexCoord2f(1, 1); glVertex3f( -0.5f,  0.5f,  0.5f );
-        glTexCoord2f(0, 1); glVertex3f( -0.5f,  0.5f, -0.5f );
-    glEnd();
- 
-    // Render the top quad
-    glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_LEFT]);
-    glBegin(GL_QUADS);
-        glTexCoord2f(0, 1); glVertex3f( -0.5f,  0.5f, -0.5f );
-        glTexCoord2f(0, 0); glVertex3f( -0.5f,  0.5f,  0.5f );
-        glTexCoord2f(1, 0); glVertex3f(  0.5f,  0.5f,  0.5f );
-        glTexCoord2f(1, 1); glVertex3f(  0.5f,  0.5f, -0.5f );
-    glEnd();
- 
-    // Render the bottom quad
-    glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_RIGHT]);
-    glBegin(GL_QUADS);
-        glTexCoord2f(0, 0); glVertex3f( -0.5f, -0.5f, -0.5f );
-        glTexCoord2f(0, 1); glVertex3f( -0.5f, -0.5f,  0.5f );
-        glTexCoord2f(1, 1); glVertex3f(  0.5f, -0.5f,  0.5f );
-        glTexCoord2f(1, 0); glVertex3f(  0.5f, -0.5f, -0.5f );
-    glEnd();
+
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BACK]);
+  glBegin(GL_TRIANGLE_STRIP);					
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x,y,z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y,z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x,y + height, z);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z); 
+  glEnd();
+
+  /*glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_FRONT]);
+  glBegin(GL_TRIANGLE_STRIP);			
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x,y,z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x,y + height, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z + length); 	
+  glEnd();
+
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BOTTOM]);
+  glBegin(GL_TRIANGLE_STRIP);				
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x,y,z);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x,y,	z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y,z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y,z + length); 	
+  glEnd();
+
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_TOP]);
+  glBegin(GL_TRIANGLE_STRIP);					
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(x,y + height,z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y + height, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y + height, z + length); 	
+  glEnd();
+
+
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_RIGHT]);
+  glBegin(GL_TRIANGLE_STRIP);				
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z + length); 
+  glEnd();
+
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_LEFT]);
+  glBegin(GL_TRIANGLE_STRIP);				
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z + length); 
+  glEnd();*/
 
   glDepthMask(GL_TRUE);
   glEnable(GL_DEPTH_TEST);
-
-}
+ }
 
 /*void Textures::setFiltering()
 {
