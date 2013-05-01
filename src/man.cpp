@@ -102,10 +102,6 @@ void Man::drawImmediate()
    solidDisk(0.7, 0.7, 0.01, 30, 30);
    glPopMatrix();
 
-   //cape
-   initCape();
-   drawCape();
-
 
    // balle
    drawBall();
@@ -281,57 +277,6 @@ void Man::drawLeg(GLfloat pelvis, GLfloat knee, bool left) {
    glPopMatrix();
 }
 
-int wiggle_count = 0;
-GLfloat hold;
-
-float capePoints[ 50 ][ 50 ] [ 3 ];
-float xRotation = 80;
-float yRotation = 0;
-float zRotation = 0;
-
-void Man::initCape()
-{
-   for(int x=0;x<50; x++)
-   {
-      for(int y=0;y<50;y++)
-      {
-         capePoints[x][y][0] = (x/60.0f)-1.5f;
-         capePoints[x][y][1] = (y/40.0f)-1.5f;
-         capePoints[x][y][2] = sin((((x/2.0f)*25.0f)/360.0f)*3.141592654*2.0f)/15.0f;
-      }
-   }
-}
-
-
-void Man::drawCape()
-{
-   glPushMatrix();
-
-   glColor3f(1,0,0);
-   //placement de la cape
-   glTranslatef(1.2f,-0.4f,1.05f);
-   glRotatef(xRotation,1.0f,0.0f,0.0f);
-   glRotatef(yRotation, 0.0f, 1.0f, 0.0f);
-   glRotatef(zRotation, 0.0f, 0.0f, 1.0f);
-
-   //init du tableau des points de la cape
-
-   glBegin(GL_QUADS);
-   for(int x = 0; x < 49; x++ )
-   {
-      for(int y = 0; y < 49; y++ )
-      {
-         glVertex3f( capePoints[x][y][0], capePoints[x][y][1], capePoints[x][y][2] );
-         glVertex3f( capePoints[x][y+1][0], capePoints[x][y+1][1], capePoints[x][y+1][2] );
-         glVertex3f( capePoints[x+1][y+1][0], capePoints[x+1][y+1][1], capePoints[x+1][y+1][2] );
-         glVertex3f( capePoints[x+1][y][0], capePoints[x+1][y][1], capePoints[x+1][y][2] );
-      }
-   }
-   glEnd();
-   glPopMatrix();
-}
-
-
 void Man::drawBall() 
 {
 
@@ -364,7 +309,6 @@ float fogDensity = 0.0f;
 
 void Man::drawFog()
 {
-  GLuint fogMode[] = { GL_EXP, GL_EXP2, GL_LINEAR };
   GLfloat fogColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
   glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
@@ -711,43 +655,10 @@ void Man::disappear()
 
 
 
-void Man::capeWave()
-{
-   //on ralenti le movement
-   if( wiggle_count == 2 )
-   {
-      for( int y = 0; y < 49; y++ )
-      {
-         //on garde le 1er point sur la gauche (1)
-         hold=capePoints[0][y][2];
-         for( int x = 0; x < 49; x++)
-         {
-            // on decale d'un cran
-            capePoints[x][y][2] = capePoints[x+1][y][2];
-         }
-         //on le met dans le point à droite (2)
-         capePoints[49][y][2]=hold;
-      }
-      wiggle_count = 0;
-   }
-   wiggle_count++;
-   // on peut utiliser ces rotations pour faire graviter des trucs
-   //xRotation+=0.3f;
-   //yRotation+=0.2f;
-   //zRotation+=0.4f;
-}
 
 void Man::animate()
 {
-   //la cape bouge tout le temps
-   //on deplace les points de la cape
-   capeWave();
-   //on redessine la cape
-   drawCape();
 
-   // ne marche pas
-   //glutPostRedisplay();
-   
    //on fait reapparaitre le bonhomme au cas ou
    if( Man::currentMove != Man::EVENT_DISAPPEAR )
      translateCompletZ = 0;

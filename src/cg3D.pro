@@ -3,8 +3,8 @@ TARGET   = cg3D
 CONFIG  += qt opengl glut warn_on release thread openmp debug
 QT *= xml opengl 
 
-HEADERS  = viewer.h renderable.h man.h textures.h 
-SOURCES  = viewer.cpp main.cpp man.cpp textures.cpp
+HEADERS  = viewer.h renderable.h man.h textures.h spring.h particle.h dynamicSystem.h 
+SOURCES  = viewer.cpp main.cpp man.cpp textures.cpp spring.cpp particle.cpp dynamicSystem.cpp
 
 
 # Qt 2.3 users must edit config.pri
