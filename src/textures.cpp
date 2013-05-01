@@ -5,7 +5,7 @@ using namespace std;
 #include <QGLViewer/qglviewer.h>
 #include "textures.h"
 
-
+string TexIDSkyBox[6];
 Textures::Textures()
 {
 	// make sure this flag is enable to use textures!
@@ -20,17 +20,20 @@ Textures::~Textures()
 
 void Textures::init()
 {
-	// load and init all the textures used in this practical
-	initGrassPlane();
+  initGrassPlane();
 	initTree();
+  initSkyBox();
 }
 
 
 void Textures::draw()
 {
-	drawGrassPlane(10.0);
-   drawTree(4, 2, 2, 4);
-   glBindTexture(GL_TEXTURE_2D, 0);
+  glDisable(GL_LIGHTING);
+	drawGrassPlane(400.0);
+  drawSkyBox(0,0,0,400,400,400);
+  drawTree(4, 2, 2, 4);
+  glEnable(GL_LIGHTING);
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -63,8 +66,8 @@ void Textures::initGrassPlane()
 	// set its parameters
 	glBindTexture(GL_TEXTURE_2D, textures[TEX_GRASS]);
 	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -109,11 +112,11 @@ void Textures::drawPlane(float s)
 	glBegin(GL_QUADS);	
 	glTexCoord2f(0, 0);
 	glVertex3f(0, 0, height);
-	glTexCoord2f(1, 0);
+	glTexCoord2f(100, 0);
 	glVertex3f(s, 0, height);
-	glTexCoord2f(1, 1);
+	glTexCoord2f(100, 100);
 	glVertex3f(s, s, height);
-	glTexCoord2f(0, 1);
+	glTexCoord2f(0, 100);
 	glVertex3f(0, s, height);
 	glEnd();
 		
@@ -121,29 +124,84 @@ void Textures::drawPlane(float s)
 
 }
 
-void Textures::drawSkyDome()
+void Textures::initSkyBox()
 {
-  int radius = 200;
-  double phi, theta;
-  double x, y, z;
-  double PI = 3.141592;
-  glPushMatrix();
-  for (phi = 0.0; phi <= 80.0; phi += 10.0) {
-        glBegin(GL_TRIANGLE_STRIP);
-            for (theta = -180.0; theta <= 180.0; theta += 10.0) {
-                x = radius * sin(PI/180 * theta) * cos(PI/180 * phi);
-                y = radius * cos(PI/180 * theta) * cos(PI/180 * phi);
-                z = radius * sin(PI/180 * phi);
-                glVertex3d (x,y,z);
-                x = radius * sin(PI/180 * theta) * cos(PI/180 * (phi + 10.0));
-                y = radius * cos(PI/180 * theta) * cos(PI/180 * (phi + 10.0));
-                z = radius * sin(PI/180 * (phi + 10.0));
-                glVertex3d (x,y,z);
-           }
-         glEnd();
-  }
-  glPopMatrix();
+	loadTexture(TEX_SKY_RIGHT, "images/XN.bmp"); //ok
+	loadTexture(TEX_SKY_BACK, "images/ZN.bmp"); // ok
+	loadTexture(TEX_SKY_FRONT, "images/ZP.bmp"); //ok
+  loadTexture(TEX_SKY_BOTTOM, "images/YN.bmp"); //ok
+  loadTexture(TEX_SKY_TOP, "images/YP.bmp"); //ok
+  loadTexture(TEX_SKY_LEFT, "images/XP.bmp"); //ok
+
+  Textures::TextureId texturesMap[6] = {TEX_SKY_BACK,TEX_SKY_FRONT,TEX_SKY_BOTTOM, TEX_SKY_TOP, TEX_SKY_RIGHT, TEX_SKY_LEFT};
+	
+  for(int i=0;i<6;i++)
+	{
+		glBindTexture(GL_TEXTURE_2D, texturesMap[i]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	}
 }
+
+void Textures::drawSkyBox(float x, float y, float z, float width, float height, float length)
+{
+  x = x - width  / 2;  // Calcul l'emplacement d'un coin du cube
+  y = y - height / 2;
+  z = z - length / 2;
+
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BOTTOM]);
+  glBegin(GL_TRIANGLE_STRIP);					
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x,y,z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y,z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x,y + height, z);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z); 
+  glEnd();
+
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_TOP]);
+  glBegin(GL_TRIANGLE_STRIP);			
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x,y,z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x,y + height, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z + length); 	
+  glEnd();
+
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_BACK]);
+  glBegin(GL_TRIANGLE_STRIP);				
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x,y,z);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x,y,	z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y,z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y,z + length); 	
+  glEnd();
+
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_FRONT]);
+  glBegin(GL_TRIANGLE_STRIP);					
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(x,y + height,z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y + height, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y + height, z + length); 	
+  glEnd();
+
+
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_LEFT]);
+  glBegin(GL_TRIANGLE_STRIP);				
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y, z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y + height, z + length); 
+  glEnd();
+
+  glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY_RIGHT]);
+  glBegin(GL_TRIANGLE_STRIP);				
+  glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y, z);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y + height, z + length); 
+  glEnd();
+
+ }
 
 /*void Textures::setFiltering()
 {

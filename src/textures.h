@@ -24,7 +24,13 @@ private:
 	// id of all textures used in this practical
 	enum TextureId {
 		TEX_GRASS,
-		TEX_TREE
+		TEX_TREE,
+    TEX_SKY_BACK,
+    TEX_SKY_FRONT,
+    TEX_SKY_BOTTOM,
+    TEX_SKY_TOP,
+    TEX_SKY_LEFT,
+    TEX_SKY_RIGHT
 	};
 
 	// association bewteen a TextureId and its OpenGL texture id
@@ -36,12 +42,13 @@ private:
 	
 	// draw a quad centered in the XY place (z=0), of size s
 	void drawPlane(float s = 10.0);
-  void drawSkyDome();
+  void drawSkyBox(float x, float y, float z, float width, float height, float length);
 	
 
 	// init and draw a plane with the grass texture
 	void initGrassPlane();
 	void initTree();
+  void initSkyBox();
 	void drawGrassPlane(float size);
    void drawTree(GLfloat posX, GLfloat posY, GLfloat width, GLfloat height);
 };
