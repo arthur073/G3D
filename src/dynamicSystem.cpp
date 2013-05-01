@@ -121,7 +121,7 @@ void DynamicSystem::createSystemScene()
       // le reste de la chaîne
       for (int j = 1; j < partNumber; j++) {
          pos += Vec(0.0, distanceBetweenParticles, 0.0);
-         particles.push_back(new Particle(pos, vel1, particleMass, particleRadius));
+         particles.push_back(new Particle(pos, vel1, particleMass, 0));
       }
    }
 
