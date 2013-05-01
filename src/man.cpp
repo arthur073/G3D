@@ -722,3 +722,9 @@ void Man::resetAnim() {
    ballSize = 0;
    alphaBall = 0;
 }
+
+
+float Man::getBelly()
+{
+   return belly;
+}

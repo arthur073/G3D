@@ -13,9 +13,10 @@ private:
 	double mass; 
 	double invMass; // the inverse of the mass is also stored
 	double radius;
+	bool top;
 	
 public:
-	Particle(Vec pos, Vec vel, double m, double r);
+	Particle(Vec pos, Vec vel, double m, double r, bool top);
 	virtual ~Particle();
 	
 	const Vec & getPosition() const;
@@ -23,6 +24,7 @@ public:
 	double getMass() const;
 	double getInvMass() const;
 	double getRadius() const;
+   bool getTop();
 
 	void setPosition(const Vec &pos);
 	void setVelocity(const Vec &vel);

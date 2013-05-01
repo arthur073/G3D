@@ -4,6 +4,7 @@
 using namespace std;
 
 #include "dynamicSystem.h"
+#include "man.h"
 
 Vec backNormal = Vec(0.0, -1.0, 0.0);
 Vec backPosition = Vec(0.0, -0.5, 1.0);
@@ -116,12 +117,12 @@ void DynamicSystem::createSystemScene()
       
       Vec initPos = Vec(cos(degInRad)*radius , sin(degInRad)*radius, 0.9);
       Vec pos = initPos;
-      particles.push_back(new Particle(pos, Vec(), 0.0, particleRadius));
+      particles.push_back(new Particle(pos, Vec(), 0.0, particleRadius, true));
       
       // le reste de la chaîne
       for (int j = 1; j < partNumber; j++) {
          pos += Vec(0.0, distanceBetweenParticles, 0.0);
-         particles.push_back(new Particle(pos, vel1, particleMass, 0));
+         particles.push_back(new Particle(pos, vel1, particleMass, 0, false));
       }
    }
 
@@ -158,13 +159,47 @@ void DynamicSystem::draw()
    for (itS = springs.begin(); itS != springs.end(); ++itS) {
       (*itS)->draw();
    }
+}
 
+Vec updatePos(int i) 
+{
+   float belly = Man::getBelly();
+   const float DEG2RAD = 3.14159/180;
+   const float bodyRadius = 0.6;
+   float degInRad = (i*10- 160)*DEG2RAD;
+   float Z ;
+
+   //cout<<" i2 "<<i<<"  deg "<<degInRad<<"\n";
+
+   float pi = 3.141592;
+   float bellyRad = pi * Man::getBelly() / 180;
+   float R = 0.9;
+   float beta = (180 - belly) /2;
+
+   //float Y = cos(bellyRad+pi/2) * R ;//+ sin(degInRad)*bodyRadius;
+   float X = cos(degInRad)*bodyRadius;
+   float Y = sin(degInRad)*bodyRadius + cos(bellyRad+pi/2) * R;
+   Z = sin(bellyRad+pi/2) * R + belly*abs(7-i)/1000 - 0.01*belly;
+
+   return Vec(X, Y, Z);
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 void DynamicSystem::animate()
 {
+   //======== 0. Update top particles position
+
+   vector<Particle *>::iterator itPa;
+   int i =0;
+   for (itPa = particles.begin(); itPa != particles.end(); ++itPa) {
+      Particle *p = *itPa;
+      if (p->getTop()) {
+         p->setPosition(updatePos(i));
+         i++;
+      }
+   }
+
 
    //======== 1. Compute all forces
    // map to accumulate the forces to apply on each particle

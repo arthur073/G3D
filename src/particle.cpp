@@ -1,11 +1,12 @@
 #include <GL/glut.h>
 #include "particle.h"
 
-Particle::Particle(Vec pos, Vec vel, double m, double r)
+Particle::Particle(Vec pos, Vec vel, double m, double r, bool top)
 	: position(pos),
 	velocity(vel),
 	mass(m),
-	radius(r)
+	radius(r), 
+   top(top)
 {
 	invMass = (m > 0 ? 1 / m : 0.0);
 }
@@ -14,6 +15,10 @@ Particle::~Particle()
 {
 }
 
+bool Particle::getTop() 
+{
+	return top;
+}
 
 const Vec & Particle::getPosition() const
 {
@@ -65,7 +70,7 @@ void Particle::incrVelocity(const Vec &vel)
 void Particle::draw() const
 {
 	glPushMatrix();
-	glTranslatef(position.x, position.y, position.z);
+   glTranslatef(position.x, position.y, position.z);
    glColor4f(1,1,1,0);
 	glutSolidSphere(radius, 12, 12);
 	glPopMatrix();

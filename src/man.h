@@ -17,6 +17,7 @@ class Man : public Renderable
       void draw();
       void animate();
       static bool isAnimationEnded();
+      static float getBelly();
       static void resetAnim();
 
    private:

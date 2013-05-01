@@ -2,6 +2,7 @@ CAPE
 
 Gérer les collisions avec le bonhomme
 Trouver une couleur plus adaptée
+/!\ Faire en sorte que la cape soit accrochée sur le bonhomme même quand il bouge
 
 SKYBOX
 
@@ -10,4 +11,9 @@ faire en sorte que l'image ne soit pas applatie
 
 ANIMATIONS
 
-créer une animation avec vent (gravitée qui change)
+créer une animation avec vent (gravité qui change)
+
+
+TEXTURES
+
+mettre une texture sur le visage du bonhomme
