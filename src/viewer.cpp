@@ -46,6 +46,20 @@ void Viewer::init()
    renderableList.push_back(tex);
    (*(++renderableList.begin()))->init();
 
+   /* Additions for Lab Session 6 "Physicall Modeling" */
+	dyn = new DynamicSystem();
+	dyn->init();
+	renderableList.push_back(dyn);
+
+	// add a manipulatedFrame to move particle 0 with the mouse
+	//setManipulatedFrame(new qglviewer::ManipulatedFrame());
+	//manipulatedFrame()->setPosition(dyn->getFixedParticlePosition());
+
+	toogleGravity = true;
+	toogleViscosity = true;
+	toogleCollisions = true;
+
+
 }
 
 

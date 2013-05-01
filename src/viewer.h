@@ -15,6 +15,7 @@
 using namespace std;
 
 #include "renderable.h"
+#include "dynamicSystem.h"
 
 
 class Viewer : public QGLViewer
@@ -48,6 +49,14 @@ class Viewer : public QGLViewer
 		
 		/// Draw every objects of the scene
 		virtual QString helpString() const;
+
+/* Controls added for Lab Session 6 "Physicall Modeling" */
+		
+		bool toogleGravity;
+		bool toogleViscosity;
+		bool toogleCollisions;
+		DynamicSystem *dyn;	
+
 };
 
 #endif
