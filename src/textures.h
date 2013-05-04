@@ -4,6 +4,7 @@
 #include <map>
 using namespace std;
 #include <QImage>
+#include <GL/glut.h>
 
 #include "renderable.h"
 
