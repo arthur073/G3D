@@ -53,8 +53,8 @@ private:
 	void initHead();
   void initSkyBox();
 	void drawGrassPlane(float size);
-   void drawTree(GLfloat posX, GLfloat posY, GLfloat width, GLfloat height);
-   void drawHead();
+  void drawTree(GLfloat posX, GLfloat posY, GLfloat width, GLfloat height);
+  void drawHead();
 };
 
 #endif
