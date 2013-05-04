@@ -635,8 +635,8 @@ int cptTimer = 0;
 void Man::disappear()
 {
   if( AnimDisappear == 0 ) {
-    if( fogDensity < 0.10f ) {
-      fogDensity += 0.001f;
+    if( fogDensity < 0.300f ) {
+      fogDensity += 0.002f;
     } else {
       AnimDisappear = 1;
     }
@@ -645,9 +645,10 @@ void Man::disappear()
     //translateCompletZ = 1200;
     AnimDisappear = 2;
   } else if( AnimDisappear == 2 ) {
-    if( fogDensity > 0 ) {
-      fogDensity -= 0.001f;
+    if( fogDensity > 0.0f ) {
+      fogDensity -= 0.002f;
     } else {
+      fogDensity = 0;
       AnimDisappear = 3;
     }
   } else if( AnimDisappear == 3 ) {
