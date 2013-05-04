@@ -6,5 +6,19 @@ Gérer les collisions avec le bonhomme
 ANIMATIONS
 
 créer une animation avec vent (gravité qui change)
+terminer le lancer de la boule (s'arrête au milieu de la scène)
+
+TEXTURES
+
+La gueule du magicien reste toujours éclairée pareil et
+la tête n'est pas visible à travers la transparence de 
+la boule de l'animation 3
+
+MAGICIEN
+
+Il doit toujours tenir une boule de verre avec alpha blending (comme dans ton anim 3)
+Limite tu pourrais faire une baguette et la mettre au bout puis prendre la boule de 
+la baguette et l'utiliser dans l'anim 3 (puis tu fais une anim reverse pour qu'elle revienne)
+
 
 
