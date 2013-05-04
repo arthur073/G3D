@@ -7,9 +7,9 @@ using namespace std;
 #include "man.h"
 
 Vec backNormal = Vec(0.0, -1.0, 0.0);
-Vec backPosition = Vec(0.0, -0.5, 1.0);
+Vec backPosition = Vec(0.0, -0.51, 0);
 GLfloat backTop = 2.5;
-GLfloat backBottom = 2;
+GLfloat backBottom = 0.03;
 GLint chainNumber = 15;
 
 
@@ -174,7 +174,6 @@ Vec updatePos(int i)
    float pi = 3.141592;
    float bellyRad = pi * Man::getBelly() / 180;
    float R = 0.9;
-   float beta = (180 - belly) /2;
 
    //float Y = cos(bellyRad+pi/2) * R ;//+ sin(degInRad)*bodyRadius;
    float X = cos(degInRad)*bodyRadius;
@@ -265,7 +264,7 @@ void DynamicSystem::animate()
    if (handleCollisions) {
       for (itP = particles.begin(); itP != particles.end(); ++itP) {
          collisionParticleGround(*itP);
-         //collisionParticleBack(*itP);
+         collisionParticleBack(*itP);
       }	
    }
 }
@@ -305,9 +304,14 @@ void DynamicSystem::collisionParticleBack(Particle *p)
    if (penetration >= 0)
       return;
 
-   if (p->getPosition()[2] > backTop+1 || p->getPosition()[2] < backBottom-1) 
-      return;
+   
+   // if particle is not at back's height
+   //if (p->getPosition()[2] > backTop || p->getPosition()[2] < backBottom) 
+   //   return;
 
+   //if (p->getPosition()[2] < -0.8 && p->getPosition()[0] < 0.50) 
+   //   return;
+      //cout<<"position z"<<p->getPosition()[2]<<"\n";
 
    // penetration velocity
    double vPen = p->getVelocity() * backNormal;
