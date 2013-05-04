@@ -631,24 +631,30 @@ void Man::spell()
    }
 
 }
-
+int cptTimer = 0;
 void Man::disappear()
 {
   if( AnimDisappear == 0 ) {
-    if( fogDensity < 1.0f ) {
-      fogDensity += 0.005f;
+    if( fogDensity < 0.10f ) {
+      fogDensity += 0.001f;
     } else {
       AnimDisappear = 1;
     }
   } else if( AnimDisappear == 1 ) {
     //faire disparaitre le bonhomme
-    translateCompletZ = 500;
+    //translateCompletZ = 1200;
     AnimDisappear = 2;
   } else if( AnimDisappear == 2 ) {
     if( fogDensity > 0 ) {
-      fogDensity -= 0.005f;
+      fogDensity -= 0.001f;
     } else {
       AnimDisappear = 3;
+    }
+  } else if( AnimDisappear == 3 ) {
+    if( cptTimer > 150 ) {
+      AnimDisappear = 4;
+    } else {
+      cptTimer++;
     }
   }
 }
@@ -698,7 +704,7 @@ bool Man::isAnimationEnded()
    }
    else if ( Man::currentMove == Man::EVENT_DISAPPEAR )
    {
-     return ( AnimDisappear == 3 ? true : false );
+     return ( AnimDisappear == 4 ? true : false );
    }
    else
    {
