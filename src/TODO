@@ -1,24 +1,25 @@
-CAPE
 
-Gérer les collisions avec le bonhomme
-
-
-ANIMATIONS
+ANIMATIONS [SERA FAIT DEMAIN]
 
 créer une animation avec vent (gravité qui change)
 terminer le lancer de la boule (s'arrête au milieu de la scène)
 
-TEXTURES
+TEXTURES [BESOIN D'AIDE]
 
 La gueule du magicien reste toujours éclairée pareil et
+[Je ne sais pas comment appliquer l'ombre aux textures, à regarder]
 la tête n'est pas visible à travers la transparence de 
 la boule de l'animation 3
+[OK il faut dessiner la tête avant la boule. ]
 
-MAGICIEN
+
+MAGICIEN [PAS UTILE]
 
 Il doit toujours tenir une boule de verre avec alpha blending (comme dans ton anim 3)
 Limite tu pourrais faire une baguette et la mettre au bout puis prendre la boule de 
 la baguette et l'utiliser dans l'anim 3 (puis tu fais une anim reverse pour qu'elle revienne)
 
+[INUTILE : pas demandé dans le sujet, et très chiant à faire. Par contre je suis 
+pour faire un sorte que la boule de l'anim' 3 soit plus transparente.]
 
 
