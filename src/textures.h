@@ -23,7 +23,6 @@ public:
 
 	// id of all textures used in this practical
 	enum TextureId {
-		TEX_FACE,
 		TEX_GRASS,
 		TEX_TREE,
     TEX_SKY_BACK,
@@ -31,7 +30,8 @@ public:
     TEX_SKY_BOTTOM,
     TEX_SKY_TOP,
     TEX_SKY_LEFT,
-    TEX_SKY_RIGHT
+    TEX_SKY_RIGHT,
+		TEX_FACE
 	};
 
 	// association bewteen a TextureId and its OpenGL texture id

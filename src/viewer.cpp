@@ -33,7 +33,7 @@ void Viewer::init()
    else
       glDisable(GL_LIGHTING);
 
-   setSceneRadius(1000.0f);
+   setSceneRadius(300.0f);
    glClearColor(.7, .7, .7, .0);
 
 

@@ -31,9 +31,9 @@ void Textures::init()
 void Textures::draw()
 {
    glDisable(GL_LIGHTING);
-   drawGrassPlane(1000.0);
+   drawGrassPlane(300.0);
    drawHead();
-   drawSkyBox(0,0,0,1000,1000,1000);
+   drawSkyBox(0,0,0,300,300,300);
    //drawTree(4, 2, 2, 4);
    glEnable(GL_LIGHTING);
    glBindTexture(GL_TEXTURE_2D, 0);
