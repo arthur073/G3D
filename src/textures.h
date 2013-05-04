@@ -21,9 +21,9 @@ public:
 	void init();
 	void draw();
 
-private:
 	// id of all textures used in this practical
 	enum TextureId {
+		TEX_FACE,
 		TEX_GRASS,
 		TEX_TREE,
     TEX_SKY_BACK,
@@ -38,6 +38,7 @@ private:
 	// (generated with glGenTextures. cf the loadTexture method)
 	map<TextureId, GLuint> textures;
 
+private:
 	// load a single texture file to associate with a Textureid
 	void loadTexture(TextureId id, const char *filename);
 	
@@ -49,9 +50,11 @@ private:
 	// init and draw a plane with the grass texture
 	void initGrassPlane();
 	void initTree();
+	void initHead();
   void initSkyBox();
 	void drawGrassPlane(float size);
    void drawTree(GLfloat posX, GLfloat posY, GLfloat width, GLfloat height);
+   void drawHead();
 };
 
 #endif

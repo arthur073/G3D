@@ -94,7 +94,7 @@ void Man::drawImmediate()
    glRotatef(belly, 1, 0, 0);
    glRotatef(neck, 1, 0, 0);
    glTranslatef(0, 0, 1.2);
-   glutSolidSphere(0.5, 30, 30);
+   //glutSolidSphere(0.5, 30, 30);
    // hat
    glTranslatef(0, 0, 0.4);
    glColor3ub(118,70,185);
@@ -733,4 +733,9 @@ void Man::resetAnim() {
 float Man::getBelly()
 {
    return belly;
+}
+
+float Man::getNeck()
+{
+   return neck;
 }
