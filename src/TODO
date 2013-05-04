@@ -13,7 +13,8 @@ la boule de l'animation 3
 [OK il faut dessiner la tête avant la boule. ]
 
 
-MAGICIEN [PAS UTILE]
+MAGICIEN [PAS UTILE]  ==> pas d'accord, boule de verre dans le sujet, on doit avoir de la transparence
+avec de l'alpha blending dans la scène statique c'est le point 2 (*) transparence du sujet.
 
 Il doit toujours tenir une boule de verre avec alpha blending (comme dans ton anim 3)
 Limite tu pourrais faire une baguette et la mettre au bout puis prendre la boule de 
