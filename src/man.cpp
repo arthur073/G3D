@@ -641,30 +641,30 @@ void Man::spell()
 int cptTimer = 0;
 void Man::disappear()
 {
-   if( AnimDisappear == 0 ) {
-      if( fogDensity < 0.300f ) {
-         fogDensity += 0.002f;
-      } else {
-         AnimDisappear = 1;
-      }
-   } else if( AnimDisappear == 1 ) {
-      //faire disparaitre le bonhomme
-      //translateCompletZ = 1200;
-      AnimDisappear = 2;
-   } else if( AnimDisappear == 2 ) {
-      if( fogDensity > 0.0f ) {
-         fogDensity -= 0.002f;
-      } else {
-         fogDensity = 0;
-         AnimDisappear = 3;
-      }
-   } else if( AnimDisappear == 3 ) {
-      if( cptTimer > 150 ) {
-         AnimDisappear = 4;
-      } else {
-         cptTimer++;
-      }
-   }
+  if( AnimDisappear == 0 ) {
+    if( fogDensity < 0.300f ) {
+      fogDensity += 0.002f;
+    } else {
+      AnimDisappear = 1;
+    }
+  } else if( AnimDisappear == 1 ) {
+    //faire disparaitre le bonhomme
+    //translateCompletZ = 50;
+    AnimDisappear = 2;
+  } else if( AnimDisappear == 2 ) {
+    if( fogDensity > 0.0f ) {
+      fogDensity -= 0.002f;
+    } else {
+      fogDensity = 0;
+      AnimDisappear = 3;
+    }
+  } else if( AnimDisappear == 3 ) {
+    if( cptTimer > 150 ) {
+      AnimDisappear = 4;
+    } else {
+      cptTimer++;
+    }
+  }
 }
 
 
