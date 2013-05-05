@@ -30,12 +30,12 @@ void Textures::init()
 
 void Textures::draw()
 {
-   glDisable(GL_LIGHTING);
+   //glDisable(GL_LIGHTING);
    drawGrassPlane(300.0);
    drawHead();
    drawSkyBox(0,0,0,300,300,300);
    //drawTree(4, 2, 2, 4);
-   glEnable(GL_LIGHTING);
+   //glEnable(GL_LIGHTING);
 
    // balle
    Man::drawBall();
