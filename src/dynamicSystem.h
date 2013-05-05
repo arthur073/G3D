@@ -91,6 +91,7 @@ private:
 	void createSystemScene();
 	void createTestCollisions();
 
+   void animWind();
 
 // Renderable methods
 public:
@@ -102,6 +103,7 @@ public:
 
 	// Update positions and velocities of dynamic objects
 	void animate();
+
 };
 
 #endif

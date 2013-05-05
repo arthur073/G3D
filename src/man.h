@@ -13,12 +13,14 @@ class Man : public Renderable
       static const string EVENT_WALK;
       static const string EVENT_SPELL;
       static const string EVENT_DISAPPEAR;
+      static const string EVENT_WIND;
       static string currentMove;
       void draw();
       void animate();
       static bool isAnimationEnded();
       static float getBelly();
       static float getNeck();
+      static int getCptWind();
       static void resetAnim();
 
       // permet de dessiner la balle en dernier et d'avoir de l'alpha blending
@@ -42,6 +44,7 @@ class Man : public Renderable
       void spell();
       void disappear();
       void capeWave();
+      void animWind();
       void solidDisk(GLfloat base, GLfloat thickness, GLint slices, GLint stacks);
 };
 

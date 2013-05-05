@@ -143,6 +143,14 @@ void Viewer::keyPressEvent(QKeyEvent *e)
         }
         animate();
         updateGL();
+   } else if (e->key()==Qt::Key_F5) {
+        if( Man::isAnimationEnded() )
+        {
+          Man::currentMove = Man::EVENT_WIND;
+          Man::resetAnim();
+        }
+        animate();
+        updateGL();
    } else {
       // if the event is not handled here, process it as default
       QGLViewer::keyPressEvent(e);

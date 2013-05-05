@@ -267,9 +267,37 @@ void DynamicSystem::animate()
          collisionParticleBack(*itP);
       }	
    }
+
+
+   if( Man::currentMove == Man::EVENT_WIND )
+   {
+      // le vent se lève
+      animWind();
+   }
+
 }
 
 
+void DynamicSystem::animWind() 
+{
+   int cptWind = Man::getCptWind();
+
+   if (cptWind == 0) {
+      // un peu de vent
+      gravity[1] = -0.17;
+      gravity[2] = -0.3;
+   }
+
+   if (cptWind == 1) {
+      gravity[1] = -0.3;
+      gravity[2] = -0.17;
+   }
+
+   if (cptWind == 3) {
+      gravity = defaultGravity;
+   }
+   
+}
 
 void DynamicSystem::collisionParticleGround(Particle *p)
 {
@@ -306,11 +334,11 @@ void DynamicSystem::collisionParticleBack(Particle *p)
 
    
    // if particle is not at back's height
-   //if (p->getPosition()[2] > backTop || p->getPosition()[2] < backBottom) 
-   //   return;
+   if (p->getPosition()[2] > backTop-0.5 ) 
+      return;
 
-   //if (p->getPosition()[2] < -0.8 && p->getPosition()[0] < 0.50) 
-   //   return;
+   if (p->getPosition()[0] > 0.45) 
+      return;
       //cout<<"position z"<<p->getPosition()[2]<<"\n";
 
    // penetration velocity
@@ -320,4 +348,3 @@ void DynamicSystem::collisionParticleBack(Particle *p)
    p->incrPosition(-(1 + rebound) * penetration * backNormal);
    p->incrVelocity(-(1 + rebound) * vPen * backNormal);
 }
-
