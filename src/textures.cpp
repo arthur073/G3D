@@ -26,7 +26,7 @@ void Textures::init()
    initTree();
    initHead();
 }
-
+float *rotate = 0;
 
 void Textures::draw()
 {
@@ -37,7 +37,15 @@ void Textures::draw()
    glEnable(GL_LIGHTING);
    //drawTree(4, 2, 2, 4);
 
-   // balle
+   // balles
+   // terrain
+   Man::drawParametrizedBall(5, 0, 3, 0, .5, 0.5, 0);
+   Man::drawParametrizedBall(0, 5, 3, 0, .5, 0.6, 1);
+   Man::drawParametrizedBall(-5, 0, 3, 0, .5, 0.7, 2);
+   Man::drawParametrizedBall(0, -5, 3, 0, .5, 0.8, 3);
+   Man::drawParametrizedBall(0, 2.5, 3, 0, .35, 0.4, 4);
+   
+   // animation
    Man::drawBall();
    glBindTexture(GL_TEXTURE_2D, 0);
 }

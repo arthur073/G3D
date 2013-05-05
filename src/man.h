@@ -23,6 +23,7 @@ class Man : public Renderable
 
       // permet de dessiner la balle en dernier et d'avoir de l'alpha blending
       static void drawBall();
+      static void drawParametrizedBall(float transX, float transY, float transZ, float rotateZ, float size, float alpha, int indBall);
 
    private:
       // drawings

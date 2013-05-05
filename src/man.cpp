@@ -3,6 +3,7 @@
 #include <math.h>
 #include<unistd.h>
 #include "man.h"
+#include<cfloat>
 /*
    cylinder's drawing
    */
@@ -32,6 +33,11 @@ GLfloat ballSize = 0;
 GLfloat alphaBall = 0;
 GLfloat Light0Power = 1.5;
 GLfloat Light1Power = 0.0;
+
+const int nbBall = 5;
+GLfloat rotateParamBall[nbBall] = {0};
+GLfloat sizeParamBall[nbBall] = {.5};
+bool reverseBall = false;
 
 float translateCompletZ = 0.0f;
 
@@ -302,6 +308,34 @@ void Man::drawBall()
    glDisable(GL_BLEND);
    glPopMatrix();
 }
+
+void Man::drawParametrizedBall(float transX, float transY, float transZ, float rotateZ, float size, float alpha, int indBall)
+{
+  sizeParamBall[indBall] = size;
+   // Lumière ambiante
+   float fTemp0[4] = { Light0Power, Light0Power, Light0Power, 1.0f };
+   glLightfv(GL_LIGHT0, GL_DIFFUSE, fTemp0);
+
+   glPushMatrix();
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+   
+   glRotatef(rotateParamBall[indBall], 0, 0, 1);
+   // Lumière de la balle
+   GLfloat light1_position[] = { 0.0f, 1.5f, 0.7f, 0.3f };
+   float fTemp1[4] = { Light1Power, Light1Power, Light1Power, 1.0f };
+   glLightfv(GL_LIGHT1, GL_DIFFUSE, fTemp1);
+   glLightfv(GL_LIGHT1, GL_POSITION, light1_position); 
+
+
+   glTranslatef(transX,transY,transZ);
+   glColor4f(1,1,1,alpha);
+  // glScalef(sizeParamBall[indBall],sizeParamBall[indBall]/40,sizeParamBall[indBall]/40);
+   glutSolidSphere(sizeParamBall[indBall], 30, 30);
+   glDisable(GL_BLEND);
+   glPopMatrix();
+}
+
 
 float fogDensity = 0.0f;
 
@@ -669,6 +703,20 @@ void Man::disappear()
 
 void Man::animate()
 {
+  //rotating balls
+  for(int i = 0; i < nbBall-1; i++ )
+  {
+    //on evite le debordement de float 
+    if( rotateParamBall[i] < FLT_MAX )
+        rotateParamBall[i]++;
+    else
+        rotateParamBall[i] = 0;
+  }
+    //on evite le debordement de float 
+    if( rotateParamBall[nbBall-1] < (FLT_MIN+4) )
+        rotateParamBall[nbBall-1]-=4;
+    else
+        rotateParamBall[nbBall-1] = 0;
 
    //on fait reapparaitre le bonhomme au cas ou
    if( Man::currentMove != Man::EVENT_DISAPPEAR )
