@@ -646,7 +646,7 @@ void Man::disappear()
     }
   } else if( AnimDisappear == 1 ) {
     //faire disparaitre le bonhomme
-    //translateCompletZ = 1200;
+    //translateCompletZ = 50;
     AnimDisappear = 2;
   } else if( AnimDisappear == 2 ) {
     if( fogDensity > 0.0f ) {
