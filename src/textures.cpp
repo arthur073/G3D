@@ -36,6 +36,9 @@ void Textures::draw()
    drawSkyBox(0,0,0,300,300,300);
    //drawTree(4, 2, 2, 4);
    glEnable(GL_LIGHTING);
+
+   // balle
+   Man::drawBall();
    glBindTexture(GL_TEXTURE_2D, 0);
 }
 

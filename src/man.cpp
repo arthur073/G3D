@@ -103,8 +103,6 @@ void Man::drawImmediate()
    glPopMatrix();
 
 
-   // balle
-   drawBall();
 
    //fog
    drawFog();
