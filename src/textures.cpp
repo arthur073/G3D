@@ -28,13 +28,13 @@ float *rotate = 0;
 
 void Textures::draw()
 {
-   drawGrassPlane(300.0);
 
    float translateCompletZ = Man::getTranslateCompletZ();
    glTranslatef(0,0,translateCompletZ);
    drawHead();
    glTranslatef(0,0,-translateCompletZ);
 
+   drawGrassPlane(300.0);
    glDisable(GL_LIGHTING);
    drawSkyBox(0,0,0,300,300,300);
    glEnable(GL_LIGHTING);
@@ -140,7 +140,7 @@ void Textures::drawPlane(float s)
 
    glPushMatrix();
 
-   glNormal3f(0.0f, 0.0f, 1.0f);
+   glNormal3f(0.0f, 1.0f, 1.0f);
    glTranslatef(-s / 2.0, -s / 2.0, -1.35);
 
    glBegin(GL_QUADS);	
