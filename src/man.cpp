@@ -30,7 +30,7 @@ GLfloat ballY = 0;
 GLfloat ballYLength = 0;
 GLfloat ballSize = 0;
 GLfloat alphaBall = 0;
-GLfloat Light0Power = 1.0;
+GLfloat Light0Power = 1.5;
 GLfloat Light1Power = 0.0;
 
 float translateCompletZ = 0.0f;
@@ -594,7 +594,13 @@ void Man::spell()
 
    if (AnimSpell == 10) {
       // insérer ici une explosion de la boule
-      AnimSpell = 11;
+      if (Light1Power < 20) {
+         Light1Power+=0.5;
+         ballSize+=0.3;
+         alphaBall-=0.2;
+      } else {
+         AnimSpell = 11;
+      }
    }
 
    if (AnimSpell == 11) {
