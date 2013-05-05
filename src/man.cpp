@@ -112,6 +112,7 @@ void Man::drawImmediate()
    glPopMatrix();
 
 
+   glTranslatef(0,0,-translateCompletZ);
 
    //fog
    drawFog();
@@ -673,6 +674,7 @@ void Man::spell()
 
 }
 int cptTimer = 0;
+bool present = true;
 void Man::disappear()
 {
   if( AnimDisappear == 0 ) {
@@ -681,20 +683,33 @@ void Man::disappear()
     } else {
       AnimDisappear = 1;
     }
-  } else if( AnimDisappear == 1 ) {
-    //faire disparaitre le bonhomme
-    //translateCompletZ = 50;
+  } 
+  if( AnimDisappear == 1 ) {
+    if (present) {
+       //faire disparaitre le bonhomme
+       translateCompletZ = 50;
+       present = false;
+    } else {
+      translateCompletZ = 0;
+      present = true;
+    }
     AnimDisappear = 2;
-  } else if( AnimDisappear == 2 ) {
+  }
+  if( AnimDisappear == 2 ) {
     if( fogDensity > 0.0f ) {
       fogDensity -= 0.002f;
     } else {
       fogDensity = 0;
       AnimDisappear = 3;
     }
-  } else if( AnimDisappear == 3 ) {
+  } 
+  if( AnimDisappear == 3 ) {
     if( cptTimer > 150 ) {
-      AnimDisappear = 4;
+      if (present) {
+         AnimDisappear = 4;
+      } else {
+         AnimDisappear = 0;
+      }
     } else {
       cptTimer++;
     }
@@ -883,4 +898,9 @@ float Man::getNeck()
 int Man::getCptWind()
 {
    return cptWind;
+}
+
+float Man::getTranslateCompletZ()
+{
+   return translateCompletZ;
 }

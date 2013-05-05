@@ -31,7 +31,12 @@ float *rotate = 0;
 void Textures::draw()
 {
    drawGrassPlane(300.0);
+
+   float translateCompletZ = Man::getTranslateCompletZ();
+   glTranslatef(0,0,translateCompletZ);
    drawHead();
+   glTranslatef(0,0,-translateCompletZ);
+   
    glDisable(GL_LIGHTING);
    drawSkyBox(0,0,0,300,300,300);
    glEnable(GL_LIGHTING);
@@ -45,7 +50,8 @@ void Textures::draw()
    Man::drawParametrizedBall(0, -5, 3, 0, .5, 0.8, 3);
    Man::drawParametrizedBall(0, 2.5, 3, 0, .35, 0.4, 4);
    
-   // animation
+   
+   // animation ball
    Man::drawBall();
    glBindTexture(GL_TEXTURE_2D, 0);
 }

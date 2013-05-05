@@ -146,7 +146,9 @@ void DynamicSystem::createSystemScene()
 void DynamicSystem::draw()
 {
    // Particles
-   glPushMatrix();
+   
+   float translateCompletZ = Man::getTranslateCompletZ();
+   glTranslatef(0,0,translateCompletZ);
    glColor3f(1,1,1);
    vector<Particle *>::iterator itP;
    for (itP = particles.begin(); itP != particles.end(); ++itP) {
@@ -159,6 +161,7 @@ void DynamicSystem::draw()
    for (itS = springs.begin(); itS != springs.end(); ++itS) {
       (*itS)->draw();
    }
+   glTranslatef(0,0,-translateCompletZ);
 }
 
 Vec updatePos(int i) 

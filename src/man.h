@@ -21,6 +21,7 @@ class Man : public Renderable
       static float getBelly();
       static float getNeck();
       static int getCptWind();
+      static float getTranslateCompletZ();
       static void resetAnim();
 
       // permet de dessiner la balle en dernier et d'avoir de l'alpha blending
