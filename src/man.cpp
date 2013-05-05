@@ -72,8 +72,6 @@ void Man::draw()
    drawImmediate();
 }
 
-//==================== 1. Immediate method ===================================
-// immediate definition of individual vertex properties
 void Man::drawImmediate()
 {
    glEnable(GL_LIGHT1);
@@ -313,7 +311,7 @@ void Man::drawBall()
    glPopMatrix();
 }
 
-void Man::drawParametrizedBall(float transX, float transY, float transZ, float rotateZ, float size, float alpha, int indBall)
+void Man::drawParametrizedBall(float transX, float transY, float transZ, float size, float alpha, int indBall)
 {
   sizeParamBall[indBall] = size;
    // Lumière ambiante
@@ -334,7 +332,6 @@ void Man::drawParametrizedBall(float transX, float transY, float transZ, float r
 
    glTranslatef(transX,transY,transZ);
    glColor4f(1,1,1,alpha);
-  // glScalef(sizeParamBall[indBall],sizeParamBall[indBall]/40,sizeParamBall[indBall]/40);
    glutSolidSphere(sizeParamBall[indBall], 30, 30);
    glDisable(GL_BLEND);
    glPopMatrix();

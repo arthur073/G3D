@@ -23,7 +23,6 @@ DynamicSystem::DynamicSystem()
       groundNormal(0.0, 0.0, 1.0),
       rebound(0.5)
 {
-   // default values reset in init()
 }
 
 DynamicSystem::~DynamicSystem()
@@ -114,11 +113,11 @@ void DynamicSystem::createSystemScene()
    for (int i =0; i < chainNumber; i++) {
       // la particule fixe
       float degInRad = (i*10-160)*DEG2RAD;
-      
+
       Vec initPos = Vec(cos(degInRad)*radius , sin(degInRad)*radius, 0.9);
       Vec pos = initPos;
       particles.push_back(new Particle(pos, Vec(), 0.0, particleRadius, true));
-      
+
       // le reste de la chaîne
       for (int j = 1; j < partNumber; j++) {
          pos += Vec(0.0, distanceBetweenParticles, 0.0);
@@ -146,7 +145,7 @@ void DynamicSystem::createSystemScene()
 void DynamicSystem::draw()
 {
    // Particles
-   
+
    float translateCompletZ = Man::getTranslateCompletZ();
    glTranslatef(0,0,translateCompletZ);
    glColor3f(1,1,1);
@@ -227,9 +226,9 @@ void DynamicSystem::animate()
       forces[s->getParticle1()] += f12;
       forces[s->getParticle2()] -= f12; // opposite force
    }
-   
 
-  for (; itS != springs.end(); ++itS) {
+
+   for (; itS != springs.end(); ++itS) {
       // les springs de la dernière ligne
       Spring *s = *itS;
       Vec f12 = s->getCurrentForce12();
@@ -299,7 +298,7 @@ void DynamicSystem::animWind()
    if (cptWind == 3) {
       gravity = defaultGravity;
    }
-   
+
 }
 
 void DynamicSystem::collisionParticleGround(Particle *p)
@@ -325,7 +324,7 @@ void DynamicSystem::collisionParticleGround(Particle *p)
 
 void DynamicSystem::collisionParticleBack(Particle *p)
 {
-     // don't process fixed particles (ground plane is fixed)
+   // don't process fixed particles (ground plane is fixed)
    if (p->getInvMass() == 0)
       return;
 
@@ -335,14 +334,14 @@ void DynamicSystem::collisionParticleBack(Particle *p)
    if (penetration >= 0)
       return;
 
-   
+
    // if particle is not at back's height
    if (p->getPosition()[2] > backTop-0.5 ) 
       return;
 
    if (p->getPosition()[0] > 0.45) 
       return;
-      //cout<<"position z"<<p->getPosition()[2]<<"\n";
+   //cout<<"position z"<<p->getPosition()[2]<<"\n";
 
    // penetration velocity
    double vPen = p->getVelocity() * backNormal;

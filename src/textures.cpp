@@ -9,7 +9,6 @@ using namespace std;
 string TexIDSkyBox[6];
 Textures::Textures()
 {
-   // make sure this flag is enable to use textures!
    glEnable(GL_TEXTURE_2D);
 }
 
@@ -23,7 +22,6 @@ void Textures::init()
 {
    initGrassPlane();
    initSkyBox();
-   initTree();
    initHead();
 }
 float *rotate = 0;
@@ -36,28 +34,24 @@ void Textures::draw()
    glTranslatef(0,0,translateCompletZ);
    drawHead();
    glTranslatef(0,0,-translateCompletZ);
-   
+
    glDisable(GL_LIGHTING);
    drawSkyBox(0,0,0,300,300,300);
    glEnable(GL_LIGHTING);
-   //drawTree(4, 2, 2, 4);
 
    // balles
-   // terrain
-   Man::drawParametrizedBall(5, 0, 3, 0, .5, 0.5, 0);
-   Man::drawParametrizedBall(0, 5, 3, 0, .5, 0.6, 1);
-   Man::drawParametrizedBall(-5, 0, 3, 0, .5, 0.7, 2);
-   Man::drawParametrizedBall(0, -5, 3, 0, .5, 0.8, 3);
-   Man::drawParametrizedBall(0, 2.5, 3, 0, .35, 0.4, 4);
-   
-   
-   // animation ball
+   Man::drawParametrizedBall(5, 0, 3,.5, 0.5, 0);
+   Man::drawParametrizedBall(0, 5, 3,.5, 0.6, 1);
+   Man::drawParametrizedBall(-5, 0, 3,.5, 0.7, 2);
+   Man::drawParametrizedBall(0, -5, 3,.5, 0.8, 3);
+   Man::drawParametrizedBall(0, 2.5, 3,.35, 0.4, 4);
+
+
    Man::drawBall();
    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
-///////////////////////////////////////////////////////////////////////////////
 void Textures::loadTexture(TextureId texId, const char *filename)
 {
    // generates an OpenGL texture id, and store it in the map
@@ -75,9 +69,6 @@ void Textures::loadTexture(TextureId texId, const char *filename)
 }
 
 
-///////////////////////////////////////////////////////////////////////////////
-//   PLANE TEXTURE WITH GRASS
-
 void Textures::initGrassPlane()
 {
    // load the grass texture
@@ -93,23 +84,6 @@ void Textures::initGrassPlane()
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
-
-void Textures::initTree() 
-{
-   // load the tree texture
-   loadTexture(TEX_TREE, "images/tree.tiff");
-
-
-   // set its parameters
-   glBindTexture(GL_TEXTURE_2D, textures[TEX_TREE]);
-
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
-   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-}
 
 void Textures::initHead()
 {  
@@ -263,52 +237,3 @@ void Textures::drawSkyBox(float x, float y, float z, float width, float height, 
    glEnd();
 
 }
-
-/*void Textures::setFiltering()
-  {
-  switch (filteringMode) {
-  case 0:
-  case 2:
-  case 4:
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  break;
-  case 1:
-  case 3:
-  case 5:
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  break;
-  }
-  }*/
-
-
-
-
-
-void Textures::drawTree(GLfloat posX, GLfloat posY, GLfloat width, GLfloat height) {
-
-   glBindTexture(GL_TEXTURE_2D, textures[TEX_TREE]);
-   glPushMatrix();
-   glEnable(GL_BLEND);
-   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-
-   glNormal3f(0, 0.0, 1.0);
-   glTranslatef(posX, posY, -1.35);
-   glRotatef(90, 1, 0, 0);
-
-   glBegin(GL_QUADS);	
-   glTexCoord2f(0, 0);
-   glVertex3f(2, 0, 0);
-   glTexCoord2f(1, 0);
-   glVertex3f(2, 0, width);
-   glTexCoord2f(1, 1);
-   glVertex3f(2, height, width);
-   glTexCoord2f(0, 1);
-   glVertex3f(2, height, 0);
-   glEnd();
-
-   glDisable(GL_BLEND);
-   glPopMatrix();
-}
-

@@ -26,7 +26,6 @@ void Viewer::init()
 
    toogleWireframe = false;  // filled faces
    toogleLight = true;       // light on
-   //help();                   // display help
 
    if (toogleLight == true)
       glEnable(GL_LIGHTING);
@@ -37,23 +36,15 @@ void Viewer::init()
    glClearColor(.7, .7, .7, .0);
 
 
-   //=== INIT SCENE: add everything you want in your scene to the renderableList
-   //    (just an instance of Cube in this example)
-
    Man *man = new Man();
    renderableList.push_back(man);
    Textures *tex = new Textures();
    renderableList.push_back(tex);
    (*(++renderableList.begin()))->init();
 
-   /* Additions for Lab Session 6 "Physicall Modeling" */
 	dyn = new DynamicSystem();
 	dyn->init();
 	renderableList.push_back(dyn);
-
-	// add a manipulatedFrame to move particle 0 with the mouse
-	//setManipulatedFrame(new qglviewer::ManipulatedFrame());
-	//manipulatedFrame()->setPosition(dyn->getFixedParticlePosition());
 
 	toogleGravity = true;
 	toogleViscosity = true;
@@ -75,15 +66,10 @@ void Viewer::draw()
 
 void Viewer::animate()
 {
-   // animate every objects in renderableList
    list<Renderable *>::iterator it;
    for(it = renderableList.begin(); it != renderableList.end(); ++it) {
       (*it)->animate();
    }
-
-   // this code might change if some rendered objets (stored as
-   // attributes) need to be specifically updated with common
-   // attributes, like real CPU time (?)
 }
 
 
@@ -94,7 +80,6 @@ void Viewer::keyPressEvent(QKeyEvent *e)
    const Qt::KeyboardModifiers modifiers = e->modifiers();
 
    if ((e->key()==Qt::Key_W) && (modifiers==Qt::NoButton)) {
-      // events with modifiers: CTRL+W, ALT+W, ... to handle separately
       toogleWireframe = !toogleWireframe;
       if (toogleWireframe)
          glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
