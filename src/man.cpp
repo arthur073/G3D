@@ -50,6 +50,7 @@ const string Man::EVENT_APPLAUSE = "applause";
 const string Man::EVENT_WALK = "walk";
 const string Man::EVENT_SPELL = "spell";
 const string Man::EVENT_DISAPPEAR = "disappear";
+const string Man::EVENT_WIND = "wind";
 
 string Man::currentMove = "";
 
@@ -61,6 +62,8 @@ GLint AnimDisappear = 0;
 GLint CptApplause = 0;
 GLint CptWait = 0;
 GLint cptWalk = 0;
+GLint cptWind = 0;
+GLint cptWaitWind = 0;
 
 
 void Man::draw()
@@ -291,7 +294,7 @@ void Man::drawBall()
    glPushMatrix();
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-   
+
    glRotatef(ballY, 0, 0, 1);
 
    // Lumière de la balle
@@ -341,16 +344,16 @@ float fogDensity = 0.0f;
 
 void Man::drawFog()
 {
-  GLfloat fogColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
-  glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+   GLfloat fogColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
+   glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
-  glFogi(GL_FOG_MODE, GL_EXP);
-  glFogfv(GL_FOG_COLOR, fogColor);
-  glFogf(GL_FOG_DENSITY, fogDensity);
-  glHint(GL_FOG_HINT, GL_DONT_CARE);
-  glFogf(GL_FOG_START, 1.0f);
-  glFogf(GL_FOG_END, 5.0f);
-  glEnable(GL_FOG);
+   glFogi(GL_FOG_MODE, GL_EXP);
+   glFogfv(GL_FOG_COLOR, fogColor);
+   glFogf(GL_FOG_DENSITY, fogDensity);
+   glHint(GL_FOG_HINT, GL_DONT_CARE);
+   glFogf(GL_FOG_START, 1.0f);
+   glFogf(GL_FOG_END, 5.0f);
+   glEnable(GL_FOG);
 
 }
 
@@ -541,25 +544,25 @@ void Man::spell()
    }
 
    if (AnimSpell == 2) {
-         if (ballSize < 20) {
-            alphaBall+=0.03;
-            ballZ++;
-            ballSize++;
-            Light1Power+=0.03;
-         } else {
-            AnimSpell = 3;
-         }
+      if (ballSize < 20) {
+         alphaBall+=0.03;
+         ballZ++;
+         ballSize++;
+         Light1Power+=0.03;
+      } else {
+         AnimSpell = 3;
+      }
    }
 
    if (AnimSpell == 3) {
-         if (ballZ < 100) {
-            ballZ++;
-            neck+=0.1;
-            leftShoulder2+=0.1;
-            rightShoulder2-=0.1;
-         } else {
-            AnimSpell = 4;
-         }
+      if (ballZ < 100) {
+         ballZ++;
+         neck+=0.1;
+         leftShoulder2+=0.1;
+         rightShoulder2-=0.1;
+      } else {
+         AnimSpell = 4;
+      }
    }
 
    if (AnimSpell == 4) {
@@ -571,7 +574,7 @@ void Man::spell()
       }
    } 
 
-  if (AnimSpell == 5) {
+   if (AnimSpell == 5) {
       if (ballY < 3600) {
          ballY= ballY + (ballY/100);
          Light1Power+=0.009;
@@ -580,7 +583,7 @@ void Man::spell()
       }
    } 
 
-  if ( AnimSpell == 6) {
+   if ( AnimSpell == 6) {
       if (ballY < 7200) {
          ballY= ballY + ((7250 - ballY)/100);
          ballSize+=0.1;
@@ -590,11 +593,11 @@ void Man::spell()
       if (ballY > 7100) {
          belly+=0.1;
       }
-  }
+   }
 
-  if (AnimSpell == 7) {
-      
-     if (belly < 20) {
+   if (AnimSpell == 7) {
+
+      if (belly < 20) {
          belly+=0.1;
          leftShoulder2-=0.1;
          rightShoulder2+=0.1;
@@ -602,9 +605,9 @@ void Man::spell()
       } else {
          AnimSpell = 8;
       }
-  } 
+   } 
 
-  if (AnimSpell == 8) {
+   if (AnimSpell == 8) {
       // lancé de la boule
       if (belly > -20) {
          belly -=3;
@@ -616,15 +619,15 @@ void Man::spell()
       if (ballYLength < 100 && belly < -10) {
          ballYLength+=0.1;
       } 
-  }
+   }
 
-  if (AnimSpell == 9) {
-     if (ballYLength < 10) {
+   if (AnimSpell == 9) {
+      if (ballYLength < 10) {
          ballYLength+=0.2;
-     } else {
-        AnimSpell = 10;
+      } else {
+         AnimSpell = 10;
       }
-  }
+   }
 
    if (AnimSpell == 10) {
       // insérer ici une explosion de la boule
@@ -699,6 +702,78 @@ void Man::disappear()
 }
 
 
+void Man::animWind() 
+{
+   if (cptWind == 0) {
+      if (cptWaitWind < 300) {
+         cptWaitWind++;
+      } else {
+         cptWind = 1;
+      }
+   }
+
+   if (cptWind == 1) {
+      // on se protège du vent 
+      if (belly > -35) {
+         belly--;
+      }
+      if (leftShoulder2 < 30) {
+         leftShoulder2++;
+         rightShoulder2--;
+      }
+      if (leftShoulder > -40) {
+         leftShoulder--;
+         rightShoulder++;
+      }
+      if (leftElbow2 < 45) {
+         leftElbow2++;
+         rightElbow2--;
+         Light0Power-=0.02;
+      } else {
+         cptWind = 2;
+      }
+      if (leftElbow > -30) {
+         leftElbow--;
+         rightElbow++;
+      }
+   }
+
+   if (cptWind == 2) {
+      if (cptWaitWind < 550) {
+         cptWaitWind++;
+      } else {
+         cptWind = 3;
+      }
+   }
+
+   if (cptWind == 3) {
+      // on se relève
+      if (belly < 0) {
+         belly++;
+      }
+      if (leftShoulder2 > 0) {
+         leftShoulder2--;
+         rightShoulder2++;
+      }
+      if (leftShoulder < 0) {
+         leftShoulder++;
+         rightShoulder--;
+      }
+      if (leftElbow2 > 0) {
+         leftElbow2--;
+         rightElbow2++;
+         Light0Power+=0.02;
+      } else {
+         cptWind = 4;
+      }
+      if (leftElbow < 0) {
+         leftElbow++;
+         rightElbow--;
+      }
+   }
+
+}
+
 
 
 void Man::animate()
@@ -720,7 +795,7 @@ void Man::animate()
 
    //on fait reapparaitre le bonhomme au cas ou
    if( Man::currentMove != Man::EVENT_DISAPPEAR )
-     translateCompletZ = 0;
+      translateCompletZ = 0;
 
    //on traite le nouveau mouvement
    if( Man::currentMove == Man::EVENT_APPLAUSE )
@@ -737,8 +812,13 @@ void Man::animate()
    }
    else if( Man::currentMove == Man::EVENT_DISAPPEAR )
    {
-     disappear();
+      disappear();
    }
+   else if( Man::currentMove == Man::EVENT_WIND )
+   {
+      animWind();
+   }
+
 }
 
 bool Man::isAnimationEnded()
@@ -757,8 +837,13 @@ bool Man::isAnimationEnded()
    }
    else if ( Man::currentMove == Man::EVENT_DISAPPEAR )
    {
-     return ( AnimDisappear == 4 ? true : false );
+      return ( AnimDisappear == 4 ? true : false );
    }
+   else if ( Man::currentMove == Man::EVENT_WIND )
+   {
+      return ( cptWind == 4 ? true : false );
+   }
+
    else
    {
       return true;
@@ -780,6 +865,8 @@ void Man::resetAnim() {
    ballYLength = 0;
    ballSize = 0;
    alphaBall = 0;
+   cptWind = 0;
+   cptWaitWind = 0;
 }
 
 
@@ -791,4 +878,9 @@ float Man::getBelly()
 float Man::getNeck()
 {
    return neck;
+}
+
+int Man::getCptWind()
+{
+   return cptWind;
 }
