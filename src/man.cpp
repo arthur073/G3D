@@ -704,7 +704,7 @@ void Man::disappear()
     }
   } 
   if( AnimDisappear == 3 ) {
-    if( cptTimer > 150 ) {
+    if( cptTimer > 80 ) {
       if (present) {
          AnimDisappear = 4;
       } else {
